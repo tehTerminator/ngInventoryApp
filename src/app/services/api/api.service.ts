@@ -7,12 +7,23 @@ import { environment } from '../../../environments/environment.development';
 })
 export class ApiService {
 
-  constructor(private client: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  get<T>(url: string | string[], payload: {[key: string]: string}) {
-    const theUrl  = this.createUrl([...url]);
-    this.client.get<T>(theUrl, {params: payload});
+  fetch_data<T>(urlData: string | string[], payload: {[key: string]: string}) {
+    let url = '';
+
+    if (Array.isArray(urlData)) {
+      url = this.createUrl([...urlData]);
+    }
+
+    else {
+      url = this.createUrl(['get', urlData]);
+    }
+
+    this.http.get<T>(url, {params: payload});
   }
+
+  /**
 
   create<Type>(url: string | string[], payload: {[key: string]: any}): Observable<Type>{
     const theUrl  = this.createUrl([...url]);
@@ -28,8 +39,9 @@ export class ApiService {
     const theUrl  = this.createUrl([...url]);
     return this.client.delete<Type>(`${theUrl, 'delete')}/${id}`);
   }
-
-  private createUrl(urlData: string[]) {
+  
+  */
+  private createUrl(urlData: string[]): string {
     const url = urlData.join('/');
     return `${environment.baseUrl}/${url}`;
   }
