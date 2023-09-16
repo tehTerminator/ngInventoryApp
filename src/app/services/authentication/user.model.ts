@@ -60,3 +60,20 @@ export interface UserData extends Entity {
     auth_token: string;
     role: Role;
 }
+
+export const AnonymousUser = {
+    id: 0,
+    name: 'Anonymous',
+    username: 'anonymous',
+    mobile: '',
+    auth_token: '',
+    role: {
+      id: 0,
+      name: 'Anonymous User',
+      description: 'Not Authenticated User',
+      created_at: (new Date()),
+      updated_at: (new Date())
+    },
+    created_at: (new Date()),
+    updated_at: (new Date())
+  }

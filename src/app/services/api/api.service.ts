@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,10 @@ export class ApiService {
       url = this.createUrl(['get', urlData]);
     }
 
-    this.http.get<T>(url, {params: payload});
+    console.log('URL: ', url);
+    console.log('Payload', payload);
+
+    return this.http.get<T>(url, {params: payload})
   }
 
   /**
