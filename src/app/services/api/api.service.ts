@@ -21,9 +21,6 @@ export class ApiService {
       url = this.createUrl(['get', urlData]);
     }
 
-    console.log('URL: ', url);
-    console.log('Payload', payload);
-
     return this.http.get<T>(url, {params: payload})
   }
 

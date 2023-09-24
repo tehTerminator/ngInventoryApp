@@ -12,6 +12,12 @@ import { HOUR } from '../../shared/constants';
 export class AuthenticationService implements OnDestroy {
   private timer: any = null;
 
+  constructor(
+    private api: ApiService,
+    private authStore: AuthStoreService,
+    private router: Router
+  ) {}
+
   init(): void {
     const userData: UserData = this.getStoredUserData();
     const expirationTime = this.getStoredExpirationTime();
@@ -25,14 +31,17 @@ export class AuthenticationService implements OnDestroy {
   authenticate(username: string, password: string): Observable<any> {
     this.authStore.authStarted();
 
-    return this.api.fetch_data<UserData>(['user', 'auth'], {username, password}).pipe(
-      tap((userData) => {
-        this.handleAuthentication(userData);
-      }),
-      catchError(() => {
-        throw new Error('Invalid Username or Password');
-      })
-    );
+    return this.api
+      .fetch_data<UserData>(['user', 'auth'], { username, password })
+      .pipe(
+        tap((userData) => {
+          this.handleAuthentication(userData);
+        }),
+        catchError(() => {
+          this.authStore.signOut();
+          throw new Error('Invalid Username or Password');
+        })
+      );
   }
 
   signOut(): void {
@@ -59,7 +68,7 @@ export class AuthenticationService implements OnDestroy {
 
   private getStoredUserData(): UserData {
     const ud = localStorage.getItem('userData');
-    let userData: UserData = {... AnonymousUser};
+    let userData: UserData = { ...AnonymousUser };
     if (!!ud) {
       userData = JSON.parse(ud) as UserData;
     }
@@ -67,12 +76,8 @@ export class AuthenticationService implements OnDestroy {
   }
 
   private getStoredExpirationTime(): number {
-    let expirationTime = 0;
     const storedExpirationTime = localStorage.getItem('expirationTime');
-    if (!!storedExpirationTime) {
-      expirationTime = +storedExpirationTime;
-    }
-    return expirationTime;
+    return storedExpirationTime ? parseInt(storedExpirationTime, 10) : 0;
   }
 
   private setAutoSignOut(expirationTime: number): void {
@@ -89,10 +94,4 @@ export class AuthenticationService implements OnDestroy {
   ngOnDestroy(): void {
     clearTimeout(this.timer);
   }
-
-  constructor(
-    private api: ApiService,
-    private authStore: AuthStoreService,
-    private router: Router
-  ) {}
 }

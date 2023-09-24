@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AuthState } from './../../interface/auth-state';
 import { AnonymousUser, User, UserData } from './../authentication/user.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthStoreService {
-  private _state: AuthState = AuthState.LOGGED_OUT;
+  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
   /**
    * Holds Current User Data
    */
@@ -24,18 +24,19 @@ export class AuthStoreService {
   signIn(userData: UserData, expirationTime: number): void {
     const currentTime = new Date().getTime();
     if (expirationTime < currentTime) {
-      this._state = AuthState.LOGGED_OUT;
+      this._state.next(AuthState.LOGGED_OUT);
       return;
     }
 
-    if (userData.id > 0) {
-      const newUser = new User(userData);
-      this._user.next(newUser);
-      this._state = AuthState.LOGGED_IN;
+    if (userData.id <= 0) {
+      this._state.next(AuthState.LOGGED_OUT);
       return;
     }
 
-    this._state = AuthState.LOGGED_OUT;
+    const newUser = new User(userData);
+    this._user.next(newUser);
+    this._state.next(AuthState.LOGGED_IN)
+    return;
   }
 
   /**
@@ -43,19 +44,23 @@ export class AuthStoreService {
    */
   signOut(): void {
     this._user.next(new User({ ...AnonymousUser }));
-    this._state = AuthState.LOGGED_OUT;
+    this._state.next(AuthState.LOGGED_OUT);
   }
 
   authStarted(): void {
     this.signOut();
-    this._state = AuthState.STARTED;
+    this._state.next(AuthState.STARTED);
   }
 
   get user(): User {
     return this._user.value;
   }
 
-  get state(): AuthState {
-    return this.state;
+  get state(): Observable<AuthState> {
+    return this._state;
+  }
+
+  get state_value(): AuthState {
+    return this._state.value;
   }
 }
