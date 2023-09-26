@@ -1,0 +1,31 @@
+<div id="container" class="d-flex flex-column">
+    <mat-toolbar color="primary">
+        <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="sidebar_one.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Inventory App</span>
+        <button mat-icon-button class="ms-auto" [matMenuTriggerFor]="userMenu">
+            <mat-icon>
+                account_circle
+            </mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item routerLink="profile">
+                <mat-icon>person</mat-icon>
+                Profile
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Logout
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+    <mat-sidenav-container>
+        <mat-sidenav #sidebar_one mode="push">
+            <app-nav-bar></app-nav-bar>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

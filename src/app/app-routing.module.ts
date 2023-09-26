@@ -6,8 +6,8 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./modules/secure-module/secure-module.module').then(
-        (m) => m.SecureModuleModule
+      import('./modules/secured/secured.module').then(
+        (m) => m.SecuredModule
       ),
       canActivate: [authGuard]
   },

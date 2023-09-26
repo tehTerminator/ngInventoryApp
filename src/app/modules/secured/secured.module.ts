@@ -1,27 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SecureModuleRoutingModule } from './secure-module-routing.module';
-import { SecureModuleComponent } from './secure-module.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { SecuredRoutingModule } from './secured-routing.module';
+import { SecuredComponent } from './secured.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 
 @NgModule({
   declarations: [
-    SecureModuleComponent,
+    SecuredComponent,
     NavBarComponent
   ],
   imports: [
     CommonModule,
-    SecureModuleRoutingModule,
+    SecuredRoutingModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
     MatSidenavModule,
+    MatMenuModule,
   ]
 })
-export class SecureModuleModule { }
+export class SecuredModule { }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { navItems } from './menu-items.data';
 
 @Component({
   selector: 'app-nav-bar',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent {
-
+  items = navItems;
+  constructor() {}
 }

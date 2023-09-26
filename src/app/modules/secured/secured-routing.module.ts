@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SecureModuleComponent } from './secure-module.component';
+import { SecuredComponent } from './secured.component';
 
 const routes: Routes = [
-  { 
-    path: '', component: SecureModuleComponent,
+  {
+    path: '',
+    component: SecuredComponent,
     children: [
       {
         path: 'dashboard',
@@ -12,11 +13,16 @@ const routes: Routes = [
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
       {
+        path: 'profile',
+        loadChildren: () =>
+          import('./profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+      },
+    ],
   },
 ];
 
@@ -24,4 +30,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SecureModuleRoutingModule {}
+export class SecuredRoutingModule {}
