@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SecuredRoutingModule } from './secured-routing.module';
 import { SecuredComponent } from './secured.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     MatButtonModule,
     MatSidenavModule,
     MatMenuModule,
+    MatExpansionModule
   ]
 })
 export class SecuredModule { }
