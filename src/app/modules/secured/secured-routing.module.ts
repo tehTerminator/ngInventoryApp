@@ -18,13 +18,17 @@ const routes: Routes = [
           import('./profile/profile.module').then((m) => m.ProfileModule),
       },
       {
+        path: 'master',
+        loadChildren: () =>
+          import('./master/master.module').then((m) => m.MasterModule),
+      },
+      {
         path: '**',
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
     ],
   },
-  { path: 'master', loadChildren: () => import('./master/master.module').then(m => m.MasterModule) },
 ];
 
 @NgModule({
