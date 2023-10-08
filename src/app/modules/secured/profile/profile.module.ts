@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CoreModule } from '../../core/core.module';
 
 
 @NgModule({
@@ -15,9 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     ProfileRoutingModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
+    CoreModule
   ]
 })
 export class ProfileModule { }

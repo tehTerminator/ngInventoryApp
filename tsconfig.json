@@ -29,5 +29,10 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
+  },
+  "paths" : {
+    "@services/*": ["app/services/*"],
+    "@shared/*": ["app/shared/*"],
+    "@interface/*": ["app/interface/*"]
   }
 }

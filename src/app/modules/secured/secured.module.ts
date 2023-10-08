@@ -11,12 +11,14 @@ import { SecuredRoutingModule } from './secured-routing.module';
 import { SecuredComponent } from './secured.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
   declarations: [
     SecuredComponent,
-    NavBarComponent
+    NavBarComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,

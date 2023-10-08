@@ -1,0 +1,32 @@
+<div class="card shadow">
+    <div class="card-header">
+        <h3 class="fs-3">Create / Edit Ledger</h3>
+    </div>
+
+    <div class="card-body">
+        <form>
+            <mat-form-field class="w-100">
+                <mat-label>ID</mat-label>
+                <input matInput type="number" min="0" step="1">
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>
+                    Title
+                </mat-label>
+                <input type="text" matInput>
+            </mat-form-field>
+            <mat-form-field class="w-100">
+                <mat-label>
+                    Group
+                </mat-label>
+                <mat-select>
+                    <mat-option>
+                        Bank
+                    </mat-option>
+                    <mat-option>Loans</mat-option>
+                    <mat-option>Sales</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </div>
+</div>

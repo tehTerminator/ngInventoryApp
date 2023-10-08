@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SecuredComponent } from './secured.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -8,7 +9,7 @@ const routes: Routes = [
     component: SecuredComponent,
     children: [
       {
-        path: 'dashboard',
+        path: '',
         loadChildren: () =>
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
@@ -23,8 +24,17 @@ const routes: Routes = [
           import('./master/master.module').then((m) => m.MasterModule),
       },
       {
+        path: '404',
+        component: PageNotFoundComponent,
+      },
+      {
+        path: 'vouchers',
+        loadChildren: () =>
+          import('./vouchers/vouchers.module').then((m) => m.VouchersModule),
+      },
+      {
         path: '**',
-        redirectTo: 'dashboard',
+        redirectTo: '404',
         pathMatch: 'full',
       },
     ],
