@@ -33,7 +33,7 @@ const routes: Routes = [
           import('./vouchers/vouchers.module').then((m) => m.VouchersModule),
       },
       {
-        path: 'invoices',
+        path: 'invoices/:type',
         loadChildren: () =>
           import('./invoices/invoices.module').then((m) => m.InvoicesModule)
       },

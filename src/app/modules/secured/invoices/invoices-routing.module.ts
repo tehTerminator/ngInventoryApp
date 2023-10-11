@@ -6,7 +6,7 @@ import { CreateTransactionComponent } from './sub-pages/create-transaction/creat
 import { ListItemsComponent } from './sub-pages/list-items/list-items.component';
 import { SelectCustomerComponent } from './sub-pages/select-customer/select-customer.component';
 import { WaitPageComponent } from './pages/wait-page/wait-page.component';
-import { TemplatePageTitleStrategy } from './../../shared/services/title-strategy/title-strategy';
+import { TemplatePageTitleStrategy } from './../../../services/title-strategy/title-strategy';
 
 const routes: Routes = [
   {
