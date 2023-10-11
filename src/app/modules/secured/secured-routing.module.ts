@@ -33,6 +33,11 @@ const routes: Routes = [
           import('./vouchers/vouchers.module').then((m) => m.VouchersModule),
       },
       {
+        path: 'invoices',
+        loadChildren: () =>
+          import('./invoices/invoices.module').then((m) => m.InvoicesModule)
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
@@ -45,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SecuredRoutingModule {}
+export class SecuredRoutingModule { }
