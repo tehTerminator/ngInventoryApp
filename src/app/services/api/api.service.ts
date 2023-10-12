@@ -15,7 +15,7 @@ export class ApiService {
     return `${environment.baseUrl}/${url}`;
   }
 
-  fetch_data<T>(urlData: string | string[], payload: {[key: string]: string}) {
+  fetch_data<T>(urlData: string | string[], payload?: {[key: string]: string}) {
     let url = '';
 
     if (Array.isArray(urlData)) {
@@ -30,17 +30,17 @@ export class ApiService {
   }
 
 
-  create<Type>(url: string | string[], payload: {[key: string]: any}): Observable<T>{
+  create<T>(url: string | string[], payload: {[key: string]: any}): Observable<T>{
     const theUrl  = this.createUrl([ 'create',...url]);
     return this.http.put<Type>(theUrl, payload);
   }
 
-  update<Type>(url: string | string[], payload: {[key: string]: any}): Observable<T> {
+  update<T>(url: string | string[], payload: {[key: string]: any}): Observable<T> {
     const theUrl  = this.createUrl([ 'update',...url]);
     return this.http.post<Type>(theUrl, payload);
   }
 
-  delete<Type>(url: string | string[], id: number): Observable<T> {
+  delete<T>(url: string | string[], id: number): Observable<T> {
     const theUrl  = this.createUrl([ 'delete',...url]);
     return this.http.delete<Type>(`${theUrl}/'delete')}/${id}`);
   }

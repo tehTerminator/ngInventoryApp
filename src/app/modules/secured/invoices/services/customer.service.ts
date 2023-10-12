@@ -13,7 +13,7 @@ export class CustomerService extends BaseService {
     }
 
     protected fetch(): void {
-        this.api.select<Contact[]>(this.tableName)
+        this.api.fetch_data<Contact[]>(this.tableName)
         .subscribe(customers => this.store(customers));
     }
 
