@@ -3,8 +3,8 @@ import { Validators, UntypedFormBuilder, UntypedFormControl } from '@angular/for
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Ledger } from '../../../../../shared/collection';
-import { LedgerService } from '../../../../../shared/services/ledger/ledger.service';
+import { Ledger } from  './../../../../../../interface/ledger';
+import { LedgerService } from './../../../../../../services/ledger/ledger.service';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 
 @Component({

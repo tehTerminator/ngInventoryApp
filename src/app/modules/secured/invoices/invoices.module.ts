@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-<<<<<<< HEAD
-import { InvoicesRoutingModule } from './invoices-routing.module';
-import { InvoicesComponent } from './invoices.component';
-=======
-import { CoreModule } from './../core/core.module';
+import { CoreModule } from './../../core/core.module';
 import { InvoicesRoutingModule } from './invoices-routing.module';
 import { InvoicesComponent } from './invoices.component';
 import { SelectCustomerComponent } from './sub-pages/select-customer/select-customer.component';
@@ -25,18 +21,10 @@ import { SelectLedgerFormComponent } from './pages/choose-payment-method/select-
 import { CustomerService } from './services/customer.service';
 import { GeneralItemStoreService } from './services/general-item-store.service';
 import { InvoiceStoreService } from './services/invoice-store.service';
->>>>>>> ad5d00ac42238e968ad4da820cc7aaf7ed79ad55
 
 
 @NgModule({
   declarations: [
-<<<<<<< HEAD
-    InvoicesComponent
-  ],
-  imports: [
-    CommonModule,
-    InvoicesRoutingModule
-=======
     InvoicesComponent,
     SelectCustomerComponent,
     CreateCustomerComponent,
@@ -62,7 +50,6 @@ import { InvoiceStoreService } from './services/invoice-store.service';
     CustomerService,
     GeneralItemStoreService,
     InvoiceStoreService
->>>>>>> ad5d00ac42238e968ad4da820cc7aaf7ed79ad55
   ]
 })
 export class InvoicesModule { }
