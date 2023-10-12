@@ -33,9 +33,15 @@ const routes: Routes = [
           import('./vouchers/vouchers.module').then((m) => m.VouchersModule),
       },
       {
+<<<<<<< HEAD
         path: 'invoices',
         loadChildren: () =>
           import('./invoices/invoices.module').then((m) => m.InvoicesModule),
+=======
+        path: 'invoices/:type',
+        loadChildren: () =>
+          import('./invoices/invoices.module').then((m) => m.InvoicesModule)
+>>>>>>> ad5d00ac42238e968ad4da820cc7aaf7ed79ad55
       },
       {
         path: '**',
@@ -50,4 +56,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SecuredRoutingModule {}
+export class SecuredRoutingModule { }

@@ -1,0 +1,37 @@
+<section class="card">
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="card-body">
+    <mat-form-field class="w-100">
+      <mat-label>Select POS Item</mat-label>
+      <input
+        type="text"
+        matInput
+        [matAutocomplete]="auto"
+        [formControl]="itemField"
+        #item
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option
+          *ngFor="let item of filteredItems | async"
+          [value]="item"
+        >
+        <div class="d-flex justify-content-between">
+          <span>
+            {{ item.title }}
+          </span>
+          <span>
+            {{ item.rate | currency:'INR' }}
+          </span>
+
+        </div>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button type="submit" class="btn btn-primary w-100">Next</button>
+  </form>
+</section>
+
+<section class="card mt-1">
+  <div class="card-body d-flex">
+    <button type="button" class="btn btn-secondary w-100" [routerLink]="['/invoices', 'create', 'paymentMethod']">Pay Invoice</button>
+  </div>
+</section>

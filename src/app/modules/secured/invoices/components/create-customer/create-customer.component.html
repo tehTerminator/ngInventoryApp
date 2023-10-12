@@ -1,0 +1,81 @@
+<div class="card-header">Create New Customer</div>
+<div class="card-body" [ngClass]="loading ? 'loading':''">
+  <form [formGroup]="createCustomerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="d-block">
+      <mat-label>Customer Name</mat-label>
+      <input matInput formControlName="title" type="text" />
+      <mat-error
+        *ngIf="
+          nameFormControl.invalid &&
+          (nameFormControl.dirty || nameFormControl.touched)
+        "
+      >
+        <span *ngIf="nameFormControl.hasError('required')"
+          >Please Enter Customer Name</span
+        >
+        <span *ngIf="nameFormControl.hasError('minlength')"
+          >Customer Name Must Have 3 Characters</span
+        >
+        <span *ngIf="nameFormControl.hasError('maxlength')"
+          >Only 100 Characters Are Allowed</span
+        >
+        <span *ngIf="nameFormControl.hasError('pattern')"
+          >Invalid Character in Name Found</span
+        >
+        <span *ngIf="nameFormControl.hasError('customerExists')"
+          >Customer Already Exists</span
+        >
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="d-block">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" type="text" />
+      <mat-error
+        *ngIf="
+          addressFormControl.invalid &&
+          (addressFormControl.dirty || addressFormControl.touched)
+        "
+      >
+        <span *ngIf="addressFormControl.hasError('required')"
+          >Please Enter Customer Address</span
+        >
+        <span *ngIf="addressFormControl.hasError('minlength')"
+          >Address Must Have atleast 5 Characters</span
+        >
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Mobile Number</mat-label>
+      <input type="text" maxlength="10" matInput formControlName="mobile" />
+      <mat-error
+        *ngIf="
+          mobileFormControl.invalid ||
+          (mobileFormControl.dirty && mobileFormControl.touched)
+        "
+      >
+        Invalid Mobile Number.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label> Default Ledger </mat-label>
+      <mat-select formControlName="ledger_id">
+        <mat-option *ngFor="let ledger of ledgers" [value]="ledger.id">
+          {{ ledger.title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      class="btn w-100"
+      [disabled]="createCustomerForm.invalid"
+    >
+      Submit
+    </button>
+  </form>
+</div>
