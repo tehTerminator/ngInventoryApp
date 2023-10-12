@@ -1,9 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ApiService } from '../../../../shared/services/api/api.service';
+import { ApiService } from './../../../../../services/api/api.service';
 import { BehaviorSubject } from 'rxjs';
-import { InvoiceStoreService } from '../../services/invoice-store.service';
-import { LedgerService } from '../../../../shared/services/ledger/ledger.service';
-import { Voucher } from '../../../../shared/collection';
+import { Voucher } from './../../../../../interface/voucher';
 
 @Component({
   selector: 'app-payment-info',
@@ -17,19 +15,17 @@ export class PaymentInfoComponent {
     this._invoiceId = id;
     this.fetchVoucherInfo();
   }
+  constructor(private api: ApiService) {}
 
   private fetchVoucherInfo() {
-    this.api.select<Voucher[]>('invoices/paymentInfo', {id: this._invoiceId.toString()})
-    .subscribe(
-      (data) => this.paymentInfo.next(data),
-      () => this.paymentInfo.next([])
-    )
+    this.api.fetch_data<Voucher[]>('invoices/paymentInfo', {id: this._invoiceId.toString()})
+    .subscribe({
+      next: (data) => this.paymentInfo.next(data),
+      error: () => this.paymentInfo.next([])
+    })
   }
 
   get isEmpty(): boolean {
     return this.paymentInfo.value.length === 0;
   }
-  
-
-  constructor(private api: ApiService) {}
 }

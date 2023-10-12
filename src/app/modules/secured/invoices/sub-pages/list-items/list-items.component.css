@@ -1,9 +1,0 @@
-.list-group-item {
-    z-index: 999 !important;
-    position: relative;
-}
-
-.list-group {
-    max-height: 700px;
-    overflow-y: scroll;
-}

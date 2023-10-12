@@ -1,17 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, TitleStrategy } from '@angular/router';
 import { InvoicesComponent } from './invoices.component';
-// import { ChoosePaymentMethodComponent } from './pages/choose-payment-method/choose-payment-method.component';
-// import { CreateTransactionComponent } from './sub-pages/create-transaction/create-transaction.component';
-// import { ListItemsComponent } from './sub-pages/list-items/list-items.component';
-// import { SelectCustomerComponent } from './sub-pages/select-customer/select-customer.component';
-// import { WaitPageComponent } from './pages/wait-page/wait-page.component';
 import { TemplatePageTitleStrategy } from './../../../services/title-strategy/title-strategy';
 
 const routes: Routes = [
-  {
-    path: 'create', title: 'Create Invoice', component: InvoicesComponent
-  }
+  { path: 'create', loadChildren: () => import('./create-invoice/create-invoice.module').then(m => m.CreateInvoiceModule) }
 ];
 
 // const routes: Routes = [

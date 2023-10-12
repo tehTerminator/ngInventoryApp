@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { InvoiceStoreService } from './../../services/invoice-store.service';
-import { Customer } from './../../../../shared/collection';
+import { Contact } from './../../../../../interface/contact';
 
 @Component({
     selector: 'app-customer-table',
@@ -9,7 +9,7 @@ import { Customer } from './../../../../shared/collection';
     styles: ['']
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
-    customer: Customer | null = null;
+    customer: Contact | null = null;
     private sub: Subscription = new Subscription();
 
     ngOnInit(): void {

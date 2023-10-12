@@ -7,7 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthStoreService {
-  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
+  // private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
+  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_IN); // Only For Testing Purpose
   /**
    * Holds Current User Data
    */

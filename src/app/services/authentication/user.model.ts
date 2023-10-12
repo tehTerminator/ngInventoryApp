@@ -71,9 +71,5 @@ export const AnonymousUser = {
       id: 0,
       name: 'Anonymous User',
       description: 'Not Authenticated User',
-      created_at: (new Date()),
-      updated_at: (new Date())
     },
-    created_at: (new Date()),
-    updated_at: (new Date())
   }

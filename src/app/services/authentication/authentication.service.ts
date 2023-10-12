@@ -52,7 +52,7 @@ export class AuthenticationService implements OnDestroy {
   }
 
   private handleAuthentication(userData: UserData): void {
-    const expirationTime = new Date(userData.updated_at).getTime() + HOUR;
+    const expirationTime = new Date(userData.updated_at || '').getTime() + HOUR;
     this.setAutoSignOut(expirationTime);
     this.authStore.signIn(userData, expirationTime);
     this.storeInLocalStorage(userData, expirationTime);
