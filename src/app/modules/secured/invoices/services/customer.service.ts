@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { BaseService } from '../../../shared/class/BaseService';
-import { Customer } from '../../../shared/collection';
-import { ApiService } from '../../../shared/services/api/api.service';
+import { BaseService } from './../../../../class/BaseService';
+import { Contact } from './../../../../interface/contact';
+import { ApiService } from './../../../../services/api/api.service';
 
 @Injectable()
 export class CustomerService extends BaseService {
@@ -13,12 +13,12 @@ export class CustomerService extends BaseService {
     }
 
     protected fetch(): void {
-        this.api.select<Customer[]>(this.tableName)
+        this.api.select<Contact[]>(this.tableName)
         .subscribe(customers => this.store(customers));
     }
 
-    public create(customer: Customer): Observable<Customer> {
-        return this.api.create<Customer>(this.tableName, customer)
+    public create(customer: Contact): Observable<Contact> {
+        return this.api.create<Contact>(this.tableName, customer)
         .pipe(
             tap(response => {
                 this.insert(response);
@@ -30,7 +30,7 @@ export class CustomerService extends BaseService {
         );
     }
 
-    public update(customer: Customer): Observable<Customer> {
+    public update(customer: Contact): Observable<Contact> {
         throw new Error('Method not implemented.');
     }
     public delete(id: number): Observable<any> {

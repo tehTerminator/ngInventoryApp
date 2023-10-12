@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,11 @@ import { tap } from 'rxjs';
 export class ApiService {
 
   constructor(private http: HttpClient) { }
+
+  private createUrl(urlData: string[]): string {
+    const url = urlData.join('/');
+    return `${environment.baseUrl}/${url}`;
+  }
 
   fetch_data<T>(urlData: string | string[], payload: {[key: string]: string}) {
     let url = '';
@@ -24,26 +29,20 @@ export class ApiService {
     return this.http.get<T>(url, {params: payload})
   }
 
-  /**
 
-  create<Type>(url: string | string[], payload: {[key: string]: any}): Observable<Type>{
-    const theUrl  = this.createUrl([...url]);
-    return this.client.put<Type>(theUrl, payload);
-  }
-
-  update<Type>(url: string | string[], payload: {[key: string]: any}): Observable<Type> {
-    const theUrl  = this.createUrl([...url]);
-    return this.client.post<Type>(theUrl, payload);
+  create<Type>(url: string | string[], payload: {[key: string]: any}): Observable<T>{
+    const theUrl  = this.createUrl([ 'create',...url]);
+    return this.http.put<Type>(theUrl, payload);
   }
 
-  delete<Type>(url: string | string[], id: number): Observable<Type> {
-    const theUrl  = this.createUrl([...url]);
-    return this.client.delete<Type>(`${theUrl, 'delete')}/${id}`);
+  update<Type>(url: string | string[], payload: {[key: string]: any}): Observable<T> {
+    const theUrl  = this.createUrl([ 'update',...url]);
+    return this.http.post<Type>(theUrl, payload);
   }
-  
-  */
-  private createUrl(urlData: string[]): string {
-    const url = urlData.join('/');
-    return `${environment.baseUrl}/${url}`;
+
+  delete<Type>(url: string | string[], id: number): Observable<T> {
+    const theUrl  = this.createUrl([ 'delete',...url]);
+    return this.http.delete<Type>(`${theUrl}/'delete')}/${id}`);
   }
+
 }
