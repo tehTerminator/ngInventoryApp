@@ -4,7 +4,8 @@ import { InvoicesComponent } from './invoices.component';
 import { TemplatePageTitleStrategy } from './../../../services/title-strategy/title-strategy';
 
 const routes: Routes = [
-  { path: 'create', loadChildren: () => import('./create-invoice/create-invoice.module').then(m => m.CreateInvoiceModule) }
+  { path: '', component: InvoicesComponent },
+  { path: 'create/:type', loadChildren: () => import('./create-invoice/create-invoice.module').then(m => m.CreateInvoiceModule) }
 ];
 
 // const routes: Routes = [

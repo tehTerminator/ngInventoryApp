@@ -14,12 +14,12 @@ export class InvoiceInfoComponent implements OnInit, OnDestroy {
     sub: Subscription = new Subscription();
 
     ngOnInit(): void {
-        this.sub = this.store.invoice
-            .subscribe(invoice => {
-                this.invoiceId = invoice.id;
-                this.customerId = invoice.customer_id;
-                this.createdAt = invoice.created_at;
-            });
+        // this.sub = this.store.invoice
+        //     .subscribe(invoice => {
+        //         this.invoiceId = invoice.id;
+        //         this.customerId = invoice.customer_id;
+        //         this.createdAt = invoice.created_at;
+        //     });
     }
 
     ngOnDestroy(): void {

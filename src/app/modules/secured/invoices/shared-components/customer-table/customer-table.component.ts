@@ -13,9 +13,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private sub: Subscription = new Subscription();
 
     ngOnInit(): void {
-        this.sub = this.store.invoice.subscribe(
-            (invoice => this.customer = invoice.customer)
-        );
+        // this.sub = this.store.invoice.subscribe(
+        //     (invoice => this.customer = invoice.customer)
+        // );
     }
 
     ngOnDestroy(): void {

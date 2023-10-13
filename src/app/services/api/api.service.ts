@@ -32,17 +32,17 @@ export class ApiService {
 
   create<T>(url: string | string[], payload: {[key: string]: any}): Observable<T>{
     const theUrl  = this.createUrl([ 'create',...url]);
-    return this.http.put<Type>(theUrl, payload);
+    return this.http.put<T>(theUrl, payload);
   }
 
   update<T>(url: string | string[], payload: {[key: string]: any}): Observable<T> {
     const theUrl  = this.createUrl([ 'update',...url]);
-    return this.http.post<Type>(theUrl, payload);
+    return this.http.post<T>(theUrl, payload);
   }
 
   delete<T>(url: string | string[], id: number): Observable<T> {
     const theUrl  = this.createUrl([ 'delete',...url]);
-    return this.http.delete<Type>(`${theUrl}/'delete')}/${id}`);
+    return this.http.delete<T>(`${theUrl}/'delete')}/${id}`);
   }
 
 }

@@ -10,10 +10,11 @@ export class PreviewInvoiceComponent implements OnInit {
   constructor(private store: InvoiceStoreService) { }
 
   ngOnInit(): void {
-    this.store.reset();
+    // this.store.reset();
   }
 
   get invoiceId(): number {
-    return this.store.invoice.value.id;
+    // return this.store.invoice.value.id;
+    return 0;
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from './../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
-import { NotificationsService } from '../../services/notifications/notifications.service';
+import { NotificationsService } from '../../services/notification/notification.service';
 import { EMPTY, Observable, Subscription, finalize } from 'rxjs';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { AuthState } from '../../interface/auth-state';

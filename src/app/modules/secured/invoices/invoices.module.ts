@@ -10,7 +10,6 @@ import { CustomerService } from './services/customer.service';
 import { GeneralItemStoreService } from './services/general-item-store.service';
 import { InvoiceStoreService } from './services/invoice-store.service';
 
-
 @NgModule({
   declarations: [
     InvoicesComponent,
