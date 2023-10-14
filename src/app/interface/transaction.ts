@@ -10,5 +10,4 @@ export interface Transaction extends Entity {
     rate: number;
     gst: number;
     amount: number;
-    product: Product;
 }
