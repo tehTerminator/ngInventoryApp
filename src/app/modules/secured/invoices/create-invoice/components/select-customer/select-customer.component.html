@@ -1,10 +1,16 @@
-<div class="card shadow">
+<h2 class="card-header">
+    Select Customer
+</h2>
+<form class="card-body" (ngSubmit)="onSubmit()" [formGroup]="customerForm">
+    <!-- <form class="card-body"> -->
     <mat-form-field class="w-100">
         <mat-label>
             Customer
         </mat-label>
-        <mat-option>Customer 1</mat-option>
-        <mat-option>Customer 2</mat-option>
-        <mat-option>Customer 3</mat-option>
+        <mat-select formControlName="id">
+            <mat-option *ngFor="let customer of customers" [value]="customer.id">{{ customer.title }}</mat-option>
+        </mat-select>
     </mat-form-field>
-</div>
+
+    <button type="submit" class="w-100" mat-raised-button color="primary">Submit</button>
+</form>
