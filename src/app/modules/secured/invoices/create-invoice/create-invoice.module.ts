@@ -8,13 +8,17 @@ import { GoBackBtnComponent } from './components/go-back-btn/go-back-btn.compone
 import { SelectCustomerComponent } from './components/select-customer/select-customer.component';
 import { CoreModule } from '../../../core/core.module';
 import { SelectProductComponent } from './components/select-product/select-product.component';
+import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
+import { SetPaymentMethodComponent } from './components/set-payment-method/set-payment-method.component';
 
 @NgModule({
   declarations: [
     CreateInvoiceComponent,
     GoBackBtnComponent,
     SelectCustomerComponent,
-    SelectProductComponent
+    SelectProductComponent,
+    CreateTransactionsComponent,
+    SetPaymentMethodComponent
   ],
   imports: [
     CommonModule,

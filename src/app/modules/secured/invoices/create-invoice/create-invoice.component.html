@@ -1,9 +1,11 @@
-<div class="row g-3">
+<div class="row g-3" [ngClass]="color">
     <div class="col-md-4 col-sm-6 d-print-none">
         <app-go-back-btn></app-go-back-btn>
-        <router-outlet></router-outlet>
+        <div class="card shadow">
+            <router-outlet></router-outlet>
+        </div>
     </div>
     <div class="col-md-8 col-sm-6">
-        <app-preview-invoice></app-preview-invoice>
+        <!-- <app-preview-invoice></app-preview-invoice> -->
     </div>
 </div>

@@ -1,0 +1,22 @@
+<h2 class="card-header">
+    Create Transaction
+</h2>
+<form class="card-body" [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="w-100">
+        <mat-label>Quantity</mat-label>
+        <input type="number" matInput formControlName="quantity">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Rate</mat-label>
+        <input type="number" matInput formControlName="rate">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>GST</mat-label>
+        <input type="number" matInput formControlName="gst">
+    </mat-form-field>
+    <mat-form-field class="w-100">
+        <mat-label>Amount</mat-label>
+        <input type="number" matInput formControlName="amount">
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="w-100" type="submit">Submit</button>
+</form>

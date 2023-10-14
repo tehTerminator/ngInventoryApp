@@ -25,11 +25,6 @@ export class InvoicesComponent implements OnInit {
     // this.ledgerService.init();
     // this.productService.init();
     // this.posItemService.init();
-    this.route.paramMap.subscribe(
-      {
-        next: (value) => this.title = value.get('type') || ''
-      }
-    );
   }
 
 
