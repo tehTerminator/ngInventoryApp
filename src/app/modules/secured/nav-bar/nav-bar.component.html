@@ -38,6 +38,23 @@
                 </a>
             </p>
         </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Products</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="d-flex flex-column">
+                <a mat-flat-button [routerLink]="['vouchers', 'add']">
+                    Create New Product
+                </a>
+                <a mat-flat-button [routerLink]="['vouchers', 'statement']">
+                    Create Product Group
+                </a>
+                <a mat-flat-button [routerLink]="['vouchers', 'daybook']">
+                    Transfer Product
+                </a>
+            </p>
+        </mat-expansion-panel>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>Master</mat-panel-title>
