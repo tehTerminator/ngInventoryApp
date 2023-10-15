@@ -1,0 +1,11 @@
+<form class="card-body" (ngSubmit)="onSubmit()" [formGroup]="contactForm">
+    <mat-form-field class="w-100">
+        <input matInput formControlName="contact" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
+            <mat-option *ngFor="let contact of filteredContacts | async" [value]="contact">
+                {{ contact.title }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button type="submit" class="w-100" mat-raised-button color="primary">Submit</button>
+</form>

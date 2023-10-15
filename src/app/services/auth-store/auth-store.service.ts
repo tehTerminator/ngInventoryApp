@@ -7,8 +7,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthStoreService {
-  // private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
-  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_IN); // Only For Testing Purpose
+  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
+  // private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_IN); // Only For Testing Purpose
   /**
    * Holds Current User Data
    */
@@ -44,6 +44,7 @@ export class AuthStoreService {
    * Remove Stored User
    */
   signOut(): void {
+    console.log('Signed Out');
     this._user.next(new User({ ...AnonymousUser }));
     this._state.next(AuthState.LOGGED_OUT);
   }
@@ -53,7 +54,11 @@ export class AuthStoreService {
     this._state.next(AuthState.STARTED);
   }
 
-  get user(): User {
+  get user(): Observable<User> {
+    return this._user;
+  }
+
+  get userData(): User {
     return this._user.value;
   }
 

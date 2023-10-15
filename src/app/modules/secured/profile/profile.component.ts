@@ -10,7 +10,7 @@ import { UserForm } from './user.form';
 })
 export class ProfileComponent {
 
-  userForm = new UserForm(this.authStore.user);
+  userForm = new UserForm(this.authStore.userData);
 
   constructor(private authStore: AuthStoreService ) {}
 

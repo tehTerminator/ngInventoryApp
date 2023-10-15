@@ -31,7 +31,7 @@ export class GoBackBtnComponent {
         path[4] = 'select-product';
         break;
       default:
-        path[4] = 'select-customer';
+        path[4] = 'select-contact';
         break;
     }
 
@@ -39,7 +39,7 @@ export class GoBackBtnComponent {
   }
 
   showBtn(): boolean {
-    if (this.currentPath.length < 3 || this.currentPath[2] !== 'create' || this.currentPath[4] === 'select-customer') {
+    if (this.currentPath.length < 3 || this.currentPath[2] !== 'create' || this.currentPath[4] === 'select-contact') {
       return false;
     }
     return true;

@@ -6,26 +6,33 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthStateService } from './../services/auth/auth-state.service';
-import { AuthState } from '../collection';
+import { AuthStoreService } from './../services/auth-store/auth-store.service';
+import { AuthState } from './../interface/auth-state';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authState: AuthStateService) {}
+  private token: string | null = null;
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-    if (this.authState.currentState === AuthState.LOGGED_IN) {
-      const token = this.authState.token;
-      const newRequest = request.clone({
-        setHeaders: {
-          Authorization: token
-        }
-      });
-
-      return next.handle(newRequest);
-    }
-    return next.handle(request);
+  constructor(private authStore: AuthStoreService) {
+    this.authStore.user.subscribe({
+      next: (user) => this.token = user.token
+    });
   }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    if (this.token === null) {
+      return next.handle(request);
+    }
+
+    const newRequest = request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${this.token}`
+      }
+    });
+    return next.handle(newRequest);
+  }
+
+
 }

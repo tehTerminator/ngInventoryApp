@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { InvoiceStoreService } from '../../services/invoice-store.service';
+import { InvoiceStoreService } from './../../services/invoice-store.service';
 
 @Component({
   selector: 'app-preview-invoice',
@@ -7,7 +7,7 @@ import { InvoiceStoreService } from '../../services/invoice-store.service';
   styleUrls: ['preview-invoice.component.css']
 })
 export class PreviewInvoiceComponent implements OnInit {
-  constructor(private store: InvoiceStoreService) { }
+  constructor(public store: InvoiceStoreService) { }
 
   ngOnInit(): void {
     // this.store.reset();

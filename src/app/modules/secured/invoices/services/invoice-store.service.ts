@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Invoice } from '../../../../interface/invoice';
 import { Transaction } from '../../../../interface/transaction';
+import { Contact } from '../../../../interface/contact';
 
 
 @Injectable()
 export class InvoiceStoreService {
-  private invoiceData: BehaviorSubject<Invoice> =
+  private _invoiceData: BehaviorSubject<Invoice> =
     new BehaviorSubject<Invoice>({...EmptyInvoice});
 
   constructor() {}
 
-  // Provide an observable for other components to subscribe to
-  getInvoiceData() {
-    return this.invoiceData.asObservable();
+
+  get invoice(): Observable<Invoice> {
+    return this._invoiceData;
   }
 
-  // Update the stored invoice data
-  updateInvoiceData(data: Invoice) {
-    this.invoiceData.next(data);
+  set invoice(data: Invoice) {
+    this._invoiceData.next(data);
   }
+
 
   addTransaction(transaction: Transaction) {
-    const transactionData = this.invoiceData.value.transactions;
+    const transactionData = this._invoiceData.value.transactions;
     const indexOfSimilarTransaction = this.findSimilarTransaction(transactionData, transaction)
     if( indexOfSimilarTransaction > 0) {
       transactionData[indexOfSimilarTransaction].quantity += transaction.quantity;
@@ -32,7 +33,7 @@ export class InvoiceStoreService {
       transactionData.push(transaction);
     }
 
-    this.invoiceData.next({... this.invoiceData.value, transactions: transactionData});
+    this.invoice = {... this._invoiceData.value, transactions: transactionData};
 
   }
 
@@ -42,24 +43,21 @@ export class InvoiceStoreService {
     )
   }
 
-  set contact(id: number) {
-    const currentInvoice = this.invoiceData.value;
-
-    if (!!currentInvoice) {
-        this.invoiceData.next({...currentInvoice, contactId: id});
-    }
+  set contact(contact: Contact) {
+    const currentValue = this._invoiceData.value;
+    this._invoiceData.next({...currentValue, contact, contactId: contact.id});
   }
 
   set kind(data: 'sales' | 'purchase') {
-    const currentInvoice = this.invoiceData.value;
+    const currentInvoice = this._invoiceData.value;
     if(!!currentInvoice) {
-      this.invoiceData.next({...currentInvoice, kind: data})
+      this.invoice = {...currentInvoice, kind: data};
     }
   }
 
   get kind(): 'sales' | 'purchase' {
-    if (!!this.invoiceData.value) {
-      return this.invoiceData.value.kind;
+    if (!!this._invoiceData.value) {
+      return this._invoiceData.value.kind;
     }
 
     return 'sales';
@@ -70,6 +68,13 @@ const EmptyInvoice: Invoice = {
   id: 0,
   kind: 'sales',
   contactId: 0,
+  contact: {
+    id: 0,
+    title: 'Not Selected',
+    address: 'Not Selected',
+    mobile: '',
+    kind: 'CUSTOMER',
+  },
   locationId: 0,
   paid: false,
   amount: 0,

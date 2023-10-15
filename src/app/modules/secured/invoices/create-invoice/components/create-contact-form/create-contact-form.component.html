@@ -1,0 +1,18 @@
+<div class="card-body" [loading]="loading">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100">
+            <mat-label>Name</mat-label>
+            <input type="text" matInput maxlength="50" formControlName="title">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+            <mat-label>Address</mat-label>
+            <input type="text" matInput maxlength="100" formControlName="address">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+            <mat-label>Mobile</mat-label>
+            <input type="text" matInput maxlength="10" formControlName="mobile">
+        </mat-form-field>
+
+        <button mat-raised-button class="w-100" color="primary" type="submit">Save Customer</button>
+    </form>
+</div>
