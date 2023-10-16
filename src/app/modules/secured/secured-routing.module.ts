@@ -35,7 +35,17 @@ const routes: Routes = [
       {
         path: 'invoices',
         loadChildren: () =>
-          import('./invoices/invoices.module').then((m) => m.InvoicesModule)
+          import('./invoices/invoices.module').then((m) => m.InvoicesModule),
+      },
+      {
+        path: 'locations',
+        loadChildren: () =>
+          import('./locations/locations.module').then((m) => m.LocationsModule),
+      },
+      {
+        path: 'products',
+        loadChildren: () =>
+          import('./products/products.module').then((m) => m.ProductsModule),
       },
       {
         path: '**',
@@ -44,12 +54,10 @@ const routes: Routes = [
       },
     ],
   },
-  { path: 'products', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) },
-  { path: 'locations', loadChildren: () => import('./locations/locations.module').then(m => m.LocationsModule) },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SecuredRoutingModule { }
+export class SecuredRoutingModule {}

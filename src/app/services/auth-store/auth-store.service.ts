@@ -44,7 +44,7 @@ export class AuthStoreService {
    * Remove Stored User
    */
   signOut(): void {
-    console.log('Signed Out');
+    console.log('Sign-Out Called');
     this._user.next(new User({ ...AnonymousUser }));
     this._state.next(AuthState.LOGGED_OUT);
   }
