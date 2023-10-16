@@ -57,6 +57,22 @@
         </mat-expansion-panel>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
+                <mat-panel-title>Locations</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="d-flex flex-column">
+                <a mat-flat-button [routerLink]="['locations', 'add']">
+                    Create New Location
+                </a>
+                <a mat-flat-button [routerLink]="['locations', 'view']">
+                    View Locations
+                </a>
+                <a mat-flat-button [routerLink]="['locations', 'assign']">
+                    Assign Users to Location
+                </a>
+            </p>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
                 <mat-panel-title>Master</mat-panel-title>
 
             </mat-expansion-panel-header>
