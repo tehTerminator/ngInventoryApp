@@ -31,4 +31,8 @@ export class LocationsTableComponent implements OnInit {
   get locations(): Observable<Location[]> {
     return this._locations;
   }
+
+  get loading(): boolean {
+    return this._loading;
+  }
 }

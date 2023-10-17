@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LocationsTableRoutingModule } from './locations-table-routing.module';
 import { LocationsTableComponent } from './locations-table.component';
-
+import { CoreModule } from './../../../core/core.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import { LocationsTableComponent } from './locations-table.component';
   ],
   imports: [
     CommonModule,
-    LocationsTableRoutingModule
+    LocationsTableRoutingModule,
+    CoreModule
   ]
 })
 export class LocationsTableModule { }

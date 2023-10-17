@@ -1,0 +1,40 @@
+<div class="row d-flex jusity-content-center">
+    <div class="col-lg-4 col-md-6">
+        <div class="shadow card">
+            <div class="card-header">
+                Create New Product
+            </div>
+            <div class="card-body">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput type="text" minlength="3" formControlName="title" required="required">
+                    </mat-form-field>
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Group</mat-label>
+                        <mat-select formControlName="group_id" required="required">
+                            <mat-option [value]="g.id" *ngFor="let g of groups | async ">
+                                {{ g.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Initial Quantity</mat-label>
+                        <input matInput type="number" minlength="3 ">
+                    </mat-form-field>
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Location</mat-label>
+                        <mat-select formControlName="location_id">
+                            <mat-option [value]="0">Select Location</mat-option>
+                            <mat-option [value]="l.id" *ngFor="let l of locations | async">
+                                {{ l.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button type="submit" mat-raised-button color="primary" class="w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,11 +12,11 @@ export abstract class BaseService {
     public abstract delete(id: number): Observable<any>;
 
     constructor(
-        private ptableName: string,
-        protected updateFrequency: number) { }
+        private _tableName: string,
+        private _updateFrequency: number) { }
 
     get tableName(): string {
-        return this.ptableName;
+        return this._tableName;
     }
 
     public init(forced = false): void {
@@ -37,7 +37,7 @@ export abstract class BaseService {
 
     protected store(data: Entity[]): void {
         this.data.next(data);
-        this.nextUpdate = (new Date()).getTime() + this.updateFrequency;
+        this.nextUpdate = (new Date()).getTime() + this._updateFrequency;
     }
 
     getElementById(id: number): Entity {
@@ -95,6 +95,6 @@ export abstract class BaseService {
     }
 
     private updateTimeStamp(): void {
-        this.nextUpdate = (new Date()).getTime() + this.updateFrequency;
+        this.nextUpdate = (new Date()).getTime() + this._updateFrequency;
     }
 }
