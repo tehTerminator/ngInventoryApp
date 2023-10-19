@@ -28,7 +28,7 @@ const routes: Routes = [
         component: PageNotFoundComponent,
       },
       {
-        path: 'vouchers',
+        path: 'accounting',
         loadChildren: () =>
           import('./vouchers/vouchers.module').then((m) => m.VouchersModule),
       },

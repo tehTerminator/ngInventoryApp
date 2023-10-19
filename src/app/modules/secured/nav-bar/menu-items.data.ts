@@ -2,9 +2,11 @@ export const navItems = [
   {
     title: 'Vouchers',
     links: [
-      { text: 'Add Edit Vouchers', routerLink: ['vouchers', 'add'] },
-      { text: 'View Statement', routerLink: ['vouchers', 'statement'] },
-      { text: 'Day Book', routerLink: ['vouchers', 'daybook'] },
+      { text: 'Groups', routerLink: ['accounting', 'groups'] },
+      { text: 'Ledger', routerLink: ['accounting', 'ledger'] },
+      { text: 'Vouchers', routerLink: ['accounting', 'voucher'] },
+      { text: 'Statement', routerLink: ['accounting', 'statement'] },
+      { text: 'Day Book', routerLink: ['accounting', 'daybook'] },
     ],
   },
   {
@@ -43,10 +45,8 @@ export const navItems = [
     ],
   },
   {
-    title: 'Master',
+    title: 'Users',
     links: [
-      { text: 'Groups', routerLink: ['master', 'groups'] },
-      { text: 'Ledgers', routerLink: ['master', 'ledgers'] },
       { text: 'Users', routerLink: ['master', 'users'] },
     ],
   },
