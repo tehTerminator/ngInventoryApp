@@ -1,9 +1,3 @@
-import { Entity } from "./entity.interface";
-import { Ledger } from './ledger.ts';
-
-export interface BalanceSnapshot extends Entity{
-    ledger_id: number;
-    ledger: Ledger;
-    opening: number;
-    closing: number;
-}
+export const SECOND = 1000;
+export const MINUTE = SECOND * 60;
+export const HOUR = MINUTE * 60;
