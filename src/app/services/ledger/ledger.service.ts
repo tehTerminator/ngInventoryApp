@@ -1,35 +1,36 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '../../class/BaseService';
-import { Ledger, MINUTE } from '../../collection';
+import { Ledger } from './../../interface/ledger';
 import { ApiService } from './../api/api.service';
-import { NotificationService } from './../notification/notification.service';
+import { NotificationsService } from './../notification/notification.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { HOUR } from '../../shared/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LedgerService extends BaseService {
 
-  constructor(private api: ApiService, private notification: NotificationService) {
-    super('ledgers', 10 * MINUTE);
+  constructor(private api: ApiService, private notification: NotificationsService) {
+    super('ledgers', HOUR);
   }
 
   protected fetch(): void {
-    this.api.select<Ledger[]>(this.tableName).subscribe(
-      ledgers => {
+    this.api.fetch_data<Ledger[]>(['get', 'ledgers']).subscribe({
+      next: (ledgers) => {
         this.store(ledgers);
       },
-      error => {
+      error: (error) => {
         this.data.next([]);
-        this.notification.showError('Error', 'An Error Occurred While Fetching Data');
+        this.notification.show('An Error Occurred While Fetching Data');
         console.log(error);
       }
-    );
+  });
   }
 
   create(ledger: Ledger): Observable<Ledger> {
-    return this.api.create<Ledger>(this.tableName, ledger)
+    return this.api.create<Ledger>(['ledger'], ledger)
       .pipe(
         tap(insertedLedger => {
           this.insert(insertedLedger);
@@ -42,7 +43,7 @@ export class LedgerService extends BaseService {
   }
 
   update(ledger: Ledger): Observable<Ledger> {
-    return this.api.update<Ledger>(this.tableName, ledger)
+    return this.api.update<Ledger>(['ledger'], ledger)
       .pipe(tap(updatedLedger => {
         this.updateItem(updatedLedger);
       }));
@@ -56,7 +57,7 @@ export class LedgerService extends BaseService {
           this.deleteItem(index);
         }));
     } catch (e) {
-      this.notification.showError('Can\'t Delete', 'Item Does Not Exist');
+      this.notification.show('Item Does Not Exist');
       throw new Error('Item Not Found Error');
     }
   }
