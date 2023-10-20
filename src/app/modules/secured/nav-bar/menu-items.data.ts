@@ -1,8 +1,7 @@
 export const navItems = [
   {
-    title: 'Vouchers',
+    title: 'Accounting',
     links: [
-      { text: 'Groups', routerLink: ['accounting', 'groups'] },
       { text: 'Ledger', routerLink: ['accounting', 'ledger'] },
       { text: 'Vouchers', routerLink: ['accounting', 'voucher'] },
       { text: 'Statement', routerLink: ['accounting', 'statement'] },
