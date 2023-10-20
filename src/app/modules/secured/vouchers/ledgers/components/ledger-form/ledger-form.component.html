@@ -1,32 +1,36 @@
-<div class="card shadow">
-    <div class="card-header">
-        <h3 class="fs-3">Create / Edit Ledger</h3>
-    </div>
-
+<form [formGroup]="ledgerForm" (ngSubmit)="onSubmit()" class="card" [ngClass]="isLoading ? 'loading':''">
+    <h2 class="card-header fs-2">
+        {{ ledgerForm.editMode ? 'Update Ledger' : 'Create New Ledger' }}
+    </h2>
     <div class="card-body">
-        <form>
-            <mat-form-field class="w-100">
-                <mat-label>ID</mat-label>
-                <input matInput type="number" min="0" step="1">
-            </mat-form-field>
-            <mat-form-field class="w-100">
-                <mat-label>
-                    Title
-                </mat-label>
-                <input type="text" matInput>
-            </mat-form-field>
-            <mat-form-field class="w-100">
-                <mat-label>
-                    Group
-                </mat-label>
-                <mat-select>
-                    <mat-option>
-                        Bank
-                    </mat-option>
-                    <mat-option>Loans</mat-option>
-                    <mat-option>Sales</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </form>
+        <mat-form-field appearance="outline" class="d-block">
+            <mat-label>#</mat-label>
+            <input type="number" min="0" step="1" matInput formControlName="id" (blur)="onIdFieldChange()">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="d-block">
+            <mat-label>Ledger Name</mat-label>
+            <input matInput type="text" required formControlName="title">
+            <mat-error *ngIf="ledgerForm.titleField.invalid && (ledgerForm.titleField.dirty || ledgerForm.titleField.touched)">
+                <span *ngIf="ledgerForm.titleField.hasError('required')">Please Enter Ledger Title</span>
+                <span *ngIf="ledgerForm.titleField.hasError('pattern')">Invalid Characters in Title Field</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="d-block">
+            <mat-label>Kind</mat-label>
+            <mat-select formControlName="kind">
+                <mat-option *ngFor="let kind of kinds" [value]="kind">
+                    {{ kind }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ledgerForm.kindField.invalid && (ledgerForm.kindField.dirty || ledgerForm.kindField.touched)">
+                <span *ngIf="ledgerForm.kindField.hasError('required')">Please Enter Ledger Group</span>
+            </mat-error>
+        </mat-form-field>
+        <button type="submit" class="btn m-1" mat-raised-button color="primary" [disabled]="ledgerForm.invalid">
+            Save Data
+        </button>
+        <button type="reset" class="btn m-1" mat-raised-button color="warn">
+            Reset Form
+        </button>
     </div>
-</div>
+</form>
