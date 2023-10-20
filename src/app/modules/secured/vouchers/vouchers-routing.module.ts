@@ -5,11 +5,6 @@ import { VouchersComponent } from './vouchers.component';
 const routes: Routes = [
   { path: '', component: VouchersComponent },
   {
-    path: 'groups',
-    loadChildren: () =>
-      import('./groups/groups.module').then((m) => m.GroupsModule),
-  },
-  {
     path: 'ledgers',
     loadChildren: () =>
       import('./ledgers/ledgers.module').then((m) => m.LedgersModule),
