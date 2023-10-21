@@ -3,10 +3,10 @@
     <div class="card-body">
 
         <ul class="list-group">
-            <li class="list-group-item">State Bank</li>
-            <li class="list-group-item">Cash</li>
-            <li class="list-group-item">HDFC Bank</li>
-            <li class="list-group-item">Misc Expenses</li>
+            <li class="list-group-item" *ngFor="let ledger of ledgers | async">
+                <div class="fw-bold">{{ ledger.title }}</div>
+                {{ ledger.kind }}
+            </li>
         </ul>
 
     </div>
