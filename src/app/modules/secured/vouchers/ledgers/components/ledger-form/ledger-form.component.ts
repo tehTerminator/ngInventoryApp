@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Subscription, Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 import { Ledger } from '../../../../../../interface/ledger';
 import { LedgerForm } from './LedgerForm';
 import { NotificationsService } from './../../../../../../services/notification/notification.service';
@@ -23,7 +23,6 @@ export class LedgerFormComponent {
     'INCOME',
   ];
   ledgerForm = new LedgerForm();
-  sub = new Subscription();
   isLoading = false;
 
   constructor(
@@ -66,13 +65,15 @@ export class LedgerFormComponent {
     if (this.ledgerForm.editMode) {
       response = this.ledgerService.update(this.ledgerForm.value);
     } else {
-      response = this.ledgerService.create(this.ledgerForm.value);
+      const data = {...this.ledgerForm.value};
+      delete(data.id);
+      response = this.ledgerService.create(data);
     }
 
     this.handleResponse(response);
   }
 
-  private handleResponse(ledger: Observable<any>): void {
+  private handleResponse(response: Observable<any>): void {
     let message = '';
     if (this.ledgerForm.editMode) {
       message = 'Updated Successfully';
@@ -80,7 +81,7 @@ export class LedgerFormComponent {
       message = 'Created Successfully';
     }
 
-    ledger.subscribe({
+    response.subscribe({
       next: () => {
         this.isLoading = false;
         this.notification.show(message);
