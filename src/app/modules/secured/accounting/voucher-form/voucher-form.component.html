@@ -9,7 +9,7 @@
                 </mat-form-field>
                 <mat-form-field class="d-block" appearance="outline">
                     <mat-label>Giver</mat-label>
-                    <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="cr" [matAutocomplete]="creditor" #firstInputField />
+                    <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="cr" [matAutocomplete]="creditor" />
                     <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete" [displayWith]="displayFunction">
                         <mat-option *ngFor="let creditor of filteredCreditor | async" [value]="creditor">
                             <div class="d-flex justify-content-between w-100">

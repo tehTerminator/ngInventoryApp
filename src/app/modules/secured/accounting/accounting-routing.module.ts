@@ -11,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'voucher',
-    loadChildren: () => import('./form/form.module').then((m) => m.FormModule),
+    loadChildren: () => import('./voucher-form/voucher-form.module').then((m) => m.VoucherFormModule),
   },
   {
     path: 'statement',

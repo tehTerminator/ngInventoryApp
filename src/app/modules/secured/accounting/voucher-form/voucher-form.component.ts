@@ -1,22 +1,22 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, EMPTY, startWith, map, distinctUntilChanged } from 'rxjs';
 import { Ledger } from '../../../../interface/ledger';
-import { ApiService } from './../../../../services/api/api.service';
-import { LedgerService } from './../../../../services/ledger/ledger.service';
+import { ApiService } from '../../../../services/api/api.service';
+import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { NotificationsService } from '../../../../services/notification/notification.service';
-import { Voucher } from './../../../../interface/voucher';
+import { Voucher } from '../../../../interface/voucher';
 import { evaluateString } from '../../../../shared/functions';
-import { VoucherForm } from './VoucherForm';
+import { VoucherFormGroup } from './VoucherFormGroup';
 
 @Component({
   selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
+  templateUrl: './voucher-form.component.html',
+  styleUrls: ['./voucher-form.component.scss'],
 })
-export class FormComponent {
-  @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
-  voucherForm = new VoucherForm();
+export class VoucherFormComponent {
+  
+  voucherForm = new VoucherFormGroup();
   isLoading = false;
   filteredCreditor: Observable<Ledger[]> = EMPTY;
   filteredDebtor: Observable<Ledger[]> = EMPTY;

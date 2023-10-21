@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormRoutingModule } from './form-routing.module';
-import { FormComponent } from './form.component';
+import { FormRoutingModule } from './voucher-form-routing.module';
+import { VoucherFormComponent } from './voucher-form.component';
 import { CoreModule } from '../../../core/core.module';
 
 
 @NgModule({
   declarations: [
-    FormComponent
+    VoucherFormComponent
   ],
   imports: [
     CommonModule,
@@ -16,4 +16,4 @@ import { CoreModule } from '../../../core/core.module';
     CoreModule
   ]
 })
-export class FormModule { }
+export class VoucherFormModule { }
