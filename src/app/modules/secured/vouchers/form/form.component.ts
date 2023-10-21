@@ -69,9 +69,7 @@ export class FormComponent {
     this.isLoading = true;
     if (this.voucherForm.id > 0) {
       this.api
-        .fetch_data<Voucher>('vouchers', {
-          id: this.voucherForm.id.toString(),
-        })
+        .fetch_data<Voucher>(['get', 'voucher', this.voucherForm.id.toString()])
         .subscribe({
           next: (voucher) => {
             this.isLoading = false;
@@ -137,10 +135,12 @@ export class FormComponent {
     payload.dr = payload.dr.id;
     let response = EMPTY;
 
+    console.log('payload: ', payload);
+    console.log('Voucher Form Value', this.voucherForm.value);
     if (this.voucherForm.editMode) {
-      response = this.api.update('vouchers', payload);
+      response = this.api.update(['voucher'], payload);
     } else {
-      response = this.api.create('vouchers', payload);
+      response = this.api.create(['voucher'], payload);
     }
 
     this.handleResponse(response);

@@ -1,7 +1,6 @@
-7
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <form [@initialize] class="card shadow" [formGroup]="voucherForm" (ngSubmit)="onSubmit()" [loading]="isLoading">
+        <form class="card shadow" [formGroup]="voucherForm" (ngSubmit)="onSubmit()" [loading]="isLoading">
             <h1 class="card-header">Create / Update Voucher</h1>
             <div class="card-body">
                 <mat-form-field appearance="outline" class="d-block">
@@ -13,10 +12,10 @@
                     <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="cr" [matAutocomplete]="creditor" #firstInputField />
                     <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete" [displayWith]="displayFunction">
                         <mat-option *ngFor="let creditor of filteredCreditor | async" [value]="creditor">
-                            <div class="d-flex justify-content-between">
-                                <span>{{ creditor.id }}</span>
+                            <div class="d-flex justify-content-between w-100">
+                                <span class="d-none d-md-inline">{{ creditor.id }}</span>
                                 <span>{{ creditor.title }}</span>
-                                <span>{{ creditor.kind }}</span>
+                                <span class="d-none d-md-inline">{{ creditor.kind }}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>
@@ -27,8 +26,9 @@
                     <mat-autocomplete autoActiveFirstOption #debtor="matAutocomplete" [displayWith]="displayFunction">
                         <mat-option *ngFor="let debtor of filteredDebtor | async" [value]="debtor">
                             <div class="d-flex justify-content-between">
-                                <span>{{ debtor.id }}</span><span>{{ debtor.title }}</span><span>{{ debtor.kind
-                                    }}</span>
+                                <span class="d-none d-md-inline">{{ debtor.id }}</span>
+                                <span>{{ debtor.title }}</span>
+                                <span class="d-none d-md-inline">{{ debtor.kind }}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>

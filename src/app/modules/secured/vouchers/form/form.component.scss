@@ -1,0 +1,23 @@
+.mdc-list-item__primary-text {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.mat-option {
+    border: 1px solid #ccc;
+    /* Custom border style */
+    background-color: #f9f9f9;
+    /* Custom background color */
+}
+
+.mat-option:hover {
+    background-color: #e5e5e5;
+    /* Custom background color on hover */
+}
+
+.mat-option.mat-selected {
+    background-color: #007bff;
+    /* Custom background color when selected */
+    color: #fff;
+    /* Custom text color when selected */
+}
