@@ -80,6 +80,7 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
           message = `Location ${value.title} Updated`;
         }
         this.notice.show(message);
+        this.form.reset();
       },
       error: () => {
         this.notice.show('Error Occurred');

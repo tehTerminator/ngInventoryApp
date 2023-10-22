@@ -79,6 +79,7 @@ export class ProductsFormComponent implements OnInit {
           message = `Product ${value.title} Updated`;
         }
         this.notice.show(message);
+        this.form.reset();
       },
       error: () => {
         this.notice.show('Error Occurred');

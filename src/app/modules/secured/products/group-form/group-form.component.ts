@@ -80,6 +80,7 @@ export class GroupsFormComponent implements OnInit, OnDestroy {
           message = `Group ${value.title} Updated`;
         }
         this.notice.show(message);
+        this.form.reset();
       },
       error: () => {
         this.notice.show('Error Occurred');
