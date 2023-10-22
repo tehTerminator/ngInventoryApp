@@ -6,19 +6,19 @@ import { Contact } from './../../../../interface/contact';
 import { ApiService } from './../../../../services/api/api.service';
 
 @Injectable()
-export class CustomerService extends BaseService {
+export class CustomerService extends BaseService<Contact> {
 
     constructor(private api: ApiService) {
         super('customers', 60);
     }
 
     protected fetch(): void {
-        this.api.fetch_data<Contact[]>(this.tableName)
+        this.api.fetch_data<Contact[]>(['get', this.tableName])
         .subscribe(customers => this.store(customers));
     }
 
     public create(customer: Contact): Observable<Contact> {
-        return this.api.create<Contact>(this.tableName, customer)
+        return this.api.create<Contact>([this.tableName], customer)
         .pipe(
             tap(response => {
                 this.insert(response);

@@ -1,20 +1,22 @@
-<form action="" class="card shadow">
+<form [formGroup]="form" class="card shadow" (ngSubmit)="onSubmit()">
     <div class="card-body">
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>Account</mat-label>
-            <mat-select>
-                <mat-option>Cash</mat-option>
-                <mat-option>Bank</mat-option>
-                <mat-option>Other</mat-option>
+            <mat-select formControlName="ledger">
+                <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger">
+                    {{ ledger.title }}
+                </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>From Date</mat-label>
-            <input matInput type="date">
+            <input matInput type="date" formControlName="fromDate">
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100">
             <mat-label>To Date</mat-label>
-            <input matInput type="date">
+            <input matInput type="date" formControlName="toDate">
         </mat-form-field>
+
+        <button class="btn btn-primary shadow w-100" type="submit">View</button>
     </div>
 </form>

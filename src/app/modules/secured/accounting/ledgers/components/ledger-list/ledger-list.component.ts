@@ -12,6 +12,6 @@ export class LedgerListComponent {
   constructor(private ledgerService: LedgerService) {}
 
   get ledgers(): Observable<Ledger[]> {
-    return this.ledgerService.getAsObservable() as Observable<Ledger[]>
+    return this.ledgerService.getAsObservable();
   }
 }

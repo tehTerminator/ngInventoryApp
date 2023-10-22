@@ -10,7 +10,7 @@ import { HOUR } from '../../shared/constants';
 @Injectable({
   providedIn: 'root'
 })
-export class LedgerService extends BaseService {
+export class LedgerService extends BaseService<Ledger> {
 
   constructor(private api: ApiService, private notification: NotificationsService) {
     super('ledgers', HOUR);
@@ -22,7 +22,7 @@ export class LedgerService extends BaseService {
         this.store(ledgers);
       },
       error: (error) => {
-        this.data.next([]);
+        this._data.next([]);
         this.notification.show('An Error Occurred While Fetching Data');
         console.log(error);
       }
@@ -78,7 +78,7 @@ export class LedgerService extends BaseService {
   }
 
   public getElementByTitle(title: string): Ledger {
-    const list = this.data.value as Ledger[];
+    const list = this._data.value as Ledger[];
     title = title.toLowerCase();
     if (list.length > 0) {
       const result = list.find(x => x.title.toLowerCase() === title);

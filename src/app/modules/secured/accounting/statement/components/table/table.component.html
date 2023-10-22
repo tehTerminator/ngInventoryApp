@@ -1,11 +1,47 @@
-<table class="table shadow stripped">
-    <thead>
-        <th>Date</th>
-        <th>Description</th>
-        <th>CR</th>
-        <th>DR</th>
-        <th>Balance</th>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="card" *ngIf="rowCount > 0;else noDataMessage">
+    <div class="card-body" style="overflow-y: scroll; max-height: 80vh;">
+        <table class="table table-hover table-sm">
+            <thead class="text-center bg-dark text-light">
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Transfer</th>
+                    <th>Description</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let v of rows| async;let i = index">
+                    <td>
+                        <a [routerLink]="['/cashbook', 'voucher', v.id]">
+                            {{ v.id }}
+                        </a>
+                    </td>
+                    <td>{{ v.date | date: 'd/M/yy' }}</td>
+                    <td>{{ v.transfer }}</td>
+                    <td>
+                        <span>
+                           {{ splitText(v.narration)[0] }}
+                       </span>
+                        <a [routerLink]="['/invoices', 'search', 'search-by-operator',  splitText(v.narration)[1]]">
+                            {{ splitText(v.narration)[1] }}
+                       </a>
+                    </td>
+                    <td class="text-end pe-3" [ngClass]="v.dr > 0 ? 'table-success' : ''">{{ v.dr | currency:'INR' }}</td>
+                    <td class="text-end pe-3" [ngClass]="v.cr > 0 ? 'table-danger' : ''">{{ v.cr | currency:'INR' }}</td>
+                    <td class="text-end pe-3">{{ v.balance | currency:'INR' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #noDataMessage>
+    <div class="card bg-light text-center">
+        <div class="card-body">
+            There is No Data to Display for Selected Date or Account
+        </div>
+    </div>
+</ng-template>
