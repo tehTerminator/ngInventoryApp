@@ -1,14 +1,14 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Entity } from './../interface/entity.interface';
 
-export abstract class BaseService {
-    protected data = new BehaviorSubject<Entity[]>([]);
+export abstract class BaseService<T extends Entity> {
+    protected _data = new BehaviorSubject<T[]>([]);
     protected nextUpdate = 0;
     private initialized = false;
 
     protected abstract fetch(): void;
-    public abstract create(data: Entity): Observable<Entity>;
-    public abstract update(data: Entity): Observable<Entity>;
+    public abstract create(data: T): Observable<T>;
+    public abstract update(data: T): Observable<T>;
     public abstract delete(id: number): Observable<any>;
 
     constructor(
@@ -35,13 +35,13 @@ export abstract class BaseService {
         this.fetch();
     }
 
-    protected store(data: Entity[]): void {
-        this.data.next(data);
+    protected store(data: T[]): void {
+        this._data.next(data);
         this.nextUpdate = (new Date()).getTime() + this._updateFrequency;
     }
 
-    getElementById(id: number): Entity {
-        const list = this.data.value;
+    getElementById(id: number): T {
+        const list = this._data.value;
         if (list.length > 0) {
             const result = list.find(x => {
                 if (x.hasOwnProperty('id')) {
@@ -56,33 +56,33 @@ export abstract class BaseService {
         throw new Error('Item Not Found');
     }
 
-    get(index: number): Entity {
-        return { ...this.data.value[index] };
+    get(index: number): T {
+        return { ...this._data.value[index] };
     }
 
-    getAsList(): Entity[] {
-        return [...this.data.value];
+    getAsList(): T[] {
+        return [...this._data.value];
     }
 
-    getAsObservable(): Observable<Entity[]> {
-        return this.data;
+    getAsObservable(): Observable<T[]> {
+        return this._data;
     }
 
     protected deleteItem(index: number): void {
-        this.data.next(this.data.value.splice(index, 1));
+        this._data.next(this._data.value.splice(index, 1));
         this.updateTimeStamp();
     }
 
-    protected insert(item: Entity): void {
-        this.data.next([...this.data.value, item]);
+    protected insert(item: T): void {
+        this._data.next([...this._data.value, item]);
         this.updateTimeStamp();
     }
 
-    protected updateItem(item: Entity): void {
+    protected updateItem(item: T): void {
         if (!item.hasOwnProperty('id')) {
             throw new Error(`Unique Field Does Not Exist in Provided Item`);
         }
-        const list = this.data.value;
+        const list = this._data.value;
         const indexOfItemToBeReplaced = list.findIndex(x => {
             if (x.hasOwnProperty('id')) {
                 return x.id === item.id;
@@ -90,7 +90,7 @@ export abstract class BaseService {
             throw new Error('No Unique Field in List');
         });
         list.splice(indexOfItemToBeReplaced, 1, item);
-        this.data.next(list);
+        this._data.next(list);
         this.updateTimeStamp();
     }
 
