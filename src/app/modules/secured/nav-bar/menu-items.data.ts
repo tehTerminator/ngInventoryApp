@@ -46,7 +46,7 @@ export const navItems = [
   {
     title: 'Users',
     links: [
-      { text: 'Users', routerLink: ['master', 'users'] },
+      { text: 'Create New', routerLink: ['master', 'users', 'create-user'] },
     ],
   },
 ];
