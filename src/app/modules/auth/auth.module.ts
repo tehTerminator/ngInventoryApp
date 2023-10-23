@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CoreModule } from '../core/core.module';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
     CoreModule
   ]
 })
