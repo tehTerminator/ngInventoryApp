@@ -20,7 +20,7 @@ export class ListProductGroupComponent {
 
   fetchData(): void {
     this._loading = true;
-    this.api.fetch_data<ProductGroup[]>(['get', 'product-groups'])
+    this.api.retrieve<ProductGroup[]>(['get', 'product-groups'])
     .pipe(finalize(() => this._loading = false))
     .subscribe({
       next: (value) => this._groups.next(value),

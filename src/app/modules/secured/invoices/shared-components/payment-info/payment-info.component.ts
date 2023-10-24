@@ -18,7 +18,7 @@ export class PaymentInfoComponent {
   constructor(private api: ApiService) {}
 
   private fetchVoucherInfo() {
-    this.api.fetch_data<Voucher[]>('invoices/paymentInfo', {id: this._invoiceId.toString()})
+    this.api.retrieve<Voucher[]>('invoices/paymentInfo', {id: this._invoiceId.toString()})
     .subscribe({
       next: (data) => this.paymentInfo.next(data),
       error: () => this.paymentInfo.next([])

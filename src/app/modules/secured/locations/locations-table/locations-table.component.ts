@@ -20,7 +20,7 @@ export class LocationsTableComponent implements OnInit {
 
   fetchData(): void {
     this._loading = true;
-    this.api.fetch_data<StoreLocation[]>(['get', 'locations'])
+    this.api.retrieve<StoreLocation[]>(['get', 'locations'])
     .pipe(finalize(() => this._loading = false))
     .subscribe({
       next: (value) => this._locations.next(value),

@@ -15,7 +15,7 @@ export class ApiService {
     return `${environment.baseUrl}/${url}`;
   }
 
-  fetch_data<T>(urlData: string | string[], payload?: {[key: string]: string}) {
+  retrieve<T>(urlData: string | string[], payload?: {[key: string]: string}) {
     let url = '';
 
     if (Array.isArray(urlData)) {

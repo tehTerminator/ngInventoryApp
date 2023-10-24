@@ -40,7 +40,7 @@ export class SelectContactComponent implements OnInit, OnDestroy {
       switchMap((value) => {
         if (typeof value === 'string') {
           const url = this.label === 'Party' ? 'customers' : 'suppliers';
-          return this.api.fetch_data<Contact[]>(url, { title: value });
+          return this.api.retrieve<Contact[]>(url, { title: value });
         } else {
           // Assuming 'value' is a Contact object with a 'title' property
           return of([value]);

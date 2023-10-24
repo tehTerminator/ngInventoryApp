@@ -13,7 +13,7 @@ export class UserListComponent implements OnChanges {
   private _user = new BehaviorSubject<User[]>([])
 
   private loadUser(): void {
-    this.api.fetch_data<User[]>(['get', 'location', 'users'], {id: this.location.toString()})
+    this.api.retrieve<User[]>(['get', 'location', 'users'], {id: this.location.toString()})
     .subscribe({
       next: (value) => this._user.next(value)
     })

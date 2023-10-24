@@ -16,7 +16,7 @@ export class UserService extends BaseService<User> {
   }
 
   protected fetch(): void {
-    this.api.fetch_data<User[]>(['get', 'users']).subscribe({
+    this.api.retrieve<User[]>(['get', 'users']).subscribe({
       next: (users) => {
         this.store(users);
       },

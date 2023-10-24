@@ -91,7 +91,7 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
   private populateForm(id: string) {
     this._loading = true;
     this.api
-      .fetch_data<StoreLocation>(['get', 'location', id])
+      .retrieve<StoreLocation>(['get', 'location', id])
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) =>

@@ -41,7 +41,7 @@ export class AssignLocationComponent implements OnInit {
   }
 
   private loadProducts(): void {
-    this.api.fetch_data<Product[]>(['get', 'inventory'], {location: this.id.toString()})
+    this.api.retrieve<Product[]>(['get', 'inventory'], {location: this.id.toString()})
     .subscribe({
       next: (value) => this.products = value
     });

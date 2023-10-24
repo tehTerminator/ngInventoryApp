@@ -32,7 +32,7 @@ export class AuthenticationService implements OnDestroy {
     this.authStore.authStarted();
 
     return this.api
-      .fetch_data<UserData>(['user', 'auth'], { username, password })
+      .retrieve<UserData>(['user', 'auth'], { username, password })
       .pipe(
         tap((userData) => {
           this.handleAuthentication(userData);

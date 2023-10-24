@@ -91,7 +91,7 @@ export class GroupsFormComponent implements OnInit, OnDestroy {
   private populateForm(id: string) {
     this._loading = true;
     this.api
-      .fetch_data<ProductGroup>(['get', 'product-group', id])
+      .retrieve<ProductGroup>(['get', 'product-group', id])
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) =>

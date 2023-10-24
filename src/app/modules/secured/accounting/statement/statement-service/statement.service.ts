@@ -16,7 +16,7 @@ export class StatementService {
 
   fetchData(ledger: Ledger, fromDate: string, toDate: string): void {
     this.api
-      .fetch_data<Statement>(['get', 'ledger-statement'], {
+      .retrieve<Statement>(['get', 'ledger-statement'], {
         ledger: ledger.id.toString(),
         fromDate,
         toDate,
