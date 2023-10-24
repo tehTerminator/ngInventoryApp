@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ApiService } from '../../../../../../services/api/api.service';
-import { Entity } from '../../../../../../interface/entity.interface';
-import { Product } from '../../../../../../interface/product';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { StockInfo } from '../../../../../../interface/StockInfo';
 
 @Component({
   selector: 'app-product-list',
@@ -34,8 +33,4 @@ export class ProductListComponent implements OnChanges {
   }
 }
 
-interface StockInfo extends Entity {
-  product: Product;
-  product_id: number;
-  quantity: number;
-}
+
