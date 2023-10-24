@@ -11,14 +11,14 @@ import { ProductGroup } from '../../../../interface/product-group';
 @Component({
   selector: 'app-products-form',
   templateUrl: './products-form.component.html',
-  styleUrls: ['./products-form.component.scss']
+  styleUrls: ['./products-form.component.scss'],
 })
 export class ProductsFormComponent implements OnInit {
   private _locations = new BehaviorSubject<StoreLocation[]>([]);
   private _groups = new BehaviorSubject<ProductGroup[]>([]);
   private _sub = new Subscription();
   private _loading = false;
-  form = new ProductForm()
+  form = new ProductForm();
 
   constructor(
     private route: ActivatedRoute,
@@ -44,8 +44,6 @@ export class ProductsFormComponent implements OnInit {
     this._sub.unsubscribe();
   }
 
-
-
   onSubmit(): void {
     if (!this.form.valid) {
       return;
@@ -62,13 +60,15 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private addNewProduct(product: Product) {
-    return this.api.create<Product>(['product'], product)
-    .pipe(finalize(() => this._loading = false));
+    return this.api
+      .create<Product>(['product'], product)
+      .pipe(finalize(() => (this._loading = false)));
   }
 
   private updateProduct(product: Product) {
-    return this.api.update<Product>(['product'], product)
-    .pipe(finalize(() => this._loading = false));
+    return this.api
+      .update<Product>(['product'], product)
+      .pipe(finalize(() => (this._loading = false)));
   }
 
   private handleResponse(response: Observable<Product>): void {
@@ -83,14 +83,14 @@ export class ProductsFormComponent implements OnInit {
       },
       error: () => {
         this.notice.show('Error Occurred');
-      }
-    })
+      },
+    });
   }
 
   private populateForm(id: string) {
     this._loading = true;
     this.api
-      .fetch_data<Product>(['get', 'product', id])
+      .retrieve<Product>(['get', 'product', id])
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) =>
@@ -102,16 +102,14 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private fetchGroups() {
-    this.api.fetch_data<ProductGroup[]>(['get', 'product-groups'])
-    .subscribe({
-      next: (value) => this._groups.next(value)
+    this.api.retrieve<ProductGroup[]>(['get', 'product-groups']).subscribe({
+      next: (value) => this._groups.next(value),
     });
   }
 
   private fetchLocations() {
-    this.api.fetch_data<StoreLocation[]>(['get', 'locations'])
-    .subscribe({
-      next: (value) => this._locations.next(value)
+    this.api.retrieve<StoreLocation[]>(['get', 'locations']).subscribe({
+      next: (value) => this._locations.next(value),
     });
   }
 
@@ -131,5 +129,3 @@ export class ProductsFormComponent implements OnInit {
     return this._locations;
   }
 }
-
-

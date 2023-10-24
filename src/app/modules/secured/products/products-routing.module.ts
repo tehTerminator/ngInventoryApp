@@ -49,6 +49,7 @@ const routes: Routes = [
         (m) => m.ListProductModule
       ),
   },
+  { path: 'transfer', loadChildren: () => import('./transfer-product/transfer-product.module').then(m => m.TransferProductModule) },
 ];
 
 @NgModule({
