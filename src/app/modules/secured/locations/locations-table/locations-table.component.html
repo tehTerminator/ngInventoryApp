@@ -3,11 +3,22 @@
         <h3 class="text-center">
             List of Locations
         </h3>
-        <div class="list-group" [loading]="loading">
-            <a [routerLink]="['../edit', location.id]" class="list-group-item list-group-item-action" *ngFor="let location of locations | async">
-                {{ location.title }}
-            </a>
-        </div>
+
+        <mat-accordion [loading]="loading">
+            <mat-expansion-panel *ngFor="let location of locations | async">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>{{ location.title }}</mat-panel-title>
+                </mat-expansion-panel-header>
+                <p class="d-flex g-3">
+                    <a mat-raised-button color="primary" class="me-3" [routerLink]="['../view', location.id]">
+                        View
+                    </a>
+                    <a mat-raised-button color="secondary" [routerLink]="['../edit', location.id]">
+                        Edit
+                    </a>
+                </p>
+            </mat-expansion-panel>
+        </mat-accordion>
 
     </div>
 </div>

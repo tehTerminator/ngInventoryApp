@@ -1,5 +1,6 @@
 import { Entity } from "../../interface/entity.interface";
 import { Role } from "../../interface/role.interface";
+import { HOUR } from "../../shared/constants";
 
 export class User {
     private _id: number
@@ -17,7 +18,7 @@ export class User {
         this._mobile = userData.mobile;
         this._auth_token = userData.auth_token;
         this._role = userData.role;
-        this._expirationTime = (new Date()).getTime() + 60000;
+        this._expirationTime = (new Date()).getTime() + HOUR;
     }
 
     get id(): number {

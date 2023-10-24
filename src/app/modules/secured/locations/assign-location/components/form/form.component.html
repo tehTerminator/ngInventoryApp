@@ -1,0 +1,11 @@
+<div class="form-group">
+    <select class="form-control w-100" [formControl]="userFormControl">
+        <option [value]="0" selected>
+            Select User
+        </option>
+        <option *ngFor="let user of users | async" [value]="user.id">
+            {{ user.name }}
+        </option>
+    </select>
+    <button (click)="onSubmit()" class="btn btn-primary w-100 mt-1">Submit</button>
+</div>

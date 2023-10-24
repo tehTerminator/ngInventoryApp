@@ -37,10 +37,8 @@ export const navItems = [
   {
     title: 'Locations',
     links: [
-      { text: 'New Location', routerLink: ['locations', 'add'] },
+      { text: 'New Store', routerLink: ['locations', 'add'] },
       { text: 'View Locations', routerLink: ['locations', 'view'] },
-      { text: 'Assign Users', routerLink: ['locations', 'assign'] },
-      { text: 'View Stock', routerLink: ['locations', 'assign'] },
     ],
   },
   {

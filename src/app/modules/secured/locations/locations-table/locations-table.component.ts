@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
-import { Location } from './../../../../interface/location';
+import { StoreLocation } from './../../../../interface/location';
 import { ApiService } from '../../../../services/api/api.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ApiService } from '../../../../services/api/api.service';
   styleUrls: ['./locations-table.component.scss']
 })
 export class LocationsTableComponent implements OnInit {
-  private _locations = new BehaviorSubject<Location[]>([]);
+  private _locations = new BehaviorSubject<StoreLocation[]>([]);
   private _loading = false;
 
   constructor(private api: ApiService) {}
@@ -20,7 +20,7 @@ export class LocationsTableComponent implements OnInit {
 
   fetchData(): void {
     this._loading = true;
-    this.api.fetch_data<Location[]>(['get', 'locations'])
+    this.api.fetch_data<StoreLocation[]>(['get', 'locations'])
     .pipe(finalize(() => this._loading = false))
     .subscribe({
       next: (value) => this._locations.next(value),
@@ -28,7 +28,7 @@ export class LocationsTableComponent implements OnInit {
     });
   }
 
-  get locations(): Observable<Location[]> {
+  get locations(): Observable<StoreLocation[]> {
     return this._locations;
   }
 

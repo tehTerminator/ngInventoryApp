@@ -25,6 +25,13 @@ const routes: Routes = [
         (m) => m.LocationsTableModule
       ),
   },
+  {
+    path: 'view/:id',
+    loadChildren: () =>
+      import('./assign-location/assign-location.module').then(
+        (m) => m.AssignLocationModule
+      ),
+  },
 ];
 
 @NgModule({

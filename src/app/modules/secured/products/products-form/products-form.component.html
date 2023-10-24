@@ -23,9 +23,9 @@
                         <input matInput type="number" minlength="3 ">
                     </mat-form-field>
                     <mat-form-field class="w-100" appearance="outline">
-                        <mat-label>Location</mat-label>
+                        <mat-label>StoreLocation</mat-label>
                         <mat-select formControlName="location_id">
-                            <mat-option [value]="0">Select Location</mat-option>
+                            <mat-option [value]="0">Select StoreLocation</mat-option>
                             <mat-option [value]="l.id" *ngFor="let l of locations | async">
                                 {{ l.title }}
                             </mat-option>

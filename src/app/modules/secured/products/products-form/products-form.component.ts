@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../../../interface/product';
-import { Location } from './../../../../interface/location';
+import { StoreLocation } from './../../../../interface/location';
 import { BehaviorSubject, Observable, Subscription, finalize } from 'rxjs';
 import { ProductForm } from './ProductForm';
 import { ActivatedRoute } from '@angular/router';
@@ -14,7 +14,7 @@ import { ProductGroup } from '../../../../interface/product-group';
   styleUrls: ['./products-form.component.scss']
 })
 export class ProductsFormComponent implements OnInit {
-  private _locations = new BehaviorSubject<Location[]>([]);
+  private _locations = new BehaviorSubject<StoreLocation[]>([]);
   private _groups = new BehaviorSubject<ProductGroup[]>([]);
   private _sub = new Subscription();
   private _loading = false;
@@ -109,7 +109,7 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private fetchLocations() {
-    this.api.fetch_data<Location[]>(['get', 'locations'])
+    this.api.fetch_data<StoreLocation[]>(['get', 'locations'])
     .subscribe({
       next: (value) => this._locations.next(value)
     });
@@ -127,7 +127,7 @@ export class ProductsFormComponent implements OnInit {
     return this._groups;
   }
 
-  get locations(): Observable<Location[]> {
+  get locations(): Observable<StoreLocation[]> {
     return this._locations;
   }
 }

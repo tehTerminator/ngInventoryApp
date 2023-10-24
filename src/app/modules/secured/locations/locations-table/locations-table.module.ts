@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LocationsTableRoutingModule } from './locations-table-routing.module';
 import { LocationsTableComponent } from './locations-table.component';
 import { CoreModule } from './../../../core/core.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { CoreModule } from './../../../core/core.module';
   imports: [
     CommonModule,
     LocationsTableRoutingModule,
-    CoreModule
+    CoreModule,
+    MatExpansionModule
   ]
 })
 export class LocationsTableModule { }

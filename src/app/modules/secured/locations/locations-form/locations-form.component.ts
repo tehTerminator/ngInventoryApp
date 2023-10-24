@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from './../../../../services/api/api.service';
 import { LocationForm } from './LocationForm';
 import { NotificationsService } from './../../../../services/notification/notification.service';
-import { Location } from './../../../../interface/location';
+import { StoreLocation } from './../../../../interface/location';
 import { Observable, Subscription, finalize } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -62,22 +62,22 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
 
   }
 
-  private addNewLocation(location: Location) {
-    return this.api.create<Location>(['location'], location)
+  private addNewLocation(location: StoreLocation) {
+    return this.api.create<StoreLocation>(['location'], location)
     .pipe(finalize(() => this._loading = false));
   }
 
-  private updateLocation(location: Location) {
-    return this.api.update<Location>(['location'], location)
+  private updateLocation(location: StoreLocation) {
+    return this.api.update<StoreLocation>(['location'], location)
     .pipe(finalize(() => this._loading = false));
   }
 
-  private handleResponse(response: Observable<Location>): void {
+  private handleResponse(response: Observable<StoreLocation>): void {
     response.subscribe({
       next: (value) => {
-        let message = `Location ${value.title} Created.`;
+        let message = `StoreLocation ${value.title} Created.`;
         if (this.editMode) {
-          message = `Location ${value.title} Updated`;
+          message = `StoreLocation ${value.title} Updated`;
         }
         this.notice.show(message);
         this.form.reset();
@@ -91,7 +91,7 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
   private populateForm(id: string) {
     this._loading = true;
     this.api
-      .fetch_data<Location>(['get', 'location', id])
+      .fetch_data<StoreLocation>(['get', 'location', id])
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) =>
