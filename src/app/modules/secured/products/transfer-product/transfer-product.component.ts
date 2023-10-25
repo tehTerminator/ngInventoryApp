@@ -7,6 +7,7 @@ import { StoreLocation } from '../../../../interface/location';
 import { NotificationsService } from '../../../../services/notification/notification.service';
 import { Product } from './../../../../interface/product';
 import { StockInfo } from '../../../../interface/StockInfo';
+import { MyLocationService } from '../../../../services/myLocation/my-location.service';
 
 @Component({
   selector: 'app-transfer-product',
@@ -15,7 +16,6 @@ import { StockInfo } from '../../../../interface/StockInfo';
 })
 export class TransferProductComponent implements OnInit, OnDestroy {
   private _loading = false;
-  private _myLocations = new BehaviorSubject<StoreLocation[]>([]);
   private _products = new BehaviorSubject<StockInfo[]>([]);
   private _sub = new Subscription();
 
@@ -24,11 +24,12 @@ export class TransferProductComponent implements OnInit, OnDestroy {
   constructor(
     private locationStore: LocationService,
     private api: ApiService,
-    private notification: NotificationsService
+    private notification: NotificationsService,
+    private myLocationStore: MyLocationService
   ) {}
 
   ngOnInit(): void {
-    this.loadMyLocations();
+    this.myLocationStore.retrieveData();
     this.locationStore.init();
     this._sub = this.form.myLocationControl.valueChanges
       .pipe(map((value) => value.toString()))
@@ -69,20 +70,6 @@ export class TransferProductComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadMyLocations(): void {
-    this._loading = true;
-    this.api
-      .retrieve<StoreLocation[]>(['get', 'user', 'locations'])
-      .pipe(finalize(() => (this._loading = false)))
-      .subscribe({
-        next: (value) => this._myLocations.next(value),
-        error: () => {
-          this.notification.show('Unable to Retrieve My Locations');
-          this._myLocations.next([]);
-        },
-      });
-  }
-
   private loadProducts(id: string): void {
     this._loading = true;
     this.api
@@ -106,7 +93,7 @@ export class TransferProductComponent implements OnInit, OnDestroy {
   }
 
   get myLocations(): Observable<StoreLocation[]> {
-    return this._myLocations;
+    return this.myLocationStore.myLocations;
   }
 
   get products(): Observable<StockInfo[]> {
