@@ -17,7 +17,7 @@ export class MyLocationService {
     .subscribe({
       next: (value) => {
         this._myLocations.next(value);
-        if(value.length === 1) {
+        if(value.length >= 1) {
           this._selectedLocation.next(value[0]);
         }
       }

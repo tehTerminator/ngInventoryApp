@@ -32,6 +32,7 @@ const routes: Routes = [
         (m) => m.AssignLocationModule
       ),
   },
+  { path: 'select-location', loadChildren: () => import('./select-location/select-location.module').then(m => m.SelectLocationModule) },
 ];
 
 @NgModule({
