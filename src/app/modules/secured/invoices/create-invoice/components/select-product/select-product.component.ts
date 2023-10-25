@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { ApiService } from './../../../../../../services/api/api.service';
 
 @Component({
   selector: 'app-select-product',
@@ -27,7 +28,8 @@ export class SelectProductComponent {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private api: ApiService
   ) {}
 
   onSelectProduct() {
@@ -39,6 +41,10 @@ export class SelectProductComponent {
 
       this.navigateToCreateTransactions(selectedProduct);
     }
+  }
+
+  loadProducts(): void {
+    this.api.
   }
 
   navigateToCreateTransactions(product_id: number) {
