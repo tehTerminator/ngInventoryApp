@@ -1,61 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { ApiService } from './../../../../../../services/api/api.service';
+import { MyLocationService } from './../../../../../../services/myLocation/my-location.service';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Product } from '../../../../../../interface/product';
+import { StockInfo } from '../../../../../../interface/StockInfo';
+import { StoreLocation } from '../../../../../../interface/location';
 
 @Component({
   selector: 'app-select-product',
   templateUrl: './select-product.component.html',
   styleUrls: ['./select-product.component.scss'],
 })
-export class SelectProductComponent {
+export class SelectProductComponent implements OnInit {
   productControl = new FormControl();
-  products = [
-    {
-      id: 1,
-      title: 'Product 1',
-    },
-    {
-      id: 2,
-      title: 'Product 2',
-    },
-    {
-      id: 3,
-      title: 'Product 3',
-    },
-  ]; // Replace with your product data
-
+  private _products = new BehaviorSubject<StockInfo[]>([]);
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private api: ApiService
+    private api: ApiService,
+    private myLocationStore: MyLocationService,
+    private store: InvoiceStoreService
   ) {}
+
+  ngOnInit(): void {
+    const storeLocation = this.myLocationStore.snapshot.selected;
+    this.loadProducts(storeLocation);
+  }
 
   onSelectProduct() {
     // Get the selected product from the form control
-    const selectedProduct = this.productControl.value;
+    const selectedProduct: Product = this.productControl.value;
 
-    if (selectedProduct) {
-      // Set the selected product in the InvoiceService
-
-      this.navigateToCreateTransactions(selectedProduct);
+    if (!!selectedProduct) {
+      this.store.product.next(selectedProduct);
+      this.navigateToCreateTransactions();
     }
   }
 
-  loadProducts(): void {
-    this.api.
+  loadProducts(value: StoreLocation): void {
+    console.log('Load Product Called');
+    this.api
+      .retrieve<StockInfo[]>(['get', 'location', 'inventory'], {
+        id: value.id.toString(),
+      })
+      .subscribe({
+        next: (value) => this._products.next(value),
+      });
   }
 
-  navigateToCreateTransactions(product_id: number) {
-    console.log(product_id)
+  navigateToCreateTransactions() {
     // Get the current :type parameter from the route
-    const type = this.route.snapshot.paramMap.get('type');
 
     // Navigate to the relative path for select-product
     this.router.navigate(['../create-transactions'], {
       relativeTo: this.route,
-      queryParams: { type, product_id },
     });
+  }
+
+  get products$(): Observable<StockInfo[]> {
+    return this._products;
+  }
+
+  get hasTransactions(): Observable<boolean> {
+    return this.store.invoice.pipe(
+      map((value) => {
+        return value.transactions.length >= 1
+      })
+    );
   }
 }
