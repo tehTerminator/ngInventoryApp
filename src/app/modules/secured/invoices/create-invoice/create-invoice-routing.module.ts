@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateInvoiceComponent } from './create-invoice.component';
 import { SelectProductComponent } from './components/select-product/select-product.component';
 import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
-import { SetPaymentMethodComponent } from './components/set-payment-method/set-payment-method.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { FinalSubmitComponent } from './components/final-submit/final-submit.component';
 
 const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children: [
   {
@@ -20,8 +20,8 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
     component: CreateTransactionsComponent
   },
   {
-    path: 'payment-method',
-    component: SetPaymentMethodComponent
+    path: 'final-submit',
+    component: FinalSubmitComponent
   },
   {
     path: '**',
