@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private _myLocation = EMPTYLOCATION;
@@ -15,9 +15,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.myLocationStore.retrieveData();
-    this._sub = this.myLocationStore.selectedLocation
-    .subscribe({
-      next: (value) => this._myLocation = value
+    this._sub = this.myLocationStore.selectedLocation.subscribe({
+      next: (value) => (this._myLocation = value),
     });
   }
 
