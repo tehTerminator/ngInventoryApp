@@ -1,43 +1,50 @@
-<!-- <table class="table table-bordered table-striped table-sm border-dark align-middle">
-            <thead>
-                <tr class="bg-dark text-light">
-                    <th *ngIf="showButtons()">
-                        Del
-                    </th>
-                    <th class="w-50">Description</th>
-                    <th class="text-center">Qty</th>
-                    <th class="text-center">Rate</th>
-                    <th class="text-center">Disc.</th>
-                    <th class="text-center">Amount</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let t of transactions;let i=index">
-                    <td *ngIf="showButtons()" class="text-center">
-                        <button type="button" class="btn icon-only" (click)="deleteTransaction(i)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </td>
-                    <td>{{ t.narration }}</td>
-                    <td class="text-center">{{ t.quantity }}</td>
-                    <td class="text-end pe-3">{{ t.rate | currency:'INR' }}</td>
-                    <td class="text-center text-danger">{{ t.gst | number:'1.2-2' }} %</td>
-                    <td class="text-end pe-3 text-primary">{{ t.amount | currency:'INR'}}</td>
-                    
-                </tr>
-                <tr *ngFor="let row of emptyRows">
-                    <td style="padding: 15px"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td *ngIf="colspan === 5"></td>                </tr>
-            </tbody>
-            <tfoot>
-                <tr class="table-info">
-                    <td [attr.colspan]="colspan" class="text-end">Amount</td>
-                    <td class="text-end pe-3">{{ grossAmount | currency:'INR' }}</td>
-                </tr>
-            </tfoot>
-        </table> -->
+<table
+  class="table table-bordered table-striped table-sm border-dark align-middle"
+>
+  <thead>
+    <tr class="bg-dark text-light">
+      <th *ngIf="showButtons()">Del</th>
+      <th class="w-50">Description</th>
+      <th class="text-center">Qty</th>
+      <th class="text-center">Rate</th>
+      <th class="text-center">GST.</th>
+      <th class="text-center">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of transactions$ | async; let i = index">
+      <td *ngIf="showButtons()" class="text-center">
+        <button
+          type="button"
+          class="btn icon-only"
+          (click)="deleteTransaction(i)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+      <td>{{ t.product.title }}</td>
+      <td class="text-center">{{ t.quantity }}</td>
+      <td class="text-end pe-3">{{ t.rate | currency : "INR" }}</td>
+      <td class="text-center text-danger">{{ t.gst | number : "1.2-2" }} %</td>
+      <td class="text-end pe-3 text-primary">
+        {{ t.amount | currency : "INR" }}
+      </td>
+    </tr>
+    <!-- <tr *ngFor="let row of emptyRows">
+      <td style="padding: 15px"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td *ngIf="colspan === 5"></td>
+    </tr> -->
+  </tbody>
+  <tfoot>
+    <tr class="table-info">
+      <td [attr.colspan]="colspan" class="text-end">Amount</td>
+      <td class="text-end pe-3">
+        {{ grossAmount | async | currency : "INR" }}
+      </td>
+    </tr>
+  </tfoot>
+</table>
