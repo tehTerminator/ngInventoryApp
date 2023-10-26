@@ -53,5 +53,6 @@ export const navItems = [
     links: [
       { text: 'Create New', routerLink: ['master', 'users', 'create-user'] },
     ],
+    role: 'admin'
   },
 ];
