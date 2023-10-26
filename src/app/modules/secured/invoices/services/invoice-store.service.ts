@@ -3,10 +3,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Invoice } from '../../../../interface/invoice';
 import { Transaction } from '../../../../interface/transaction';
 import { Contact } from '../../../../interface/contact';
+import { Product } from '../../../../interface/product';
 
 
 @Injectable()
 export class InvoiceStoreService {
+  product = new BehaviorSubject<Product|null>(null);
   private _invoiceData: BehaviorSubject<Invoice> =
     new BehaviorSubject<Invoice>({...EmptyInvoice});
 
@@ -21,7 +23,6 @@ export class InvoiceStoreService {
     this._invoiceData.next(data);
   }
 
-
   addTransaction(transaction: Transaction) {
     const transactionData = this._invoiceData.value.transactions;
     const indexOfSimilarTransaction = this.findSimilarTransaction(transactionData, transaction)
@@ -34,7 +35,13 @@ export class InvoiceStoreService {
     }
 
     this.invoice = {... this._invoiceData.value, transactions: transactionData};
+    console.log(this._invoiceData.value);
+  }
 
+  deleteTransaction(index: number) {
+    const transactions = {... this.snapshot.transactions};
+    transactions.splice(index, 1);
+    this._invoiceData.next({...this.snapshot, transactions});
   }
 
   private findSimilarTransaction(data: Transaction[], transaction: Transaction): number{
@@ -43,9 +50,13 @@ export class InvoiceStoreService {
     )
   }
 
+  reset(): void {
+    this._invoiceData.next(EmptyInvoice);
+  }
+
   set contact(contact: Contact) {
     const currentValue = this._invoiceData.value;
-    this._invoiceData.next({...currentValue, contact, contactId: contact.id});
+    this._invoiceData.next({...currentValue, contact, contact_id: contact.id});
   }
 
   set kind(data: 'sales' | 'purchase') {
@@ -62,12 +73,24 @@ export class InvoiceStoreService {
 
     return 'sales';
   }
+
+  get snapshot(): Invoice {
+    return this._invoiceData.value;
+  }
+
+  set amount(value: number) {
+    this._invoiceData.next({...this.snapshot, amount: value});
+  }
+
+  set location(value: number) {
+    this._invoiceData.next({...this.snapshot, location_id: value});
+  }
 }
 
 const EmptyInvoice: Invoice = {
   id: 0,
   kind: 'sales',
-  contactId: 0,
+  contact_id: 0,
   contact: {
     id: 0,
     title: 'Not Selected',
@@ -75,9 +98,10 @@ const EmptyInvoice: Invoice = {
     mobile: '',
     kind: 'CUSTOMER',
   },
-  locationId: 0,
+  location_id: 0,
   paid: false,
   amount: 0,
   userId: 0,
-  transactions: []
+  transactions: [],
+  created_at: ''
 }
