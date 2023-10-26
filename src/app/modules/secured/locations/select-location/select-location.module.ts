@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SelectLocationRoutingModule } from './select-location-routing.module';
 import { SelectLocationComponent } from './select-location.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SelectLocationRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule
   ]
 })
 export class SelectLocationModule { }
