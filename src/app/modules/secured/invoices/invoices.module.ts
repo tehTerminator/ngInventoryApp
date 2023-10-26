@@ -8,10 +8,12 @@ import { SharedComponentModule } from './shared-components/shared-components.mod
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CustomerService } from './services/customer.service';
 import { InvoiceStoreService } from './services/invoice-store.service';
+import { PleaseWaitPageComponent } from './please-wait-page/please-wait-page.component';
 
 @NgModule({
   declarations: [
     InvoicesComponent,
+    PleaseWaitPageComponent,
   ],
   imports: [
     CommonModule,
