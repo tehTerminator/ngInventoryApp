@@ -9,10 +9,16 @@ import { ApiService } from './../api/api.service';
 export class MyLocationService {
   private _myLocations = new BehaviorSubject<StoreLocation[]>([]);
   private _selectedLocation = new BehaviorSubject<StoreLocation>(EMPTYLOCATION);
+  private _init = false;
 
   constructor(private api: ApiService) { }
 
   retrieveData() {
+
+    if (this._init) {
+      return;
+    }
+
     this.api.retrieve<StoreLocation[]>(['get', 'user', 'locations'])
     .subscribe({
       next: (value) => {
@@ -20,6 +26,7 @@ export class MyLocationService {
         if(value.length >= 1) {
           this._selectedLocation.next(value[0]);
         }
+        this._init = true;
       }
     });
   }
@@ -35,4 +42,16 @@ export class MyLocationService {
   get selectedLocation(): Observable<StoreLocation> {
     return this._selectedLocation;
   }
+
+  get snapshot(): Snapshot {
+    return {
+      selected: this._selectedLocation.value,
+      available: this._myLocations.value
+    };
+  }
+}
+
+interface Snapshot {
+  selected: StoreLocation;
+  available: StoreLocation[];
 }
