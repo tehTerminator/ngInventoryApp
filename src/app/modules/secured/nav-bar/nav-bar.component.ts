@@ -15,19 +15,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
   constructor(private userStore: AuthStoreService) {}
 
   ngOnInit(): void {
-    this._sub = this.userStore.user.subscribe({
-      next: (value) => {
-        try {
-          this._role = value.role;
-        } catch (e) {
-          this._role = 'user'
-        }
-      }
-    }); 
+    this._role = this.userStore.userData.role;
   }
 
   ngOnDestroy(): void {
-    this._sub.unsubscribe();
+    // this._sub.unsubscribe();
+    console.log('Destroyed');
   }
 
   hasRole(role: string | undefined): boolean {

@@ -19,25 +19,6 @@ const routes: Routes = [
   }
 ];
 
-// const routes: Routes = [
-//   {
-//     path: 'create', title: 'Create Invoice', component: InvoicesComponent, children: [
-//       { path: 'select-customer', component: SelectCustomerComponent },
-//       { path: 'list-items', component: ListItemsComponent },
-//       { path: 'transactions', component: CreateTransactionComponent },
-//       { path: 'paymentMethod', component: ChoosePaymentMethodComponent },
-//       { path: '**', redirectTo: 'select-customer', pathMatch: 'full' }
-//     ],
-//   },
-//   {
-//     path: 'search',
-//     title: 'Search Invoice',
-//     loadChildren: () => import('./pages/search-invoice/search-invoice.module')
-//       .then(m => m.SearchInvoiceModule)
-//   },
-//   { path: 'wait', component: WaitPageComponent },
-//   { path: '**', redirectTo: 'search', pathMatch: 'full' }
-// ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

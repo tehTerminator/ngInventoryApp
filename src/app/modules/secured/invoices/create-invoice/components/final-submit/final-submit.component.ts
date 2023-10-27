@@ -4,6 +4,7 @@ import { Invoice } from '../../../../../../interface/invoice';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Router } from '@angular/router';
 import { MyLocationService } from './../../../../../../services/myLocation/my-location.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-final-submit',
@@ -21,7 +22,7 @@ export class FinalSubmitComponent {
   ) {}
 
   saveInvoice(): void {
-
+    this.loading = true;
     const transactions = this.store.snapshot.transactions;
     let amount = 0;
 
@@ -33,9 +34,11 @@ export class FinalSubmitComponent {
     this.store.location = this.myLocationStore.snapshot.selected.id;
 
     this.api.create<Invoice>(['invoice'], this.store.snapshot)
+    .pipe(finalize(() => this.loading  = false))
     .subscribe({
       next: (value) => {
         console.log(value);
+        this.router.navigate(['/auth', 'invoices', 'view', value.id]);
       }
     })
   }
