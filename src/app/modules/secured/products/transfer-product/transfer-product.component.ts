@@ -5,7 +5,6 @@ import { ApiService } from '../../../../services/api/api.service';
 import { BehaviorSubject, Observable, Subscription, finalize, map } from 'rxjs';
 import { StoreLocation } from '../../../../interface/location';
 import { NotificationsService } from '../../../../services/notification/notification.service';
-import { Product } from './../../../../interface/product';
 import { StockInfo } from '../../../../interface/StockInfo';
 import { MyLocationService } from '../../../../services/myLocation/my-location.service';
 
