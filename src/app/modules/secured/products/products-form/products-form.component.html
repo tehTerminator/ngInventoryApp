@@ -1,4 +1,4 @@
-<div class="row d-flex jusity-content-center">
+<div class="row d-flex justify-content-center">
   <div class="col-lg-4 col-md-6">
     <div class="shadow card">
       <div class="card-header">Create New Product</div>
@@ -13,14 +13,6 @@
               formControlName="title"
               required="required"
             />
-          </mat-form-field>
-          <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Group</mat-label>
-            <mat-select formControlName="group_id" required="required">
-              <mat-option [value]="g.id" *ngFor="let g of groups | async">
-                {{ g.title }}
-              </mat-option>
-            </mat-select>
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Initial Quantity</mat-label>
