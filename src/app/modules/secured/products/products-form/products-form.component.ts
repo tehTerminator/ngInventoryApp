@@ -6,7 +6,6 @@ import { ProductForm } from './ProductForm';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../services/api/api.service';
 import { NotificationsService } from '../../../../services/notification/notification.service';
-import { ProductGroup } from '../../../../interface/product-group';
 
 @Component({
   selector: 'app-products-form',
@@ -15,7 +14,6 @@ import { ProductGroup } from '../../../../interface/product-group';
 })
 export class ProductsFormComponent implements OnInit {
   private _locations = new BehaviorSubject<StoreLocation[]>([]);
-  private _groups = new BehaviorSubject<ProductGroup[]>([]);
   private _sub = new Subscription();
   private _loading = false;
   form = new ProductForm();
@@ -35,8 +33,6 @@ export class ProductsFormComponent implements OnInit {
         }
       },
     });
-
-    this.fetchGroups();
     this.fetchLocations();
   }
 
@@ -101,12 +97,6 @@ export class ProductsFormComponent implements OnInit {
       });
   }
 
-  private fetchGroups() {
-    this.api.retrieve<ProductGroup[]>(['get', 'product-groups']).subscribe({
-      next: (value) => this._groups.next(value),
-    });
-  }
-
   private fetchLocations() {
     this.api.retrieve<StoreLocation[]>(['get', 'locations']).subscribe({
       next: (value) => this._locations.next(value),
@@ -119,10 +109,6 @@ export class ProductsFormComponent implements OnInit {
 
   get loading(): boolean {
     return this._loading;
-  }
-
-  get groups(): Observable<ProductGroup[]> {
-    return this._groups;
   }
 
   get locations(): Observable<StoreLocation[]> {
