@@ -26,30 +26,19 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'product-group/add',
-    loadChildren: () =>
-      import('./group-form/group-form.module').then((m) => m.GroupFormModule),
-  },
-  {
-    path: 'product-group/edit/:id',
-    loadChildren: () =>
-      import('./group-form/group-form.module').then((m) => m.GroupFormModule),
-  },
-  {
-    path: 'product-group/view',
-    loadChildren: () =>
-      import('./list-product-group/list-product-group.module').then(
-        (m) => m.ListProductGroupModule
-      ),
-  },
-  {
     path: 'view',
     loadChildren: () =>
       import('./list-product/list-product.module').then(
         (m) => m.ListProductModule
       ),
   },
-  { path: 'transfer', loadChildren: () => import('./transfer-product/transfer-product.module').then(m => m.TransferProductModule) },
+  {
+    path: 'transfer',
+    loadChildren: () =>
+      import('./transfer-product/transfer-product.module').then(
+        (m) => m.TransferProductModule
+      ),
+  },
 ];
 
 @NgModule({
