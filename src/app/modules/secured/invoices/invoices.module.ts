@@ -9,11 +9,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CustomerService } from './services/customer.service';
 import { InvoiceStoreService } from './services/invoice-store.service';
 import { PleaseWaitPageComponent } from './please-wait-page/please-wait-page.component';
+import { InvoiceListComponent } from './invoice-list/invoice-list.component';
+import { SearchInvoiceStoreService } from './search-invoice/search-store/search-store.service';
 
 @NgModule({
   declarations: [
     InvoicesComponent,
     PleaseWaitPageComponent,
+    InvoiceListComponent,
   ],
   imports: [
     CommonModule,
@@ -23,8 +26,8 @@ import { PleaseWaitPageComponent } from './please-wait-page/please-wait-page.com
     MatAutocompleteModule
   ],
   providers: [
-    CustomerService,
-    InvoiceStoreService
+    InvoiceStoreService,
+    SearchInvoiceStoreService
   ]
 })
 export class InvoicesModule { }

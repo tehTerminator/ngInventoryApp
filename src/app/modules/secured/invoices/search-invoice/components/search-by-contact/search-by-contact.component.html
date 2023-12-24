@@ -1,0 +1,44 @@
+<section class="card">
+    <div class="card-body">
+      <div class="fs-4 card-title text-center">Search By Customer</div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100">
+            <input matInput formControlName="contact" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
+                <mat-option *ngFor="let contact of filteredContacts | async" [value]="contact">
+                    {{ contact.title }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <div class="form-group mb-3">
+          <label for="month">Month</label>
+          <input
+            type="month"
+            name="month"
+            class="form-control"
+            formControlName="month"
+          />
+        </div>
+        <div class="form-group mb-3">
+          <label for="paymentStatus">Payment Status</label>
+          <select
+            name="paymentStatus"
+            class="form-control"
+            formControlName="paymentStatus"
+          >
+            <option value="1">Paid</option>
+            <option value="0">Unpaid</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="btn d-block w-100"
+          mat-raised-button
+          color="primary"
+          [disabled]="form.invalid"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  </section>
