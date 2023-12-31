@@ -28,6 +28,13 @@ export const navItems = [
     ],
   },
   {
+    title: 'Bundles',
+    links: [
+      { text: 'Create', routerLink: ['bundles', 'add'] },
+      { text: 'View', routerLink: ['bundles', 'view'] },
+    ],
+  },
+  {
     title: 'Locations',
     links: [
       { text: 'New Store', routerLink: ['locations', 'add'] },
