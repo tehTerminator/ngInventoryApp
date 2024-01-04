@@ -30,7 +30,7 @@ export const navItems = [
   {
     title: 'Bundles',
     links: [
-      { text: 'Create', routerLink: ['bundles', 'add'] },
+      { text: 'Create', routerLink: ['bundles', 'create'] },
       { text: 'View', routerLink: ['bundles', 'view'] },
     ],
   },

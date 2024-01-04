@@ -30,7 +30,9 @@ const routes: Routes = [
       {
         path: 'accounting',
         loadChildren: () =>
-          import('./accounting/accounting.module').then((m) => m.AccountingModule),
+          import('./accounting/accounting.module').then(
+            (m) => m.AccountingModule
+          ),
       },
       {
         path: 'invoices',
@@ -48,13 +50,17 @@ const routes: Routes = [
           import('./products/products.module').then((m) => m.ProductsModule),
       },
       {
+        path: 'bundles',
+        loadChildren: () =>
+          import('./bundles/bundles.module').then((m) => m.BundlesModule),
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
       },
     ],
   },
-  { path: 'bundles', loadChildren: () => import('./bundles/bundles.module').then(m => m.BundlesModule) },
 ];
 
 @NgModule({
