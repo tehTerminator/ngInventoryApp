@@ -18,3 +18,17 @@ export function evaluateString(text: string): number {
     }
     return 0;
 }
+
+export function ToTitleCase(text: string) {
+    return text.replace(
+        /\w\S*/g,
+        function(txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+      ); 
+}
+
+export function SplitCamelCase(text: string) {
+    return text.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
+

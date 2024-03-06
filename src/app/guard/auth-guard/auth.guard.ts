@@ -11,8 +11,10 @@ export const authGuard: CanActivateFn = () => {
   const authState = authStore.state_value;
 
   if (authState === AuthState.LOGGED_IN) {
+    console.log('Returing True');
     return true;
   }
 
+  console.log('Returning Tree');
   return router.createUrlTree(['']);
 };
