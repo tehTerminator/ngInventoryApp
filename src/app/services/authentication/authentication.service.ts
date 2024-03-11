@@ -23,7 +23,7 @@ export class AuthenticationService implements OnDestroy {
     const expirationTime = this.getStoredExpirationTime();
     const currentTime = new Date().getTime();
 
-    if (expirationTime > currentTime && userData.id > 0) {
+    if (expirationTime > currentTime ) {
       this.handleAuthentication(userData);
     }
   }
@@ -31,28 +31,27 @@ export class AuthenticationService implements OnDestroy {
   authenticate(username: string, password: string): Observable<any> {
     this.authStore.authStarted();
 
-    return this.api
-      .fetch_data<UserData>(['user', 'auth'], { username, password })
-      .pipe(
-        tap((userData) => {
-          this.handleAuthentication(userData);
-        }),
-        catchError(() => {
-          this.authStore.signOut();
-          throw new Error('Invalid Username or Password');
-        })
-      );
+    return this.api.signIn(username, password).pipe(
+      tap((userData) => {
+        this.handleAuthentication(userData);
+      }),
+      catchError(() => {
+        this.authStore.signOut();
+        throw new Error('Invalid Username or Password');
+      })
+    );
   }
 
   signOut(): void {
     this.authStore.signOut();
     localStorage.removeItem('userData');
-    localStorage.removeItem('expirationTime');
+
     this.router.navigate(['']);
   }
 
   private handleAuthentication(userData: UserData): void {
-    const expirationTime = new Date(userData.updated_at).getTime() + HOUR;
+    const expirationTime = new Date().getTime() + parseInt(userData.expiresIn);
+    console.log('Expiring in ', new Date(expirationTime));
     this.setAutoSignOut(expirationTime);
     this.authStore.signIn(userData, expirationTime);
     this.storeInLocalStorage(userData, expirationTime);

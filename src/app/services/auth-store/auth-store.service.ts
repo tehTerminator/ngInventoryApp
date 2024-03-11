@@ -28,7 +28,7 @@ export class AuthStoreService {
       return;
     }
 
-    if (userData.id <= 0) {
+    if (userData.localId.length === 0) {
       this._state.next(AuthState.LOGGED_OUT);
       return;
     }

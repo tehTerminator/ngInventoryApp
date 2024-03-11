@@ -16,8 +16,8 @@ export class AuthComponent implements OnInit, OnDestroy {
   isLoading = false;
   private authSubscription: Subscription = new Subscription()
   loginForm: FormGroup<LoginCredentials> = new FormGroup({
-    username: new FormControl<string>('', {
-      validators: [Validators.required, Validators.minLength(3)],
+    email: new FormControl<string>('', {
+      validators: [Validators.required, Validators.minLength(3), Validators.email],
       nonNullable: true,
     }),
     password: new FormControl<string>('', {
@@ -57,28 +57,29 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    const username = this.usernameField.value;
+    const email = this.emailField.value;
     const password = this.passwordField.value;
 
     if (this.loginForm.invalid) {
-      this.notification.show('Please Enter Username and Password');
+      this.notification.show('Please Enter email and Password');
       return;
     }
 
     this.isLoading = true;
 
     this.authService
-      .authenticate(username, password)
+      .authenticate(email, password)
       .subscribe({
         next: () => this.navigateToAuthenticatedPage(),
         error: (error: string) => this.notification.show(error),
       });
+
   }
 
   private navigateToAuthenticatedPage = () => this.router.navigate(['auth']);
 
-  get usernameField(): FormControl {
-    return this.loginForm.get('username') as FormControl;
+  get emailField(): FormControl {
+    return this.loginForm.get('email') as FormControl;
   }
 
   get passwordField(): FormControl {
@@ -87,6 +88,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 }
 
 interface LoginCredentials {
-  username: FormControl<string>;
+  email: FormControl<string>;
   password: FormControl<string>;
 }

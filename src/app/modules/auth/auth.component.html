@@ -9,20 +9,21 @@
                     <div class="card-body">
                         <main>
                             <mat-form-field class="w-100">
-                                <mat-label>Username</mat-label>
-                                <input autocomplete="username" type="text" matInput formControlName="username">
-                                <mat-error *ngIf="usernameField.dirty">
-                                    <span *ngIf="usernameField.hasError('required')">
-                                        Please Enter Username
+                                <mat-label>Email</mat-label>
+                                <input autocomplete="email" type="email" matInput formControlName="email">
+                                <mat-error *ngIf="emailField.dirty">
+                                    <span *ngIf="emailField.hasError('required')">
+                                        Please Enter email
                                     </span>
-                                    <span *ngIf="usernameField.hasError('minlength')">
-                                        Too Short Username.
+                                    <span *ngIf="emailField.hasError('minlength')">
+                                        Too Short email.
                                     </span>
                                 </mat-error>
                             </mat-form-field>
                             <mat-form-field class="w-100">
                                 <mat-label>Password</mat-label>
-                                <input type="password" autocomplete="current-password" matInput formControlName="password">
+                                <input type="password" autocomplete="current-password" matInput
+                                    formControlName="password">
                                 <mat-error *ngIf="passwordField.dirty">
                                     <span *ngIf="passwordField.hasError('required')">
                                         Please Enter a Password.
@@ -37,7 +38,8 @@
                     </div>
 
                     <div class="card-footer d-flex justify-content-between">
-                        <button type="submit" mat-flat-button color="primary" class="me-2 w-50" [disabled]="loginForm.invalid">
+                        <button type="submit" mat-flat-button color="primary" class="me-2 w-50"
+                            [disabled]="loginForm.invalid">
                             Submit
                         </button>
                         <button type="reset" mat-flat-button color="warn" class="w-50">Reset</button>
