@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SecureModuleComponent } from './secure-module.component';
+import { SecuredComponent } from './secured.component';
 
 const routes: Routes = [
   { 
-    path: '', component: SecureModuleComponent,
+    path: '', component: SecuredComponent,
     children: [
       {
         path: 'dashboard',
@@ -24,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SecureModuleRoutingModule {}
+export class SecuredRoutingModule {}
