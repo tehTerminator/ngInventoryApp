@@ -68,7 +68,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.authService
-      .authenticate(email, password)
+      .signIn(email, password)
       .subscribe({
         next: () => this.navigateToAuthenticatedPage(),
         error: (error: string) => this.notification.show(error),

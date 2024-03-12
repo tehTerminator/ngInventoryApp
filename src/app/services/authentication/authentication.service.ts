@@ -28,16 +28,16 @@ export class AuthenticationService implements OnDestroy {
     }
   }
 
-  authenticate(username: string, password: string): Observable<any> {
+  signIn(username: string, password: string): Observable<any> {
     this.authStore.authStarted();
 
     return this.api.signIn(username, password).pipe(
       tap((userData) => {
         this.handleAuthentication(userData);
       }),
-      catchError(() => {
+      catchError((error) => {
         this.authStore.signOut();
-        throw new Error('Invalid Username or Password');
+        throw new Error(error.error.error.message);
       })
     );
   }
@@ -45,7 +45,7 @@ export class AuthenticationService implements OnDestroy {
   signOut(): void {
     this.authStore.signOut();
     localStorage.removeItem('userData');
-
+    localStorage.removeItem('expirationTime');
     this.router.navigate(['']);
   }
 
