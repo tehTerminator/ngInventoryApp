@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-secure-module',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./secure-module.component.scss']
 })
 export class SecureModuleComponent {
+  constructor(private authService: AuthenticationService) {}
 
+  logout = () => this.authService.signOut();
 }

@@ -7,6 +7,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 
@@ -22,6 +24,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     MatIconModule,
     MatButtonModule,
     MatSidenavModule,
+    MatMenuModule,
+    MatExpansionModule,
   ]
 })
 export class SecureModuleModule { }
