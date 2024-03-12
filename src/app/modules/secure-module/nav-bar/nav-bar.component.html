@@ -1,1 +1,26 @@
-<p>nav-bar works!</p>
+<nav class="mx-3 mt-3 d-grid gap-1 d-print-none">
+    <a mat-flat-button [routerLink]="['']">
+      <mat-icon>home</mat-icon>
+      <strong>Dashboard</strong>
+    </a>
+  
+    <mat-accordion>
+      <ng-container *ngFor="let item of items">
+        <!-- <ng-container *ngIf="hasRole(item.role)"> -->
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ item.title }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="d-flex flex-column">
+              <a
+                mat-flat-button
+                *ngFor="let link of item.links"
+                [routerLink]="link.routerLink"
+                >{{ link.text }}</a
+              >
+            </p>
+          </mat-expansion-panel>
+        <!-- </ng-container> -->
+      </ng-container>
+    </mat-accordion>
+  </nav>
