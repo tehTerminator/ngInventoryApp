@@ -4,7 +4,7 @@ import { ApiService } from '../api/api.service';
 import { Router } from '@angular/router';
 import { AuthStoreService } from '../auth-store/auth-store.service';
 import { Observable, catchError, tap } from 'rxjs';
-import { HOUR } from '../../shared/constants';
+import { HOUR, MINUTE } from '../../shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -50,8 +50,7 @@ export class AuthenticationService implements OnDestroy {
   }
 
   private handleAuthentication(userData: UserData): void {
-    const expirationTime = new Date().getTime() + parseInt(userData.expiresIn);
-    console.log('Expiring in ', new Date(expirationTime));
+    const expirationTime = new Date().getTime() + (parseInt(userData.expiresIn) * MINUTE);
     this.setAutoSignOut(expirationTime);
     this.authStore.signIn(userData, expirationTime);
     this.storeInLocalStorage(userData, expirationTime);
