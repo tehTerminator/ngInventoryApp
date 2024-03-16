@@ -10,38 +10,32 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  private createUrl(urlData: string[]): string {
-    const url = urlData.join('/');
-    return `${environment.baseUrl}/${url}`;
+  private createUrl(prefix: string, urlData: string[] | string): string {
+    let url = urlData;
+    if (Array.isArray(urlData)) {
+      url = urlData.join('/')
+    }
+    return `${environment.baseUrl}/${prefix}/${url}`;
   }
 
   retrieve<T>(urlData: string | string[], payload?: {[key: string]: string}) {
-    let url = '';
-
-    if (Array.isArray(urlData)) {
-      url = this.createUrl([...urlData]);
-    }
-
-    else {
-      url = this.createUrl(['get', urlData]);
-    }
-
+    const url = this.createUrl('get', urlData);
     return this.http.get<T>(url, {params: payload})
   }
 
 
   create<T>(url: string | string[], payload: {[key: string]: any}): Observable<T>{
-    const theUrl  = this.createUrl([ 'create',...url]);
+    const theUrl  = this.createUrl('create', url);
     return this.http.post<T>(theUrl, payload);
   }
 
   update<T>(url: string | string[], payload: {[key: string]: any}): Observable<T> {
-    const theUrl  = this.createUrl([ 'update',...url]);
+    const theUrl  = this.createUrl('update', url);
     return this.http.put<T>(theUrl, payload);
   }
 
   delete<T>(url: string | string[], id: number): Observable<T> {
-    const theUrl  = this.createUrl([ 'delete',...url]);
+    const theUrl  = this.createUrl('delete', url);
     return this.http.delete<T>(`${theUrl}/'delete')}/${id}`);
   }
 

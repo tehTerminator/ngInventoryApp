@@ -70,7 +70,7 @@ export class VoucherFormComponent {
     this.isLoading = true;
     if (this.voucherForm.id > 0) {
       this.api
-        .retrieve<Voucher>(['get', 'voucher', this.voucherForm.id.toString()])
+        .retrieve<Voucher>(['voucher', this.voucherForm.id.toString()])
         .subscribe({
           next: (voucher) => {
             this.isLoading = false;

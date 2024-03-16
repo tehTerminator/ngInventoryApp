@@ -35,7 +35,7 @@ export class ListProductComponent {
   private fetchData(): void {
     this._loading = true;
     this.api
-      .retrieve<Product[]>(['get', 'products'], {
+      .retrieve<Product[]>('products', {
         pageLength: this.pageSize.toString(),
         currentPage: this.currentPage.toString(),
       })

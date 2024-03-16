@@ -19,7 +19,7 @@ export class MyLocationService {
       return;
     }
 
-    this.api.retrieve<StoreLocation[]>(['get', 'user', 'locations'])
+    this.api.retrieve<StoreLocation[]>(['user', 'locations'])
     .subscribe({
       next: (value) => {
         this._myLocations.next(value);

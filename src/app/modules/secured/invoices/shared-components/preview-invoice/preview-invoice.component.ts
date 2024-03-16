@@ -28,7 +28,7 @@ export class PreviewInvoiceComponent implements OnInit {
   }
 
   private loadInvoices(id: string) {
-    this.api.retrieve<Invoice>(['get', 'invoice'], {id})
+    this.api.retrieve<Invoice>('invoice', {id})
     .subscribe({
       next: (value) => this.store.invoice = value
     })

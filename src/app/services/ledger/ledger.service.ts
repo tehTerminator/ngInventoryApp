@@ -17,7 +17,7 @@ export class LedgerService extends BaseService<Ledger> {
   }
 
   protected fetch(): void {
-    this.api.retrieve<Ledger[]>(['get', 'ledgers']).subscribe({
+    this.api.retrieve<Ledger[]>('ledgers').subscribe({
       next: (ledgers) => {
         this.store(ledgers);
       },

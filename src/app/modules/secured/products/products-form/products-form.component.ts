@@ -86,7 +86,7 @@ export class ProductsFormComponent implements OnInit {
   private populateForm(id: string) {
     this._loading = true;
     this.api
-      .retrieve<Product>(['get', 'product', id])
+      .retrieve<Product>(['product', id])
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) =>
@@ -98,7 +98,7 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private fetchLocations() {
-    this.api.retrieve<StoreLocation[]>(['get', 'locations']).subscribe({
+    this.api.retrieve<StoreLocation[]>('locations').subscribe({
       next: (value) => this._locations.next(value),
     });
   }

@@ -34,7 +34,7 @@ export class SearchByContactComponent {
       distinctUntilChanged(), // Only make requests if the input value changes
       switchMap((value) => {
         if (typeof value === 'string') {
-          return this.api.retrieve<Contact[]>(['get', 'contacts'], {
+          return this.api.retrieve<Contact[]>('contacts', {
             title: value,
           });
         } else {

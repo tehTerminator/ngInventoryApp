@@ -43,7 +43,7 @@ export class SelectProductComponent implements OnInit {
   loadProducts(value: StoreLocation): void {
     console.log('Load Product Called');
     this.api
-      .retrieve<StockInfo[]>(['get', 'location', 'inventory'], {
+      .retrieve<StockInfo[]>(['location', 'inventory'], {
         id: value.id.toString(),
       })
       .subscribe({

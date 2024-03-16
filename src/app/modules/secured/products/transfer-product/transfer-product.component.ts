@@ -72,7 +72,7 @@ export class TransferProductComponent implements OnInit, OnDestroy {
   private loadProducts(id: string): void {
     this._loading = true;
     this.api
-      .retrieve<StockInfo[]>(['get', 'location', 'inventory'], { id })
+      .retrieve<StockInfo[]>(['location', 'inventory'], { id })
       .pipe(finalize(() => (this._loading = false)))
       .subscribe({
         next: (value) => this._products.next(value),

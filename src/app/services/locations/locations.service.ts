@@ -15,7 +15,7 @@ export class LocationService extends BaseService<StoreLocation> {
       }
     
       protected fetch(): void {
-        this.api.retrieve<StoreLocation[]>(['get', 'locations']).subscribe({
+        this.api.retrieve<StoreLocation[]>('locations').subscribe({
           next: (locations) => {
             this.store(locations);
           },

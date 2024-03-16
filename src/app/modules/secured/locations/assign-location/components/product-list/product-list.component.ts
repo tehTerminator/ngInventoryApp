@@ -20,7 +20,7 @@ export class ProductListComponent implements OnChanges {
   }
 
   loadProducts() {
-    this.api.retrieve<StockInfo[]>(['get', 'location', 'inventory'], {id: this.location.toString()})
+    this.api.retrieve<StockInfo[]>(['location', 'inventory'], {id: this.location.toString()})
     .subscribe({
       next: (value) => {
         this._data$.next(value)

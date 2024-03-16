@@ -5,7 +5,7 @@
                 Create New Bundles
             </div>
             <div class="card-body">
-                <form [formGroup]="bundleFormGroup">
+                <form [formGroup]="bundleFormGroup" (ngSubmit)="onSubmit()">
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Title</mat-label>
                         <input type="text" matInput formControlName="title">
@@ -14,7 +14,7 @@
                         <mat-label>Rate</mat-label>
                         <input type="number" matInput formControlName="rate">
                     </mat-form-field>
-                    <button mat-raised-button class="w-100 py-4" color="primary">
+                    <button type="submit" mat-raised-button class="w-100 py-4" color="primary">
                         Submit
                     </button>
                 </form>
