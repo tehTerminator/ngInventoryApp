@@ -9,15 +9,13 @@ const routes: Routes = [
     loadChildren: () => import('./form/form.module').then((m) => m.FormModule),
   },
   {
-    path: 'temp',
-    loadChildren: () =>
-      import('./template-form/template-form.module').then(
-        (m) => m.TemplateFormModule
-      ),
-  },
-  {
     path: 'view',
     loadChildren: () => import('./list/list.module').then((m) => m.ListModule),
+  },
+  {
+    path: ':id/template',
+    loadChildren: () =>
+      import('./template/template.module').then((m) => m.TemplateModule),
   },
 ];
 
