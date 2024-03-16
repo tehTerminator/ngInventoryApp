@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DefaultForm } from './../../../../class/DefaultForm';
-import { formData } from './formData';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { BundleFormGroup } from './BundleFormGroup';
+import { ApiService } from './../../../../services/api/api.service';
+import { NotificationsService }  from './../../../../services/notification/notification.service';
+import { Bundle } from './../../../../interface/bundles';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -10,57 +13,41 @@ import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class FormComponent {
   private _loading = false;
-  form = new BundleForm();
+  bundleFormGroup = new BundleFormGroup();
 
   get loading(): boolean {
     return this._loading;
   }
 
-  get formData() {
-    return formData;
-  }
-
   onSubmit() {
-    return;
+    if (this.bundleFormGroup.invalid) {
+      this.notification.show('Invalid Form Data');
+      return;
+    }
+
+    const payload = this.bundleFormGroup.value;
+    let reponse: Observable<Bundle>;
+
+    if (this.bundleFormGroup.editMode) {
+      this.handleResponse(this.api.update<Bundle>('bundle', payload));
+    } else {
+      this.handleResponse(this.api.create<Bundle>('bundle', payload));
+    }
   }
+
+  private handleResponse(response: Observable<any>)
+  {
+    response.subscribe({
+      next: ((data) => {
+        this.router.navigate(['/auth', 'bundles', data.id, 'templates']);
+      }),
+      error: ((error) => this.notification.show(error))
+    })
+  }
+
+  constructor(
+    private router: Router,
+    private api: ApiService, 
+    private notification: NotificationsService) {}
 }
-
-class BundleForm extends FormGroup {
-  constructor() {
-    super({
-      id: new FormControl<number>(0, [Validators.min(0)]),
-      title: new FormControl<string>('', Validators.required),
-      rate: new FormControl<number>(0, [Validators.required, Validators.min(1)])
-    });
-  }
-
-  get titleControl(): FormControl<string> {
-    return this.get('title') as FormControl<string>;
-  }
-
-  get rateControl(): FormControl<number> {
-    return this.get('rate') as FormControl<number>;
-  }
-
-  get idControl(): FormControl<number> {
-    return this.get('id') as FormControl<number>;
-  }
-
-  get title(): string {
-    return this.titleControl.value;
-  }
-
-  get rate(): number {
-    return this.rateControl.value;
-  }
-
-  get id(): number {
-    return this.idControl.value;
-  }  
-
-  get editMode(): boolean {
-    return this.id > 0;
-  }
-}
-
 
