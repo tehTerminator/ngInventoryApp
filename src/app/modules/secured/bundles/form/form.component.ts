@@ -5,6 +5,7 @@ import { NotificationsService }  from './../../../../services/notification/notif
 import { Bundle } from './../../../../interface/bundles';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { BundleService } from '../../../../services/bundle/bundle.service';
 
 @Component({
   selector: 'app-form',
@@ -25,13 +26,12 @@ export class FormComponent {
       return;
     }
 
-    const payload = this.bundleFormGroup.value;
-    let reponse: Observable<Bundle>;
+    const payload: Bundle = this.bundleFormGroup.value;
 
     if (this.bundleFormGroup.editMode) {
-      this.handleResponse(this.api.update<Bundle>('bundle', payload));
+      this.handleResponse(this.bundleService.update(payload));
     } else {
-      this.handleResponse(this.api.create<Bundle>('bundle', payload));
+      this.handleResponse(this.bundleService.create(payload));
     }
   }
 
@@ -39,7 +39,7 @@ export class FormComponent {
   {
     response.subscribe({
       next: ((data) => {
-        this.router.navigate(['/auth', 'bundles', data.id, 'templates']);
+        this.router.navigate(['/auth', 'bundles', data.id, 'template']);
       }),
       error: ((error) => this.notification.show(error))
     })
@@ -47,7 +47,7 @@ export class FormComponent {
 
   constructor(
     private router: Router,
-    private api: ApiService, 
+    private bundleService: BundleService,
     private notification: NotificationsService) {}
 }
 
