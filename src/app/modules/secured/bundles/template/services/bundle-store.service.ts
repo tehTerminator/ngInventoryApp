@@ -4,23 +4,52 @@ import { Bundle, BundleTemplate } from './../../../../../interface/bundles';
 import { ApiService } from './../../../../../services/api/api.service';
 import { ProductService } from './../../../../../services/product/product.service';
 import { LedgerService } from './../../../../../services/ledger/ledger.service';
+import { NotificationsService } from '../../../../../services/notification/notification.service';
 
 @Injectable()
 export class BundleStoreService {
   private _bundle$ = new BehaviorSubject<Bundle>(EMPTY_BUNDLE);
   private _total = 0;
+  private _id = 0;
 
   constructor(
     private api: ApiService,
     private productService: ProductService,
-    private ledgerService: LedgerService
+    private ledgerService: LedgerService,
+    private notification: NotificationsService
   ) {
     productService.init();
     ledgerService.init();
   }
 
+  addTemplate(template: BundleTemplate) {
+    const data = this._bundle$.value;
+    data.template = [...data.template, template];
+    this._bundle$.next(data);
+  }
+
+  deleteTemplate(index: number, id: number) {
+    this.api.delete('bundles__template', id)
+    .subscribe({
+      next: (() => {
+        const data = this._bundle$.value;
+        data.template.splice(index, 1);
+        this._bundle$.next(data);
+      }),
+      error: ((err) => {
+        console.error(err);
+        this.notification.show('Unable to Delete Template')
+      })
+    });
+  }
+
   set id(id: number) {
+    this._id = id;
     this.retrieveBundle(id.toString());
+  }
+
+  get id(): number {
+    return this._id;
   }
 
   get bundle$(): BehaviorSubject<Bundle> {

@@ -11,6 +11,10 @@ import { BundleTemplate } from '../../../../../../interface/bundles';
 export class TemplateListComponent {
   constructor(private store: BundleStoreService) {}
 
+  deleteItem(index: number, id: number) {
+    this.store.deleteTemplate(index, id);
+  }
+
   get templates(): Observable<BundleTemplate[]> {
     return this.store.templates$;
   }

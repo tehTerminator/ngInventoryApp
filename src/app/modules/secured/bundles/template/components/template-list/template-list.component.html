@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table shadow border">
     <thead>
         <tr>
             <th>Description</th>
@@ -9,11 +9,14 @@
     </thead>
 
     <tbody>
-        <tr *ngFor="let item of templates | async">    
-            <td>{{ item.title }}</td>
-            <td>{{ item.rate }}</td>
+        <tr *ngFor="let item of templates | async;index as i">    
+            <td>
+                <mat-icon (click)="deleteItem(i, item.id)">delete</mat-icon>
+                {{ item.title }}
+            </td>
+            <td>{{ item.rate | currency:'INR' }}</td>
             <td>{{ item.quantity }}</td>
-            <td>{{ item.quantity * item.rate }}</td>
+            <td>{{ item.quantity * item.rate  }}</td>
         </tr>
     </tbody>
     <tfoot>
@@ -21,7 +24,7 @@
             <td colspan="3">
                 Total
             </td>
-            <td>{{ totalAmount }}</td>
+            <td>{{ totalAmount | currency:'INR' }}</td>
         </tr>
     </tfoot>
 </table>

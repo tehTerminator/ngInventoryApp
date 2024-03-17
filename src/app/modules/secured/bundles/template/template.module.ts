@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CoreModule } from './../../../core/core.module';
 
 import { TemplateRoutingModule } from './template-routing.module';
 import { TemplateComponent } from './template.component';
@@ -17,6 +18,7 @@ import { TemplateListComponent } from './components/template-list/template-list.
     TemplateListComponent
   ],
   imports: [
+    CoreModule,
     CommonModule,
     TemplateRoutingModule
   ],
