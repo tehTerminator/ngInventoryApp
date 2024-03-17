@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './../../../../services/api/api.service';
+import { BundleService } from './../../../../services/bundle/bundle.service';
 import { NotificationsService } from './../../../../services/notification/notification.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Bundle } from './../../../../interface/bundles';
 
 @Component({
@@ -10,22 +10,17 @@ import { Bundle } from './../../../../interface/bundles';
   styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
-  bundles$ = new BehaviorSubject<Bundle[]>([]);
-  constructor(private api: ApiService, private notification: NotificationsService) {}
+  constructor(private bundleService: BundleService, private notification: NotificationsService) {}
 
   ngOnInit(): void {
-    this.api.retrieve<Bundle[]>('bundles')
-    .subscribe({
-      next: (data => {
-        console.log(data);
-        this.bundles$.next(data)
-      }),
-      error: (() => this.notification.show('Unable to Retrieve Bundles'))
-    });
-
+    this.bundleService.init();
   }
 
-  get listEmpty(): boolean {
-    return this.bundles$.value.length === 0;
+  get bundles$(): Observable<Bundle[]> {
+    return this.bundleService.getAsObservable();
+  }
+
+  get isEmpty(): Observable<boolean> {
+    return this.bundleService.getAsObservable().pipe(map(data => data.length === 0));
   }
 }
