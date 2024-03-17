@@ -13,12 +13,12 @@ export class CustomerService extends BaseService<Contact> {
     }
 
     protected fetch(): void {
-        this.api.retrieve<Contact[]>(this.tableName)
+        this.api.retrieve<Contact[]>(this.table)
         .subscribe(customers => this.store(customers));
     }
 
     public create(customer: Contact): Observable<Contact> {
-        return this.api.create<Contact>([this.tableName], customer)
+        return this.api.create<Contact>([this.table], customer)
         .pipe(
             tap(response => {
                 this.insert(response);

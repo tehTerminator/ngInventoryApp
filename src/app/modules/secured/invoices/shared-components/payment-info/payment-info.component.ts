@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ApiService } from './../../../../../services/api/api.service';
 import { BehaviorSubject } from 'rxjs';
 import { Voucher } from './../../../../../interface/voucher';
-import { MyLocationService } from './../../../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from './../../../../../services/myLocation/my-location.service';
 
 @Component({
   selector: 'app-payment-info',

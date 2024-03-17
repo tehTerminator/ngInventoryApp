@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, finalize, map } from 'rxjs';
 import { StoreLocation } from '../../../../interface/location';
 import { NotificationsService } from '../../../../services/notification/notification.service';
 import { StockInfo } from '../../../../interface/StockInfo';
-import { MyLocationService } from '../../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
 
 @Component({
   selector: 'app-transfer-product',
@@ -24,7 +24,7 @@ export class TransferProductComponent implements OnInit, OnDestroy {
     private locationStore: LocationService,
     private api: ApiService,
     private notification: NotificationsService,
-    private myLocationStore: MyLocationService
+    private myLocationStore: MyLocationStoreService
   ) {}
 
   ngOnInit(): void {

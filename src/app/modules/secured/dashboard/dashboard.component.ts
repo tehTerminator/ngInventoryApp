@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MyLocationService } from '../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from '../../../services/myLocation/my-location.service';
 import { EMPTYLOCATION, StoreLocation } from '../../../interface/location';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 export class DashboardComponent implements OnInit, OnDestroy {
   private _myLocation = EMPTYLOCATION;
   private _sub = new Subscription();
-  constructor(private myLocationStore: MyLocationService) {}
+  constructor(private myLocationStore: MyLocationStoreService) {}
 
   ngOnInit(): void {
     this.myLocationStore.retrieveData();

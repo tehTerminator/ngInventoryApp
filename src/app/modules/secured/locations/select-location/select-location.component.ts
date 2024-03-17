@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MyLocationService } from '../../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
 import { Observable, Subscription } from 'rxjs';
 import { EMPTYLOCATION, StoreLocation } from '../../../../interface/location';
 import { FormControl } from '@angular/forms';
@@ -13,7 +13,7 @@ export class SelectLocationComponent implements OnInit, OnDestroy {
   private _selectedLocation = EMPTYLOCATION;
   private _sub = new Subscription();
   selectLocationControl = new FormControl(null);
-  constructor(private myLocationStore: MyLocationService) {}
+  constructor(private myLocationStore: MyLocationStoreService) {}
 
   ngOnInit(): void {
     this._sub = this.myLocationStore.selectedLocation.subscribe({

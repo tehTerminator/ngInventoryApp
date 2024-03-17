@@ -50,7 +50,7 @@ export class LocationService extends BaseService<StoreLocation> {
       delete(index: number): Observable<string> {
         try {
           const item = this.get(index);
-          return this.api.delete<string>(this.tableName, item.id)
+          return this.api.delete<string>(this.table, item.id)
             .pipe(tap(() => {
               this.deleteItem(index);
             }));

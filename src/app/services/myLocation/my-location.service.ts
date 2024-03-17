@@ -6,7 +6,7 @@ import { ApiService } from './../api/api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class MyLocationService {
+export class MyLocationStoreService {
   private _myLocations = new BehaviorSubject<StoreLocation[]>([]);
   private _selectedLocation = new BehaviorSubject<StoreLocation>(EMPTYLOCATION);
   private _init = false;

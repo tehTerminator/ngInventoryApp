@@ -3,7 +3,7 @@ import { ApiService } from '../../../../../../services/api/api.service';
 import { Invoice } from '../../../../../../interface/invoice';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Router } from '@angular/router';
-import { MyLocationService } from './../../../../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from './../../../../../../services/myLocation/my-location.service';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ export class FinalSubmitComponent {
     private api: ApiService,
     private store: InvoiceStoreService,
     private router: Router,
-    private myLocationStore: MyLocationService
+    private myLocationStore: MyLocationStoreService
   ) {}
 
   saveInvoice(): void {

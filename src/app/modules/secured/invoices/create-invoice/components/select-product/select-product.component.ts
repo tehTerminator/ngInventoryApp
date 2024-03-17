@@ -3,7 +3,7 @@ import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { ApiService } from './../../../../../../services/api/api.service';
-import { MyLocationService } from './../../../../../../services/myLocation/my-location.service';
+import { MyLocationStoreService } from './../../../../../../services/myLocation/my-location.service';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { Product } from '../../../../../../interface/product';
 import { StockInfo } from '../../../../../../interface/StockInfo';
@@ -21,7 +21,7 @@ export class SelectProductComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: ApiService,
-    private myLocationStore: MyLocationService,
+    private myLocationStore: MyLocationStoreService,
     private store: InvoiceStoreService
   ) {}
 
