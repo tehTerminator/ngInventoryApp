@@ -5,6 +5,8 @@ import { SelectProductComponent } from './components/select-product/select-produ
 import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FinalSubmitComponent } from './components/final-submit/final-submit.component';
+import { contactGuard } from './guards/contacts.guard';
+import { productGuard } from './guards/products.guard';
 
 const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children: [
   {
@@ -13,11 +15,13 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
   },
   {
     path: 'select-product',
-    component: SelectProductComponent
+    component: SelectProductComponent,
+    canActivate: [contactGuard]
   },
   {
     path: 'create-transactions',
-    component: CreateTransactionsComponent
+    component: CreateTransactionsComponent,
+    canActivate: [contactGuard, productGuard]
   },
   {
     path: 'final-submit',
