@@ -12,11 +12,11 @@ export abstract class BaseService<T extends Entity> {
     public abstract delete(id: number): Observable<any>;
 
     constructor(
-        private _tableName: string,
+        private _table: string,
         private _updateFrequency: number) { }
 
-    get tableName(): string {
-        return this._tableName;
+    get table(): string {
+        return this._table;
     }
 
     public init(forced = false): void {
