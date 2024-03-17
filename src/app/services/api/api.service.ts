@@ -35,8 +35,8 @@ export class ApiService {
   }
 
   delete<T>(url: string | string[], id: number): Observable<T> {
-    const theUrl  = this.createUrl('delete', url);
-    return this.http.delete<T>(`${theUrl}/'delete')}/${id}`);
+    const theUrl  = this.createUrl('destroy', url);
+    return this.http.delete<T>(`${theUrl}/${id}`);
   }
 
 }
