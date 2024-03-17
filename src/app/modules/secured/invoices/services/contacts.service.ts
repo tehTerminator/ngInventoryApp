@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { BaseService } from './../../../../class/BaseService';
-import { Contact } from './../../../../interface/contact';
-import { ApiService } from './../../../../services/api/api.service';
+import { BaseService } from '../../../../class/BaseService';
+import { Contact } from '../../../../interface/contact';
+import { ApiService } from '../../../../services/api/api.service';
 
 @Injectable()
-export class CustomerService extends BaseService<Contact> {
+export class ContactsService extends BaseService<Contact> {
 
     constructor(private api: ApiService) {
-        super('customers', 60);
+        super('contacts', 60);
     }
 
     protected fetch(): void {
