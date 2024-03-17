@@ -1,11 +1,23 @@
-<form class="card-body" (ngSubmit)="onSubmit()" [formGroup]="contactForm">
-    <mat-form-field class="w-100">
-        <input matInput formControlName="contact" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunction">
-            <mat-option *ngFor="let contact of filteredContacts | async" [value]="contact">
-                {{ contact.title }}
-            </mat-option>
+<section class="card">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="card-body">
+      <mat-form-field class="w-100">
+        <mat-label>Existing Customer</mat-label>
+        <input
+          type="text"
+          matInput
+          [matAutocomplete]="auto"
+          #customerTextField
+          [formControl]="contactForm.contactField"
+        />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option
+            *ngFor="let customer of filteredContacts | async"
+            [value]="customer"
+          >
+            {{ customer.title }}<br />
+          </mat-option>
         </mat-autocomplete>
-    </mat-form-field>
-    <button type="submit" class="w-100" mat-raised-button color="primary">Submit</button>
-</form>
+      </mat-form-field>
+      <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+  </section>

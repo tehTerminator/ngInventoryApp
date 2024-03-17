@@ -1,72 +1,82 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import {
+  EMPTY,
   Observable,
   Subscription,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
   map,
-  of,
   startWith,
-  switchMap,
 } from 'rxjs';
 import { ApiService } from './../../../../../../services/api/api.service';
 import { Contact } from './../../../../../../interface/contact';
+import { ContactsService } from '../../../services/contacts.service';
+import { SelectContactForm } from './SelectContactForm';
 
 @Component({
   selector: 'app-select-contact',
   templateUrl: './select-contact.component.html',
   styleUrls: ['./select-contact.component.scss'],
 })
-export class SelectContactComponent implements OnInit, OnDestroy {
-  private _sub = new Subscription();
+export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
   label = 'Party';
-  filteredContacts: Observable<Contact[]>;
+  filteredContacts: Observable<any> = EMPTY;
   contactForm = new SelectContactForm();
+  private _sub = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: InvoiceStoreService,
-    private api: ApiService
-  ) {
+    private api: ApiService,
+    private contactsService: ContactsService
+  ) { }
+
+  ngOnInit(): void {
+    this.createSubscription();
+    this.contactsService.init();
     this.filteredContacts = this.contactForm.contactField.valueChanges.pipe(
       startWith(''),
-      debounceTime(300), // Add a debounce time to reduce API requests
-      distinctUntilChanged(), // Only make requests if the input value changes
-      switchMap((value) => {
-        if (typeof value === 'string') {
-          const url = this.label === 'Party' ? 'customers' : 'suppliers';
-          return this.api.retrieve<Contact[]>(url, { title: value });
-        } else {
-          // Assuming 'value' is a Contact object with a 'title' property
-          return of([value]);
+      map(value => {
+        if (typeof(value) === 'string') {
+          return this._filter(value)
         }
+        return [value];
       })
     );
   }
 
-  ngOnInit(): void {
-    this.createSubscription();
+  ngAfterViewInit(): void {
+    if (this.input !== null){
+      this.input.nativeElement.focus();
+    }
   }
 
   ngOnDestroy(): void {
     this._sub.unsubscribe();
   }
 
-  onSubmit() {
-    if (!this.contactForm.valid) {
-      return;
+  private _filter(title: string): Contact[] {
+    const customer = this.contactsService.getAsList() as Contact[];
+    try{
+      const t = title.toLowerCase();
+      return customer.filter(
+        x => x.title.toLowerCase().indexOf(t) >= 0
+      );
+    } catch (e) {
+      return customer;
     }
+  }
 
-    if (!!this.contactForm.contact) {
-      this.store.contact = this.contactForm.contact;
+  onSubmit(): void {
+    const contact = this.contactForm.contact;
+    if (!!contact) {
+      this.store.contact = contact;
       this.navigateToSelectProduct();
+    } else {
+      console.log(contact);
     }
-    return;
   }
 
   navigateToSelectProduct() {
@@ -78,6 +88,10 @@ export class SelectContactComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: { type: type },
     });
+  }
+
+  get customers(): Observable<Contact[]> {
+    return this.contactsService.getAsObservable();
   }
 
   private createSubscription() {
@@ -95,23 +109,9 @@ export class SelectContactComponent implements OnInit, OnDestroy {
     });
   }
 
-  public displayFunction(contact: Contact): string {
-    return contact && contact.title ? contact.title : '';
+  displayFn(customer: Contact): string {
+    return customer && customer.title ? customer.title : '';
   }
 }
 
-class SelectContactForm extends FormGroup {
-  constructor() {
-    super({
-      contact: new FormControl(null, { validators: [Validators.required] }),
-    });
-  }
 
-  get contactField(): FormControl<Contact> {
-    return this.get('contact') as FormControl<Contact>;
-  }
-
-  get contact(): Contact | null {
-    return this.contactField.value;
-  }
-}
