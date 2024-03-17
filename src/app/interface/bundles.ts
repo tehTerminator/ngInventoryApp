@@ -9,6 +9,7 @@ export interface Bundle extends Entity {
 export interface BundleTemplate extends Entity {
     bundle_id: number;
     item_id: number;
+    title: string;
     kind: 'PRODUCT' | 'LEDGER',
     rate: number;
     quantity: number;
