@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { BaseService } from '../../class/BaseService';
-import { HOUR } from './../../interface/collection';
-import { Bundle, BundleTemplate } from './../../interface/bundles';
+import { HOUR } from '../../interface/collection.interface';
+import { Bundle, BundleTemplate } from '../../interface/bundle.interface';
 import { ApiService } from '../api/api.service';
 import { NotificationsService } from '../notification/notification.service';
 
@@ -124,7 +124,7 @@ export class BundleService extends BaseService<Bundle> {
   }
 
   public isInstanceOfBundle(data: any): data is Bundle {
-    return 'templates' in data;
+    return 'template' in data;
   }
 
   private findTemplateIndexById(bundleId: number, templateId: number): number {

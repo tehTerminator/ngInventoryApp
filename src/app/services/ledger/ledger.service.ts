@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from '../../class/BaseService';
-import { Ledger } from './../../interface/ledger';
+import { Ledger } from '../../interface/ledger.interface';
 import { ApiService } from './../api/api.service';
 import { NotificationsService } from './../notification/notification.service';
 import { catchError, tap } from 'rxjs/operators';

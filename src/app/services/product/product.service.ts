@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HOUR } from './../../interface/collection';
+import { HOUR } from '../../interface/collection.interface';
 import { BaseService } from './../../class/BaseService';
 import { ApiService } from './../api/api.service';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NotificationsService } from '../notification/notification.service';
-import { Product } from './../../interface/product'; 
+import { Product } from '../../interface/product.interface'; 
 import { AuthStoreService } from '../auth-store/auth-store.service';
 import { MyLocationStoreService } from './../myLocation/my-location.service';
 
