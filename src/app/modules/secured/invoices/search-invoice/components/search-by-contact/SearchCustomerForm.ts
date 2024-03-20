@@ -2,7 +2,7 @@ import {
   Validators, FormGroup,
   FormControl
 } from '@angular/forms';
-import { Contact } from '../../../../../../interface/contact';
+import { Contact } from '../../../../../../interface/contact.interface';
 
 export class SearchCustomerForm extends FormGroup {
   constructor() {

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ConstantPool } from '@angular/compiler';
-import { User } from '../../../../../../interface/user';
+import { User } from '../../../../../../interface/user.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 
 @Component({

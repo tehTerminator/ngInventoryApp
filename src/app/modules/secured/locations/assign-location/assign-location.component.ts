@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LocationService } from './../../../../services/locations/locations.service';
 import { UserService } from './../../../../services/user/user.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { EMPTYLOCATION, StoreLocation } from './../../../../interface/location';
-import { User } from '../../../../interface/user';
-import { Product } from '../../../../interface/product';
+import { EMPTYLOCATION, StoreLocation } from './../../../../interface/location.interface';
+import { User } from '../../../../interface/user.interface';
+import { Product } from '../../../../interface/product.interface';
 import { ApiService } from '../../../../services/api/api.service';
 
 

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Contact } from '../../../../../interface/contact'
+import { Contact } from '../../../../../interface/contact.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { ApiService } from '../../../../../services/api/api.service';
 

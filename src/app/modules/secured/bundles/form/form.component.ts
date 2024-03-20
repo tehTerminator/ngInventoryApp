@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BundleFormGroup } from './BundleFormGroup';
 import { ApiService } from './../../../../services/api/api.service';
 import { NotificationsService }  from './../../../../services/notification/notification.service';
-import { Bundle } from './../../../../interface/bundles';
+import { Bundle } from './../../../../interface/bundles.interface';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { BundleService } from '../../../../services/bundle/bundle.service';

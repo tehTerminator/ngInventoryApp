@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
 import { Observable } from 'rxjs';
-import { Ledger } from '../../../../../../interface/ledger';
+import { Ledger } from '../../../../../..interface/ledger.interface';
 
 @Component({
   selector: 'app-ledger-list',

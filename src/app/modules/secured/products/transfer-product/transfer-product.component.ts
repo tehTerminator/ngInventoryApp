@@ -3,9 +3,9 @@ import { TransferProductFormGroup } from './TransferProductFormGroup';
 import { LocationService } from './../../../../services/locations/locations.service';
 import { ApiService } from '../../../../services/api/api.service';
 import { BehaviorSubject, Observable, Subscription, finalize, map } from 'rxjs';
-import { StoreLocation } from '../../../../interface/location';
+import { StoreLocation } from '../../../../interface/location.interface';
 import { NotificationsService } from '../../../../services/notification/notification.service';
-import { StockInfo } from '../../../../interface/StockInfo';
+import { StockInfo } from '../../../../interface/stock-info.interface';
 import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
 
 @Component({

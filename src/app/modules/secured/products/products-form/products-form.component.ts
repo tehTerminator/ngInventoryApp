@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../../../../interface/product';
-import { StoreLocation } from './../../../../interface/location';
+import { Product } from '../../../../interface/product.interface';
+import { StoreLocation } from './../../../../interface/location.interface';
 import { BehaviorSubject, Observable, Subscription, finalize } from 'rxjs';
 import { ProductForm } from './ProductForm';
 import { ActivatedRoute } from '@angular/router';

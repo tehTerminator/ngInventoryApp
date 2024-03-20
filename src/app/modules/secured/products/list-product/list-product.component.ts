@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Product } from '../../../../interface/product';
+import { Product } from '../../../../interface/product.interface';
 import { BehaviorSubject, finalize, from, Observable } from 'rxjs';
 import { ApiService } from '../../../../services/api/api.service';
 

@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from './../../../../services/api/api.service';
 import { LocationForm } from './LocationForm';
 import { NotificationsService } from './../../../../services/notification/notification.service';
-import { StoreLocation } from './../../../../interface/location';
+import { StoreLocation } from './../../../../interface/location.interface';
 import { Observable, Subscription, finalize } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 

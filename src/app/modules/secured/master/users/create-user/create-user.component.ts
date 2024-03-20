@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, finalize } from 'rxjs';
-import { User } from '../../../../../interface/user';
+import { User } from '../../../../../interface/user.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { NotificationsService } from '../../../../../services/notification/notification.service';
 import { UserFormGroup } from './UserFormGroup';

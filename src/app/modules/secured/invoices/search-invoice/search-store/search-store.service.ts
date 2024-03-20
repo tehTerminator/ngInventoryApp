@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { Invoice } from '../../../../../interface/invoice';
+import { Invoice } from '../../../../../interface/invoice.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { NotificationsService } from './../../../../../services/notification/notification.service';

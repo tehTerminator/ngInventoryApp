@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BundleStoreService } from '../../services/bundle-store.service';
 import { EMPTY, Observable, Subscription } from 'rxjs';
-import { Bundle } from '../../../../../../interface/bundles';
+import { Bundle } from '../../../../../../interface/bundles.interface';
 
 @Component({
   selector: 'app-bundle-title',

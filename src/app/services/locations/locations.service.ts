@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StoreLocation } from '../../interface/location';
+import { StoreLocation } from '../../interface/location.interface';
 import { BaseService } from './../../class/BaseService';
 import { Observable, tap, catchError } from 'rxjs';
 import { HOUR } from '../../shared/constants';

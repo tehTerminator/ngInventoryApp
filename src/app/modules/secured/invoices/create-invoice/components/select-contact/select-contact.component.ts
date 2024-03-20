@@ -9,7 +9,7 @@ import {
   startWith,
 } from 'rxjs';
 import { ApiService } from './../../../../../../services/api/api.service';
-import { Contact } from './../../../../../../interface/contact';
+import { Contact } from './../../../../../../interface/contact.interface';
 import { ContactsService } from '../../../services/contacts.service';
 import { SelectContactForm } from './SelectContactForm';
 

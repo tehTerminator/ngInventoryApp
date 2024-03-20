@@ -4,7 +4,7 @@ import { HOUR } from '../../shared/constants';
 import { ApiService } from '../api/api.service';
 import { NotificationsService } from '../notification/notification.service';
 import { BaseService } from '../../class/BaseService';
-import { User } from './../../interface/user';
+import { User } from './../../interface/user.interface';
 
 @Injectable({
   providedIn: 'root'

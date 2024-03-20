@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Contact } from './../../../../../../interface/contact';
+import { Contact } from './../../../../../../interface/contact.interface';
 
 export class SelectContactForm extends FormGroup {
   constructor() {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SearchInvoiceStoreService } from '../search-invoice/search-store/search-store.service';
-import { Invoice } from '../../../../interface/invoice';
+import { Invoice } from '../../../../interface/invoice.interface';
 import { Observable } from 'rxjs';
 
 @Component({

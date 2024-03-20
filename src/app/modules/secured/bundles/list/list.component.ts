@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BundleService } from './../../../../services/bundle/bundle.service';
 import { NotificationsService } from './../../../../services/notification/notification.service';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { Bundle } from './../../../../interface/bundles';
+import { Bundle } from './../../../../interface/bundles.interface';
 
 @Component({
   selector: 'app-list',

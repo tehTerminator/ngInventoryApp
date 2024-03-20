@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../../services/api/api.service';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Subscription } from 'rxjs';
-import { Contact } from './../../../../../../interface/contact';
+import { Contact } from './../../../../../../interface/contact.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactForm } from './ContactForm';
 import { getCreateInvoiceRoutes } from '../../functions';

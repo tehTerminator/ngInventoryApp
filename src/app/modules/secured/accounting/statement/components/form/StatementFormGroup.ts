@@ -1,5 +1,5 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Ledger } from '../../../../../../interface/ledger';
+import { Ledger } from '../../../../../..interface/ledger.interface';
 
 export class StatementFormGroup extends FormGroup {
   constructor() {

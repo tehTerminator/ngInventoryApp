@@ -5,9 +5,9 @@ import { FormControl } from '@angular/forms';
 import { ApiService } from './../../../../../../services/api/api.service';
 import { MyLocationStoreService } from './../../../../../../services/myLocation/my-location.service';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { Product } from '../../../../../../interface/product';
-import { StockInfo } from '../../../../../../interface/StockInfo';
-import { StoreLocation } from '../../../../../../interface/location';
+import { Product } from '../../../../../../interface/product.interface';
+import { StockInfo } from '../../../../../../interface/stock-info.interface';
+import { StoreLocation } from '../../../../../../interface/location.interface';
 
 @Component({
   selector: 'app-select-product',

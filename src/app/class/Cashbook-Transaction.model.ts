@@ -1,5 +1,5 @@
-import { Ledger } from './../interface/ledger';
-import { Voucher } from './../interface/voucher';
+import { Ledger } from './..interface/ledger.interface';
+import { Voucher } from './../interface/voucher.interface';
 
 export class Cashbook {
     private pLedger: Ledger;

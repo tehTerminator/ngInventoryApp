@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { BaseService } from '../../../../class/BaseService';
-import { Contact } from '../../../../interface/contact';
+import { Contact } from '../../../../interface/contact.interface';
 import { ApiService } from '../../../../services/api/api.service';
 
 @Injectable()

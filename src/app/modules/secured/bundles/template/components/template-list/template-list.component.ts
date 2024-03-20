@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BundleStoreService } from './../../services/bundle-store.service';
 import { Observable } from 'rxjs';
-import { BundleTemplate } from '../../../../../../interface/bundles';
+import { BundleTemplate } from '../../../../../../interface/bundles.interface';
 
 @Component({
   selector: 'app-template-list',

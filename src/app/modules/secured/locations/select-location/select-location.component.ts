@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
 import { Observable, Subscription } from 'rxjs';
-import { EMPTYLOCATION, StoreLocation } from '../../../../interface/location';
+import { EMPTYLOCATION, StoreLocation } from '../../../../interface/location.interface';
 import { FormControl } from '@angular/forms';
 
 @Component({

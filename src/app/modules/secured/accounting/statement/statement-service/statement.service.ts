@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { EMPTYLEDGER, Ledger } from '../../../../../interface/ledger';
+import { EMPTYLEDGER, Ledger } from '../../../../..interface/ledger.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { Cashbook, Statement } from '../components/table/Cashbook';
 

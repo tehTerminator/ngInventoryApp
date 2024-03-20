@@ -8,7 +8,7 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { Contact } from '../../../../../../interface/contact';
+import { Contact } from '../../../../../../interface/contact.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 import { SearchInvoiceStoreService } from '../../search-store/search-store.service';
 import { SearchCustomerForm } from './SearchCustomerForm';

@@ -28,10 +28,10 @@ export class GoBackBtnComponent {
     switch (path[4]) {
       case 'create-transactions':
       case 'payment-method':
-        path[4] = 'select-product';
+        path[4] = 'select-product.interface';
         break;
       default:
-        path[4] = 'select-contact';
+        path[4] = 'select-contact.interface';
         break;
     }
 

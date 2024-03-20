@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ApiService } from '../../../../../../services/api/api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StockInfo } from '../../../../../../interface/StockInfo';
+import { StockInfo } from '../../../../../../interface/stock-info.interface';
 
 @Component({
   selector: 'app-product-list',

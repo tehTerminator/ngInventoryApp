@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../../../../../services/api/api.service';
-import { Invoice } from '../../../../../../interface/invoice';
+import { Invoice } from '../../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Router } from '@angular/router';
 import { MyLocationStoreService } from './../../../../../../services/myLocation/my-location.service';

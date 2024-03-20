@@ -3,7 +3,7 @@ import { InvoiceStoreService } from './../../services/invoice-store.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, distinctUntilChanged } from 'rxjs';
 import { ApiService } from './../../../../../services/api/api.service';
-import { Invoice } from '../../../../../interface/invoice';
+import { Invoice } from '../../../../../interface/invoice.interface';
 
 @Component({
   selector: 'app-preview-invoice',

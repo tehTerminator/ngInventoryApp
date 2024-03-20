@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../../../../../interface/user';
+import { User } from '../../../../../../interface/user.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 
 @Component({

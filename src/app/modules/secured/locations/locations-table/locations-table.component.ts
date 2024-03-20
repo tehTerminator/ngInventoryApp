@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
-import { StoreLocation } from './../../../../interface/location';
+import { StoreLocation } from './../../../../interface/location.interface';
 import { ApiService } from '../../../../services/api/api.service';
 
 @Component({

@@ -5,7 +5,7 @@ import { ProductService } from './../../../../../../services/product/product.ser
 import { TemplateFormGroup } from './TemplateFormGroup';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
-import { BundleTemplate } from './../../../../../../interface/bundles';
+import { BundleTemplate } from './../../../../../../interface/bundles.interface';
 import { BundleStoreService } from '../../services/bundle-store.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MyLocationStoreService } from '../../../services/myLocation/my-location.service';
-import { EMPTYLOCATION, StoreLocation } from '../../../interface/location';
+import { EMPTYLOCATION, StoreLocation } from '../../../interface/location.interface';
 import { Subscription } from 'rxjs';
 
 @Component({
