@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { EMPTYLEDGER, Ledger } from '../../../../..interface/ledger.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { Cashbook, Statement } from '../components/table/Cashbook';
+import { EMPTY_LEDGER, Ledger } from './../../../../../interface/ledger.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StatementService {
   cashbook: BehaviorSubject<Cashbook> = new BehaviorSubject(
-    new Cashbook(EMPTYLEDGER, [])
+    new Cashbook(EMPTY_LEDGER, [])
   );
 
   constructor(private api: ApiService) {}

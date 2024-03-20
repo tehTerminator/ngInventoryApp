@@ -98,7 +98,7 @@ export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy 
     this._sub = this.store.invoice.subscribe({
       next: (invoice) => {
         switch (invoice.kind) {
-          case 'sales':
+          case 'SALES':
             this.label = 'Party';
             break;
           default:

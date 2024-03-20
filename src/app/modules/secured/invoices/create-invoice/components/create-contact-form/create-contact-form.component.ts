@@ -29,7 +29,7 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._sub = this.store.invoice.subscribe({
       next: (invoice) => {
-        this.contactForm.kind = invoice.kind === 'sales' ? 'CUSTOMER' : 'SUPPLIER';
+        this.contactForm.kind = invoice.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
       },
     });
   }

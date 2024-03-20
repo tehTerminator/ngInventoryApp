@@ -37,7 +37,7 @@ export class TransactionsTableComponent {
     return this.store.invoice.pipe(map((value) => {
         let total = 0;
         value.transactions.forEach(item => {
-            total += item.amount;
+            total += (item.quantity * item.rate) * (1 - item.discount / 100);
         })
         return total;
     }))

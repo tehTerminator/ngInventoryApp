@@ -19,7 +19,7 @@ export interface Ledger extends Entity {
     | 'DUTIES AND TAXES';
 }
 
-export const EMPTYLEDGER: Ledger = Object.freeze({
+export const EMPTY_LEDGER: Ledger = Object.freeze({
   title: '',
   groupId: 0,
   canReceivePayment: false,

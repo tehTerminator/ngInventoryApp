@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, map } from 'rxjs';
-import { Bundle, BundleTemplate } from './../../../../../interface/bundles.interface';
+import { Bundle, BundleTemplate } from './../../../../../interface/bundle.interface';
 import { ApiService } from './../../../../../services/api/api.service';
 import { ProductService } from './../../../../../services/product/product.service';
 import { LedgerService } from './../../../../../services/ledger/ledger.service';

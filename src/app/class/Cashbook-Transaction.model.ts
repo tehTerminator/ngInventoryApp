@@ -1,4 +1,4 @@
-import { Ledger } from './..interface/ledger.interface';
+import { Ledger } from './../interface/ledger.interface';
 import { Voucher } from './../interface/voucher.interface';
 
 export class Cashbook {

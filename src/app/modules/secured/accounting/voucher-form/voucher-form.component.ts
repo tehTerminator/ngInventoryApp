@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, EMPTY, startWith, map, distinctUntilChanged } from 'rxjs';
-import { Ledger } from '../../../..interface/ledger.interface';
+import { Ledger } from './../../../../interface/ledger.interface';
 import { ApiService } from '../../../../services/api/api.service';
 import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { NotificationsService } from '../../../../services/notification/notification.service';

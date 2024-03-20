@@ -5,8 +5,8 @@ import { BundleService } from './../../../../../services/bundle/bundle.service';
 import { ApiService } from '../../../../../services/api/api.service';
 import { GeneralItem } from './../../../../../interface/general-item';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Bundle } from '../../../../../interface/bundles.interface';
-import { Ledger } from '../../../../..interface/ledger.interface';
+import { Bundle } from '../../../../../interface/bundle.interface';
+import { Ledger } from '../../../../../interface/ledger.interface';
 import { Product } from '../../../../../interface/product.interface';
 
 @Injectable({

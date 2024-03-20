@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable, EMPTY } from 'rxjs';
-import { Ledger } from '../../../../../..interface/ledger.interface';
+import { Ledger } from '../../../../../../interface/ledger.interface';
 import { LedgerForm } from './LedgerForm';
 import { NotificationsService } from './../../../../../../services/notification/notification.service';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';

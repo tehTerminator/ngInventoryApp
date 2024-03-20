@@ -17,7 +17,7 @@ export class ContactComponent implements OnInit, OnDestroy {
       next: (invoice) => {
         const type = invoice.kind;
         switch (type) {
-          case 'sales':
+          case 'SALES':
             this.contactType = 'Party'
             break;
           default:

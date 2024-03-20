@@ -35,7 +35,7 @@ export class SelectProductComponent implements OnInit {
     const selectedProduct: Product = this.productControl.value;
 
     if (!!selectedProduct) {
-      this.store.product.next(selectedProduct);
+      this.store.selectedItem = selectedProduct;
       this.navigateToCreateTransactions();
     }
   }

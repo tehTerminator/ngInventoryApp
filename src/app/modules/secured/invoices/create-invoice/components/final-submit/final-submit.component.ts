@@ -27,7 +27,7 @@ export class FinalSubmitComponent {
     let amount = 0;
 
     transactions.forEach(t => {
-      amount += t.amount;
+      amount += (t.quantity * t.rate) * (1 - t.discount/100);
     });
 
     this.store.amount = amount;

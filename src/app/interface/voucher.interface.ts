@@ -1,5 +1,5 @@
 import { Entity } from "./entity.interface";
-import { Ledger } from './ledger';
+import { Ledger } from './ledger.interface';
 
 export interface Voucher extends Entity {
     cr: number;

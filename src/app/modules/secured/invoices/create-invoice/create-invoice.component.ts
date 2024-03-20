@@ -21,7 +21,7 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
       next: (value) => {
         const type = value.get('type') || 'EMPTY';
 
-        if (type === 'sales' || type === 'purchase') {
+        if (type === 'SALES' || type === 'PURCHASE') {
           this.store.kind = type;
         }
         return;
@@ -29,7 +29,7 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  get color(): 'sales' | 'purchase' { 
+  get color(): 'SALES' | 'PURCHASE' { 
     return this.store.kind;
   }
 
