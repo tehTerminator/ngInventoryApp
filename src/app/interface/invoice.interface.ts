@@ -1,4 +1,4 @@
-import { Contact } from './contact.interface';
+import { Contact, EMPTY_CUSTOMER } from './contact.interface';
 import { Entity } from './entity.interface';
 
 export interface Invoice extends Entity {
@@ -10,7 +10,7 @@ export interface Invoice extends Entity {
   paid: boolean;
   amount: number;
   user_id: number;
-  transaction: Transaction[];
+  transactions: Transaction[];
 }
 
 export interface Transaction extends Entity {
@@ -21,7 +21,7 @@ export interface Transaction extends Entity {
   quantity: number;
   rate: number;
   discount: number;
-  transaction?: Transaction[];
+  transactions?: Transaction[];
 }
 
 export const BASE_TRANSACTION: Transaction = Object.freeze({
@@ -46,5 +46,5 @@ export const BASE_INVOICE: Invoice = Object.freeze({
   location_id: 0,
   created_at: '',
   updated_at: '',
-  transaction: [],
+  transactions: [],
 });
