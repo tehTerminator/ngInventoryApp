@@ -7,7 +7,7 @@ import { ApiService } from './../api/api.service';
   providedIn: 'root'
 })
 export class MyLocationStoreService {
-  private _myLocations = new BehaviorSubject<StoreLocation[]>([]);
+  private _availableLocations = new BehaviorSubject<StoreLocation[]>([]);
   private _selectedLocation = new BehaviorSubject<StoreLocation>(EMPTYLOCATION);
   private _init = false;
 
@@ -22,7 +22,7 @@ export class MyLocationStoreService {
     this.api.retrieve<StoreLocation[]>(['user', 'locations'])
     .subscribe({
       next: (value) => {
-        this._myLocations.next(value);
+        this._availableLocations.next(value);
         if(value.length >= 1) {
           this._selectedLocation.next(value[0]);
         }
@@ -35,8 +35,8 @@ export class MyLocationStoreService {
     this._selectedLocation.next(value);
   }
 
-  get myLocations(): Observable<StoreLocation[]> {
-    return this._myLocations;
+  get availableLocations(): Observable<StoreLocation[]> {
+    return this._availableLocations;
   }
 
   get selectedLocation(): Observable<StoreLocation> {
@@ -46,7 +46,7 @@ export class MyLocationStoreService {
   get snapshot(): Snapshot {
     return {
       selected: this._selectedLocation.value,
-      available: this._myLocations.value
+      available: this._availableLocations.value
     };
   }
 }

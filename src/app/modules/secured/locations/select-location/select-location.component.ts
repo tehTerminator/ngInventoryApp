@@ -34,7 +34,7 @@ export class SelectLocationComponent implements OnInit, OnDestroy {
   }
 
   get myLocations(): Observable<StoreLocation[]> {
-    return this.myLocationStore.myLocations;
+    return this.myLocationStore.availableLocations;
   }
 
   get selectedLocation(): StoreLocation {
