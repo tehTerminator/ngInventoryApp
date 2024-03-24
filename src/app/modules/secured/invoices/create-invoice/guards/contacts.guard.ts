@@ -10,7 +10,7 @@ export const contactGuard: CanActivateFn = () => {
     const router: Router = inject(Router);
     const route: ActivatedRoute = inject(ActivatedRoute);
 
-    if (store.contact.id >= 0) {
+    if (store.snapshot.contact_id >= 0) {
         return true;
     }
 
