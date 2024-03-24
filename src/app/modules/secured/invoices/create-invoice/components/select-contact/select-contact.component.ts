@@ -1,13 +1,14 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
-import {
-  EMPTY,
-  Observable,
-  Subscription,
-  map,
-  startWith,
-} from 'rxjs';
+import { EMPTY, Observable, Subscription, map, startWith } from 'rxjs';
 import { ApiService } from './../../../../../../services/api/api.service';
 import { Contact } from './../../../../../../interface/contact.interface';
 import { ContactsService } from '../../../services/contacts.service';
@@ -18,7 +19,9 @@ import { SelectContactForm } from './SelectContactForm';
   templateUrl: './select-contact.component.html',
   styleUrls: ['./select-contact.component.scss'],
 })
-export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SelectContactComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
   label = 'Party';
   filteredContacts: Observable<any> = EMPTY;
@@ -31,16 +34,16 @@ export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy 
     private store: InvoiceStoreService,
     private api: ApiService,
     private contactsService: ContactsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.createSubscription();
     this.contactsService.init();
     this.filteredContacts = this.contactForm.contactField.valueChanges.pipe(
       startWith(''),
-      map(value => {
-        if (typeof(value) === 'string') {
-          return this._filter(value)
+      map((value) => {
+        if (typeof value === 'string') {
+          return this._filter(value);
         }
         return [value];
       })
@@ -48,7 +51,7 @@ export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngAfterViewInit(): void {
-    if (this.input !== null){
+    if (this.input !== null) {
       this.input.nativeElement.focus();
     }
   }
@@ -58,24 +61,30 @@ export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   private _filter(title: string): Contact[] {
-    const customer = this.contactsService.getAsList() as Contact[];
-    try{
+    const customer = this.contactsService.getAsList();
+    try {
       const t = title.toLowerCase();
-      return customer.filter(
-        x => x.title.toLowerCase().indexOf(t) >= 0
-      );
+      return customer.filter((x) => {
+        const kind = this.label === 'Party' ? 'CUSTOMER' : 'SUPPLIER';
+        return x.title.toLowerCase().indexOf(t) >= 0 && x.kind === kind;
+      });
     } catch (e) {
       return customer;
     }
   }
 
   onSubmit(): void {
-    const contact = this.contactForm.contact;
+    if (this.contactForm.invalid) {
+      return;
+    }
+
+    const contact = this.contactForm.value.contact;
+
     if (!!contact) {
       this.store.contact = contact;
       this.navigateToSelectProduct();
     } else {
-      console.log(contact);
+      console.log(this.contactForm.value);
     }
   }
 
@@ -113,5 +122,3 @@ export class SelectContactComponent implements OnInit, AfterViewInit, OnDestroy 
     return customer && customer.title ? customer.title : '';
   }
 }
-
-
