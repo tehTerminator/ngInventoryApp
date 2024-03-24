@@ -16,12 +16,12 @@
               required
             />
             <mat-error
-              *ngIf="quantity.invalid && (quantity.touched || quantity.dirty)"
+              *ngIf="transactionForm.quantityFormControl.invalid && (transactionForm.quantityFormControl.touched || transactionForm.quantityFormControl.dirty)"
             >
-              <span *ngIf="quantity.hasError('required')"
+              <span *ngIf="transactionForm.quantityFormControl.hasError('required')"
                 >Please Provide Quantity.</span
               >
-              <span *ngIf="quantity.hasError('min')"
+              <span *ngIf="transactionForm.quantityFormControl.hasError('min')"
                 >Quantity Must Not Be Zero.</span
               >
             </mat-error>
@@ -31,9 +31,9 @@
           <mat-form-field class="d-block" appearance="outline">
             <mat-label>Rate</mat-label>
             <input type="number" name="rate" matInput formControlName="rate" required />
-            <mat-error *ngIf="rate.invalid && (rate.touched || rate.dirty)">
-              <span *ngIf="rate.hasError('required')">Please Provide Rate.</span>
-              <span *ngIf="rate.hasError('min')">Rate Must Not Be Zero.</span>
+            <mat-error *ngIf="transactionForm.rateFormControl.invalid && (transactionForm.rateFormControl.touched || transactionForm.rateFormControl.dirty)">
+              <span *ngIf="transactionForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
+              <span *ngIf="transactionForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
             </mat-error>
           </mat-form-field>
         </div>
@@ -68,11 +68,11 @@
     <table class="table bg-light mt-3 text-center">
       <thead>
         <tr>
-          <th *ngIf="netPrice < 5000">
+          <th *ngIf="transactionForm.netAmount < 5000">
             <span class="d-block">Gross Amount</span>
             <span class="d-block text-center">A</span>
           </th>
-          <th *ngIf="netPrice < 5000">
+          <th *ngIf="transactionForm.netAmount < 5000">
             <span class="d-block">Total Discount</span>
             <span class="d-block text-center">B</span>
           </th>
@@ -84,20 +84,20 @@
       </thead>
       <tbody>
         <tr class="text-center">
-          <td *ngIf="netPrice < 5000">
+          <td *ngIf="transactionForm.netAmount < 5000">
             <span class="d-block">
-              {{ grossPrice | currency: 'INR' }}
+              {{ transactionForm.grossAmount | currency: 'INR' }}
             </span>
             <span class="d-block">
-              {{ this.quantity.value }} &amp; {{ this.rate.value }}
+              {{ transactionForm.quantity }} &#64; {{ transactionForm.rate }}
             </span>
           </td>
-          <td *ngIf="netPrice < 5000">
-            <span class="d-block">{{ discount.value | currency: 'INR'}}</span>
-            <span class="d-block">{{ discountPercent | number:'1.2-2' }} %</span>
+          <td *ngIf="transactionForm.netAmount < 5000">
+            <span class="d-block">{{ transactionForm.discount | currency: 'INR'}}</span>
+            <span class="d-block">{{ transactionForm.discountPercentage | number:'1.2-2' }} %</span>
           </td>
           <td class="fw-bold fs-1 align-middle">
-            {{ netPrice | currency: 'INR' }}
+            {{ transactionForm.netAmount | currency: 'INR' }}
           </td>
         </tr>
       </tbody>

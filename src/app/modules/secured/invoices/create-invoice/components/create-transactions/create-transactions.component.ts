@@ -3,9 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { NotificationsService } from './../../../../../../services/notification/notification.service';
 import { LedgerService } from './../../../../../../services/ledger/ledger.service';
-import { TransactionForm } from './TransactionForm';
-import { Validators, UntypedFormControl } from '@angular/forms';
-import { Transaction, BASE_TRANSACTION } from '../../../../../../interface/invoice.interface';
+import { CreateTransactionFormGroup } from './CreateTransactionFormGroup';
 
 @Component({
   selector: 'app-create-transactions',
@@ -15,7 +13,7 @@ import { Transaction, BASE_TRANSACTION } from '../../../../../../interface/invoi
 export class CreateTransactionsComponent implements OnInit {
   @ViewChild('quantityField')
   quantityField: ElementRef<HTMLInputElement> | null = null;
-  transactionForm = new TransactionForm();
+  transactionForm = new CreateTransactionFormGroup();
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -25,13 +23,10 @@ export class CreateTransactionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (
-      !this.ledgerService.isInstanceOfLedger(this.store.selectedItem) &&
-      this.store.selectedItem !== null
-    ) {
-      this.transactionForm.patchValue({
-        rate: this.store.selectedItem.rate,
-      });
+    if (!this.ledgerService.isInstanceOfLedger(this.store.selectedItem)) {
+      this.transactionForm.rateFormControl.setValue(
+        this.store.selectedItem.rate
+      );
     }
 
     window.scroll({
@@ -53,15 +48,10 @@ export class CreateTransactionsComponent implements OnInit {
       return;
     }
 
-    if (this.discountPercent >= 90) {
-      this.notification.show('Discount Too High');
-      return;
-    }
-
     this.store.createTransaction(
-      this.quantity.value,
-      this.rate.value,
-      this.discountPercent
+      this.transactionForm.quantity,
+      this.transactionForm.rate,
+      this.transactionForm.discountPercentage
     );
     this.navigateToSelectProduct();
   }
@@ -80,33 +70,5 @@ export class CreateTransactionsComponent implements OnInit {
       return this.store.selectedItem.title;
     }
     return '';
-  }
-
-  get grossPrice(): number {
-    return this.quantity.value * this.rate.value;
-  }
-
-  get discountPercent(): number {
-    const val = (this.discount.value / this.grossPrice) * 100;
-    if (isNaN(val)) {
-      return 0;
-    }
-    return val;
-  }
-
-  get netPrice(): number {
-    return this.grossPrice - this.discount.value;
-  }
-
-  get quantity(): UntypedFormControl {
-    return this.transactionForm.get('quantity') as UntypedFormControl;
-  }
-
-  get rate(): UntypedFormControl {
-    return this.transactionForm.get('rate') as UntypedFormControl;
-  }
-
-  get discount(): UntypedFormControl {
-    return this.transactionForm.get('discount') as UntypedFormControl;
   }
 }
