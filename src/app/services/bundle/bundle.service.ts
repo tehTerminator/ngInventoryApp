@@ -23,7 +23,7 @@ export class BundleService extends BaseService<Bundle> {
       next: (bundles) => this.store(bundles),
       error: (error) => {
         this._data.next([]);
-        this.notificationService.show('An Error Occurred While Fetching Data');
+        this.notificationService.show('An Error Occurred While Fetching Bundles');
         console.log(error);
       },
     });
@@ -36,7 +36,7 @@ export class BundleService extends BaseService<Bundle> {
         if (item === undefined) {
           return [];
         }
-        return item.template;
+        return item.templates;
       }),
       catchError((error) => {
         console.log(error);
@@ -84,9 +84,9 @@ export class BundleService extends BaseService<Bundle> {
           try {
             const bundle = this.getElementById(response.bundle_id) as Bundle;
             if (bundle.hasOwnProperty('templates')) {
-              bundle.template.push(response);
+              bundle.templates.push(response);
             } else {
-              bundle.template = [response];
+              bundle.templates = [response];
             }
             this.updateItem(bundle);
           } catch (e) {
@@ -110,7 +110,7 @@ export class BundleService extends BaseService<Bundle> {
             bundle.id,
             template.id
           );
-          bundle.template.splice(indexOfItemToBeDeleted, 1);
+          bundle.templates.splice(indexOfItemToBeDeleted, 1);
           this.updateItem(bundle);
         } catch (e) {
           throw new Error('Bundle Not Found');
@@ -124,13 +124,13 @@ export class BundleService extends BaseService<Bundle> {
   }
 
   public isInstanceOfBundle(data: any): data is Bundle {
-    return 'template' in data;
+    return 'templates' in data;
   }
 
   private findTemplateIndexById(bundleId: number, templateId: number): number {
     try {
       const item = this.getElementById(bundleId) as Bundle;
-      return item.template.findIndex((x) => x.id === templateId);
+      return item.templates.findIndex((x) => x.id === templateId);
     } catch (error) {
       throw new Error('Pos Item Not Found');
     }

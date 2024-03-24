@@ -18,11 +18,11 @@ export class LocationService extends BaseService<StoreLocation> {
         this.api.retrieve<StoreLocation[]>('locations').subscribe({
           next: (locations) => {
             this.store(locations);
+            console.log('Locations Fetched');
           },
           error: (error) => {
             this._data.next([]);
-            this.notification.show('An Error Occurred While Fetching Data');
-            console.log(error);
+            this.notification.show('An Error Occurred While Fetching Locations');
           }
       });
       }
@@ -58,22 +58,5 @@ export class LocationService extends BaseService<StoreLocation> {
           this.notification.show('Item Does Not Exist');
           throw new Error('Item Not Found Error');
         }
-      }
-    
-      public getElementByTitle(title: string): StoreLocation {
-        const list = this._data.value as StoreLocation[];
-        title = title.toLowerCase();
-        if (list.length > 0) {
-          const result = list.find(x => x.title.toLowerCase() === title);
-          if (!!result) {
-            return result;
-          }
-          throw new Error('Item Not Found');
-        }
-        throw new Error('List is Empty');
-      }
-    
-      public isInstanceOfLocation(data: any): data is StoreLocation {
-        return 'kind' in data;
       }
 }

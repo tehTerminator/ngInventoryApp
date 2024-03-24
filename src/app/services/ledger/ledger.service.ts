@@ -23,7 +23,7 @@ export class LedgerService extends BaseService<Ledger> {
       },
       error: (error) => {
         this._data.next([]);
-        this.notification.show('An Error Occurred While Fetching Data');
+        this.notification.show('An Error Occurred While Fetching Ledgers');
         console.log(error);
       }
   });
