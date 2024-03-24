@@ -19,7 +19,9 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.route.paramMap.subscribe({
       next: (value) => {
-        const type = value.get('type') || 'EMPTY';
+        let type = value.get('type') || 'EMPTY';
+        type = type.toUpperCase();
+        console.log('create-invoice {type}', type);
 
         if (type === 'SALES' || type === 'PURCHASE') {
           this.store.kind = type;
@@ -29,8 +31,8 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
     });
   }
 
-  get color(): 'SALES' | 'PURCHASE' { 
-    return this.store.kind;
+  get color(): string { 
+    return this.store.kind.toLowerCase();
   }
 
   ngOnDestroy(): void {
