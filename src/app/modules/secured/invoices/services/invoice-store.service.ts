@@ -17,7 +17,9 @@ import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { ProductService } from '../../../../services/product/product.service';
 import { BundleService } from '../../../../services/bundle/bundle.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class InvoiceStoreService {
   selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
   private _invoiceData: BehaviorSubject<Invoice> = new BehaviorSubject<Invoice>(
@@ -49,6 +51,7 @@ export class InvoiceStoreService {
       const kind = this.ledgerService.isInstanceOfLedger(this.selectedItem)
         ? 'LEDGER'
         : 'PRODUCT';
+
       transaction = this.makeTransation(
         this.selectedItem,
         kind,
@@ -60,6 +63,15 @@ export class InvoiceStoreService {
     this.appendTransaction(transaction);
   }
 
+  /**
+   * 
+   * @param item is Product | Bundle | Ledger
+   * @param kind is a String "PRODUCT" | "LEDGER" | "BUNDLE"
+   * @param quantity is a number
+   * @param rate is a number
+   * @param discount is a number
+   * @returns a Transaction
+   */
   private makeTransation(
     item: Product | Ledger | Bundle,
     kind: 'PRODUCT' | 'LEDGER' | 'BUNDLE',
@@ -67,12 +79,12 @@ export class InvoiceStoreService {
     rate: number,
     discount = 0
   ) {
-    const transaction = { ...BASE_TRANSACTION };
-    (transaction.itemId = item.id), (transaction.rate = rate);
+    let transaction = { ...BASE_TRANSACTION };
+    transaction.itemId = item.id; 
+    transaction.rate = rate;
     transaction.discount = kind === 'PRODUCT' ? discount : 0;
     transaction.itemType = kind;
     transaction.quantity = quantity;
-
     return transaction;
   }
 
@@ -91,7 +103,6 @@ export class InvoiceStoreService {
       ...this._invoiceData.value,
       transactions: existingTransactions,
     };
-    // console.log(this._invoiceData.value);
   }
 
   deleteTransaction(index: number) {
@@ -117,22 +128,20 @@ export class InvoiceStoreService {
     const rate = this.bundleService.getElementById(bundle.id).rate;
     const transaction = this.makeTransation(bundle, 'BUNDLE', quantity, rate);
     transaction.transactions = [];
-    for (const template of bundle.template) {
+    for (const template of bundle.templates) {
       try {
         let item =
           template.kind === 'PRODUCT'
-            ? this.productService.getElementById(template.id)
-            : this.ledgerService.getElementById(template.id);
+            ? this.productService.getElementById(template.item_id)
+            : this.ledgerService.getElementById(template.item_id);
         quantity = template.quantity * quantity;
         transaction.transactions.push(
           this.makeTransation(item, template.kind, quantity, template.rate)
         );
       } catch (e) {
-        console.log('Error for Template', template);
-        throw new Error('Unable to Create Transaction, Please Check Log');
+        throw new Error('Unable to Create Transaction for ' + JSON.stringify(template));
       }
     }
-
     return transaction;
   }
 
@@ -141,10 +150,9 @@ export class InvoiceStoreService {
   }
 
   set contact(contact: Contact) {
-    const currentValue = this._invoiceData.value;
+    const oldInvoiceValue = this.snapshot;
     this._invoiceData.next({
-      ...currentValue,
-      contact,
+      ...oldInvoiceValue,
       contact_id: contact.id,
     });
   }
