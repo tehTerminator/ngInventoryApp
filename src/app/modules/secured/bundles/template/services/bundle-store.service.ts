@@ -24,7 +24,7 @@ export class BundleStoreService {
 
   addTemplate(template: BundleTemplate) {
     const data = this._bundle$.value;
-    data.template = [...data.template, template];
+    data.templates = [...data.templates, template];
     this._bundle$.next(data);
   }
 
@@ -33,7 +33,7 @@ export class BundleStoreService {
     .subscribe({
       next: (() => {
         const data = this._bundle$.value;
-        data.template.splice(index, 1);
+        data.templates.splice(index, 1);
         this._bundle$.next(data);
       }),
       error: ((err) => {
@@ -57,7 +57,7 @@ export class BundleStoreService {
   }
 
   get templates$(): Observable<BundleTemplate[]> {
-    return this._bundle$.pipe(map((bundle) => bundle.template));
+    return this._bundle$.pipe(map((bundle) => bundle.templates));
   }
 
   get totalAmount(): number {
@@ -94,10 +94,10 @@ export class BundleStoreService {
 
             this._total += element.rate * element.quantity;
           });
-          bundle.template = data;
+          bundle.templates = data;
           this._bundle$.next(bundle);
         },
-        error: () => (bundle.template = []),
+        error: () => (bundle.templates = []),
       });
   }
 }
@@ -106,5 +106,5 @@ const EMPTY_BUNDLE: Bundle = {
   id: 0,
   title: 'Dummy Bundle',
   rate: 0,
-  template: [],
+  templates: [],
 };
