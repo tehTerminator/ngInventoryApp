@@ -1,5 +1,5 @@
 <div id="container" class="d-flex flex-column">
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="d-print-none">
         <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="sidebar_one.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
@@ -21,11 +21,11 @@
         </mat-menu>
     </mat-toolbar>
     <mat-sidenav-container>
-        <mat-sidenav #sidebar_one mode="over">
+        <mat-sidenav #sidebar_one mode="over" class="d-print-none">
             <app-nav-bar></app-nav-bar>
         </mat-sidenav>
         <mat-sidenav-content>
-            <div class="container mt-3">
+            <div class="container-fluid mt-3">
                 <div class="row">
                     <div class="col">
                         <router-outlet></router-outlet>
