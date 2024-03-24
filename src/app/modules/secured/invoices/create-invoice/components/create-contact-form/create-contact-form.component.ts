@@ -5,8 +5,6 @@ import { Subscription } from 'rxjs';
 import { Contact } from './../../../../../../interface/contact.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactForm } from './ContactForm';
-import { getCreateInvoiceRoutes } from '../../functions';
-
 export const mobilePattern = '^[6-9][0-9]{9}$';
 
 @Component({
