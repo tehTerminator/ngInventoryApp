@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ContactTableComponent } from './contact-table/contact-table.component';
 import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
 import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.component';
@@ -15,7 +16,9 @@ import { PaymentInfoComponent } from './payment-info/payment-info.component';
         TransactionsTableComponent,
         PaymentInfoComponent
     ],
-    imports: [CommonModule, MatIconModule],
+    imports: [
+        CommonModule, MatIconModule, MatExpansionModule
+    ],
     exports: [PreviewInvoiceComponent]
 })
 export class SharedComponentModule { }
