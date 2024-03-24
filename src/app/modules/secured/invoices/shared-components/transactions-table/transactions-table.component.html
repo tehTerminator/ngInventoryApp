@@ -13,20 +13,37 @@
     </tr>
   </thead>
   <tbody>
-    <!-- <tr *ngFor="let t of transactions;let i=index">
+    <tr *ngFor="let t of transactions;let i=index">
       <td *ngIf="showButtons()" class="text-center">
         <button type="button" class="btn icon-only" (click)="deleteTransaction(i)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
-      <td>{{ t.description }}</td>
+      <td>
+        <div *ngIf="t.itemType !== 'BUNDLE'">
+          {{ getDescription(t) }}
+        </div>
+        <div *ngIf="t.itemType === 'BUNDLE'">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ getDescription(t) }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="list-group" *ngIf="t.transactions">
+              <div *ngFor="let child of t.transactions" class="list-group-item">
+                {{ getDescription(child)}} - {{child.quantity}} &#64; {{ child.rate }}
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+      </td>
       <td class="text-center">{{ t.quantity }}</td>
       <td class="text-end pe-3">{{ t.rate | currency:'INR' }}</td>
       <td class="text-center text-danger">{{ t.discount | number:'1.2-2' }} %</td>
-      <td class="text-end pe-3 text-primary">{{ rowAmount(t) | currency:'INR'}}</td>
+      <td class="text-end pe-3 text-primary">{{ getRowAmount(t) | currency:'INR'}}</td>
 
     </tr>
-    <tr *ngFor="let row of emptyRows">
+    <!-- <tr *ngFor="let row of emptyRows">
       <td style="padding: 15px"></td>
       <td></td>
       <td></td>
@@ -36,17 +53,17 @@
     </tr> -->
   </tbody>
   <tfoot>
-    <!-- <tr class="table-info">
+    <tr class="table-info">
       <td [attr.colspan]="colspan" class="text-end">Gross Amount</td>
-      <td class="text-end pe-3">{{ grossAmount | currency:'INR' }}</td>
+      <td class="text-end pe-3">{{ grossAmount | currency: 'INR' }}</td>
     </tr>
     <tr class="table-danger">
       <td [attr.colspan]="colspan" class="text-end">Total Discount</td>
-      <td class="text-end pe-3">{{ totalDiscount | currency:'INR' }}</td>
+      <td class="text-end pe-3">{{ totalDiscount | currency: 'INR' }}</td>
     </tr>
     <tr class="table-success">
       <td [attr.colspan]="colspan" class="text-end">Net Amount</td>
-      <td class="text-end pe-3 fw-bold">{{ netTotal | currency:'INR' }}</td>
-    </tr> -->
+      <td class="text-end pe-3 fw-bold">{{ netAmount | currency: 'INR' }} </td>
+    </tr>
   </tfoot>
 </table>

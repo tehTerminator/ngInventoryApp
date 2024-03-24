@@ -2,45 +2,72 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, map } from 'rxjs';
 import { Transaction } from './../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
+import { LedgerService } from '../../../../../services/ledger/ledger.service';
+import { ProductService } from '../../../../../services/product/product.service';
+import { BundleService } from '../../../../../services/bundle/bundle.service';
+import { Product } from '../../../../../interface/product.interface';
+import { Bundle } from '../../../../../interface/bundle.interface';
+import { Ledger } from '../../../../../interface/ledger.interface';
+import { BaseService } from '../../../../../class/BaseService';
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styles: [''],
 })
-export class TransactionsTableComponent {
-  // export class TransactionsTableComponent {
+export class TransactionsTableComponent implements OnInit, OnDestroy {
   public transactions: Transaction[] = [];
+  public grossAmount = 0;
+  public netAmount = 0;
   private sub: Subscription = new Subscription();
 
-  constructor(private store: InvoiceStoreService) {}
+  constructor(
+    private store: InvoiceStoreService,
+    private ledgerService: LedgerService,
+    private productService: ProductService,
+    private bundleService: BundleService
+  ) {}
 
-  // ngOnInit(): void {
-  //     this.sub = this.store.invoice.subscribe(
-  //         (invoice => this.transactions = invoice.transactions)
-  //     );
-  // }
+  ngOnInit(): void {
+    this.sub = this.store.invoice.subscribe({
+      next: (invoice => {
+        this.grossAmount = 0;
+        this.netAmount = 0;
+        this.transactions = invoice.transactions;
+        invoice.transactions.forEach(t => {
+          this.grossAmount += t.quantity * t.rate;
+          this.netAmount += this.getRowAmount(t);
+        });
+      })
+    })
+  }
 
-  // ngOnDestroy(): void {
-  //     this.sub.unsubscribe();
-  // }
+  ngOnDestroy(): void {
+      this.sub.unsubscribe();
+  }
 
   deleteTransaction(index: number): void {
       this.store.deleteTransaction(index);
   }
 
-  get transactions$(): Observable<Transaction[]> {
-    return this.store.invoice.pipe(map((value) => value.transactions));
+  getDescription(transaction: Transaction) {
+    console.log(transaction);
+    if (transaction.itemType === 'LEDGER'){
+      const title = this.ledgerService.getElementById(transaction.itemId).title;
+      return `${title} Payment`;
+    }
+
+    let service = transaction.itemType === 'BUNDLE' ? this.bundleService : this.productService;
+    const title = service.getElementById(transaction.itemId).title;
+    return title;
   }
 
-  get grossAmount(): Observable<number> {
-    return this.store.invoice.pipe(map((value) => {
-        let total = 0;
-        value.transactions.forEach(item => {
-            total += (item.quantity * item.rate) * (1 - item.discount / 100);
-        })
-        return total;
-    }))
+  getRowAmount(t: Transaction): number {
+    return (t.quantity * t.rate) * (1 - t.discount / 100);
+  }
+
+  showButtons(): boolean {
+    return this.store.snapshot.id === 0;
   }
 
   get colspan(): number {
@@ -50,16 +77,7 @@ export class TransactionsTableComponent {
     return 4;
   }
 
-//   get emptyRows(): number[] {
-//     const tCount = this.transactions.length;
-//     if (tCount >= 5) {
-//       return [];
-//     } else {
-//       return Array.from(Array(5 - tCount).keys());
-//     }
-//   }
-
-  showButtons(): boolean {
-    return this.store.snapshot.id === 0;
+  get totalDiscount(): number {
+    return this.grossAmount - this.netAmount;
   }
 }
