@@ -3,7 +3,7 @@ import { Entity } from './entity.interface';
 export interface Bundle extends Entity {
     title: string;
     rate: number;
-    template: BundleTemplate[];
+    templates: BundleTemplate[];
 }
 
 export interface BundleTemplate extends Entity {
