@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
 import { StoreLocation } from './../../../../interface/location.interface';
 import { ApiService } from '../../../../services/api/api.service';
+import { LocationService } from '../../../../services/locations/locations.service';
 
 @Component({
   selector: 'app-locations-table',
@@ -9,27 +10,16 @@ import { ApiService } from '../../../../services/api/api.service';
   styleUrls: ['./locations-table.component.scss']
 })
 export class LocationsTableComponent implements OnInit {
-  private _locations = new BehaviorSubject<StoreLocation[]>([]);
   private _loading = false;
 
-  constructor(private api: ApiService) {}
+  constructor(private locationService: LocationService) {}
 
   ngOnInit(): void {
-    this.fetchData();
-  }
-
-  fetchData(): void {
-    this._loading = true;
-    this.api.retrieve<StoreLocation[]>('locations')
-    .pipe(finalize(() => this._loading = false))
-    .subscribe({
-      next: (value) => this._locations.next(value),
-      error: () => this._locations.next([])
-    });
+    this.locationService.init();
   }
 
   get locations(): Observable<StoreLocation[]> {
-    return this._locations;
+    return this.locationService.getAsObservable();
   }
 
   get loading(): boolean {
