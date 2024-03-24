@@ -7,7 +7,7 @@ export interface Contact extends Entity {
   kind: 'CUSTOMER' | 'SUPPLIER';
 }
 
-export const EMPTY_CUSTOMER: Contact = Object.freeze({
+export const EMPTY_CONTACT: Contact = Object.freeze({
   id: 0,
   title: 'NOT SELECTED',
   address: 'NOT SELECTED',
