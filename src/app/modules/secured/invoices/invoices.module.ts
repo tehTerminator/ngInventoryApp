@@ -7,7 +7,6 @@ import { InvoicesComponent } from './invoices.component';
 import { SharedComponentModule } from './shared-components/shared-components.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ContactsService } from './services/contacts.service';
-import { InvoiceStoreService } from './services/invoice-store.service';
 import { PleaseWaitPageComponent } from './please-wait-page/please-wait-page.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { SearchInvoiceStoreService } from './search-invoice/search-store/search-store.service';
@@ -26,7 +25,6 @@ import { SearchInvoiceStoreService } from './search-invoice/search-store/search-
     MatAutocompleteModule
   ],
   providers: [
-    InvoiceStoreService,
     SearchInvoiceStoreService,
     ContactsService
   ]
