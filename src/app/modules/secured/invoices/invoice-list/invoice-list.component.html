@@ -6,7 +6,7 @@
             [routerLink]="['../view', invoice.id]"
             class="list-group-item list-group-item-action d-flex justify-content-between" 
             *ngFor="let invoice of invoices | async">
-                <span class="fw-bold">{{ invoice.contact.title }}</span>
+                <span class="fw-bold">{{ contact(invoice.contact_id) }}</span>
                 <div class="div">
                     <span class="badge bg-primary me-1">
                         {{ invoice.amount | currency:'INR' }}
