@@ -7,8 +7,8 @@
       matInput
       [formControl]="productControl"
     >
-      <mat-option *ngFor="let product of products$ | async" [value]="product.product">
-        {{ product.product.title }}
+      <mat-option *ngFor="let product of products$ | async" [value]="product">
+        {{ product.title }}
       </mat-option>
       </mat-select>
   </mat-form-field>
