@@ -16,13 +16,14 @@ export class UserService extends BaseService<User> {
   }
 
   protected fetch(): void {
-    this.api.retrieve<User[]>(['get', 'users']).subscribe({
+    this.api.retrieve<User[]>(this.table).subscribe({
       next: (users) => {
         this.store(users);
+        console.log('Fetching Users');
       },
       error: (error) => {
         this._data.next([]);
-        this.notification.show('An Error Occurred While Fetching Data');
+        this.notification.show('An Error Occurred While Fetching Users');
         console.log(error);
       }
   });
