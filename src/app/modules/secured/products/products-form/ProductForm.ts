@@ -3,11 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class ProductForm extends FormGroup {
   constructor() {
     super({
-      id: new FormControl(0),
-      title: new FormControl('', { validators: [Validators.required, Validators.minLength(3)] }),
-      group_id: new FormControl(0, { validators: [Validators.required, Validators.min(1)] }),
-      quantity: new FormControl(0),
-      location_id: new FormControl(0, { validators: [Validators.required, Validators.min(0)] })
+      id: new FormControl<number>(0),
+      title: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3)] }),
+      quantity: new FormControl<number>(0),
+      rate: new FormControl<number>(0, [Validators.required, Validators.min(0.1)]),
+      location_id: new FormControl<number>(0, { validators: [Validators.min(0)] })
     });
   }
 
@@ -15,40 +15,40 @@ export class ProductForm extends FormGroup {
     return this.get('id') as FormControl<number>;
   }
 
-  set idControl(value: number) {
-    this.idControl.setValue(value);
+  get id(): number {
+    return this.idControl.value;
   }
 
   get titleControl(): FormControl<string> {
     return this.get('title') as FormControl<string>;
   }
 
-  set titleControl(value: string) {
-    this.titleControl.setValue(value);
-  }
-
-  get groupIdControl(): FormControl<number> {
-    return this.get('group_id') as FormControl<number>;
-  }
-
-  set groupIdControl(value: number) {
-    this.groupIdControl.setValue(value);
+  get title(): string {
+    return this.titleControl.value;
   }
 
   get quantityControl(): FormControl<number> {
     return this.get('quantity') as FormControl;
   }
 
-  set quantityControl(value: number) {
-    this.quantityControl.setValue(value);
+  get quantity(): number {
+    return this.quantityControl.value;
   }
 
-  get locationIdControl(): FormControl<number> {
+  get rateControl(): FormControl<number> {
+    return this.get('rate') as FormControl;
+  }
+
+  get rate(): number {
+    return this.rateControl.value;
+  }
+
+  get locationControl(): FormControl<number> {
     return this.get('location_id') as FormControl<number>;
   }
 
-  set locationIdControl(value: number) {
-    this.locationIdControl.setValue(value);
+  get location(): number {
+    return this.locationControl.value;
   }
 
 }

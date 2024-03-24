@@ -4,8 +4,9 @@ import { StoreLocation } from './../../../../interface/location.interface';
 import { BehaviorSubject, Observable, Subscription, finalize } from 'rxjs';
 import { ProductForm } from './ProductForm';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../../../services/api/api.service';
 import { NotificationsService } from '../../../../services/notification/notification.service';
+import { ProductService } from '../../../../services/product/product.service';
+import { LocationService } from './../../../../services/locations/locations.service';
 
 @Component({
   selector: 'app-products-form',
@@ -13,15 +14,15 @@ import { NotificationsService } from '../../../../services/notification/notifica
   styleUrls: ['./products-form.component.scss'],
 })
 export class ProductsFormComponent implements OnInit {
-  private _locations = new BehaviorSubject<StoreLocation[]>([]);
   private _sub = new Subscription();
   private _loading = false;
   form = new ProductForm();
 
   constructor(
     private route: ActivatedRoute,
-    private api: ApiService,
-    private notice: NotificationsService
+    private notice: NotificationsService,
+    private productService: ProductService,
+    private locationService: LocationService
   ) {}
 
   ngOnInit(): void {
@@ -29,11 +30,10 @@ export class ProductsFormComponent implements OnInit {
       next: (value) => {
         const id = value.get('id');
         if (!!id) {
-          this.populateForm(id);
+          this.populateForm(+id);
         }
       },
     });
-    this.fetchLocations();
   }
 
   ngOnDestroy(): void {
@@ -56,14 +56,12 @@ export class ProductsFormComponent implements OnInit {
   }
 
   private addNewProduct(product: Product) {
-    return this.api
-      .create<Product>(['product'], product)
+    return this.productService.create(product)
       .pipe(finalize(() => (this._loading = false)));
   }
 
   private updateProduct(product: Product) {
-    return this.api
-      .update<Product>(['product'], product)
+    return this.productService.update(product)
       .pipe(finalize(() => (this._loading = false)));
   }
 
@@ -83,24 +81,13 @@ export class ProductsFormComponent implements OnInit {
     });
   }
 
-  private populateForm(id: string) {
+  private populateForm(id: number) {
     this._loading = true;
-    this.api
-      .retrieve<Product>(['product', id])
-      .pipe(finalize(() => (this._loading = false)))
-      .subscribe({
-        next: (value) =>
-          this.form.patchValue({
-            id: value.id,
-            title: value.title,
-          }),
-      });
-  }
-
-  private fetchLocations() {
-    this.api.retrieve<StoreLocation[]>('locations').subscribe({
-      next: (value) => this._locations.next(value),
-    });
+    const product = this.productService.getElementById(id)
+    this.form.patchValue({
+      title: product.title,
+      rate: product.rate,
+    })
   }
 
   get editMode(): boolean {
@@ -112,6 +99,6 @@ export class ProductsFormComponent implements OnInit {
   }
 
   get locations(): Observable<StoreLocation[]> {
-    return this._locations;
+    return this.locationService.getAsObservable();
   }
 }
