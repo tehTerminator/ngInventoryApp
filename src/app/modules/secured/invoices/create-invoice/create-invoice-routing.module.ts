@@ -4,9 +4,9 @@ import { CreateInvoiceComponent } from './create-invoice.component';
 import { SelectProductComponent } from './components/select-product/select-product.component';
 import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
 import { ContactComponent } from './components/contact/contact.component';
-import { FinalSubmitComponent } from './components/final-submit/final-submit.component';
 import { contactGuard } from './guards/contacts.guard';
 import { productGuard } from './guards/products.guard';
+import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
 
 const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children: [
   {
@@ -24,8 +24,8 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
     canActivate: [contactGuard, productGuard]
   },
   {
-    path: 'final-submit',
-    component: FinalSubmitComponent
+    path: 'choose-payment-method',
+    component: ChoosePaymentMethodComponent
   },
   {
     path: '**',
