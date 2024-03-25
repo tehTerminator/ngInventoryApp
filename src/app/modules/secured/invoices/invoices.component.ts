@@ -18,7 +18,6 @@ export class InvoicesComponent implements OnInit {
   title = '';
 
   constructor(
-    private route: ActivatedRoute,
     private contactService: ContactsService,
     private ledgerService: LedgerService,
     private productService: ProductService,
