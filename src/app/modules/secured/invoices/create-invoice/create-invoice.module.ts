@@ -11,8 +11,10 @@ import { SelectProductComponent } from './components/select-product/select-produ
 import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { CreateContactFormComponent } from './components/create-contact-form/create-contact-form.component';
-import { FinalSubmitComponent } from './components/final-submit/final-submit.component';
-
+import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
+import { RecentPaymentBtnComponent } from './components/choose-payment-method/recent-payment-btn/recent-payment-btn.component';
+import { SelectLedgerFormComponent } from './components/choose-payment-method/select-ledger-form/select-ledger-form.component';
+import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,10 @@ import { FinalSubmitComponent } from './components/final-submit/final-submit.com
     CreateTransactionsComponent,
     ContactComponent,
     CreateContactFormComponent,
-    FinalSubmitComponent,
+    ChoosePaymentMethodComponent,
+    RecentPaymentBtnComponent,
+    SelectLedgerFormComponent,
+    UdhaarPaymentBtnComponent,
   ],
   imports: [
     CommonModule,
