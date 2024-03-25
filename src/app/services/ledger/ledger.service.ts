@@ -30,7 +30,7 @@ export class LedgerService extends BaseService<Ledger> {
   }
 
   create(ledger: Ledger): Observable<Ledger> {
-    return this.api.create<Ledger>(['ledger'], ledger)
+    return this.api.create<Ledger>('ledger', ledger)
       .pipe(
         tap(insertedLedger => {
           this.insert(insertedLedger);
@@ -43,7 +43,7 @@ export class LedgerService extends BaseService<Ledger> {
   }
 
   update(ledger: Ledger): Observable<Ledger> {
-    return this.api.update<Ledger>(['ledger'], ledger)
+    return this.api.update<Ledger>('ledger', ledger)
       .pipe(tap(updatedLedger => {
         this.updateItem(updatedLedger);
       }));
