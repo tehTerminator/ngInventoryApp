@@ -2,7 +2,6 @@ import { Entity } from './entity.interface';
 
 export interface Ledger extends Entity {
   title: string;
-  groupId: number;
   canReceivePayment: boolean;
   kind:
     | 'CAPITAL'
@@ -21,7 +20,6 @@ export interface Ledger extends Entity {
 
 export const EMPTY_LEDGER: Ledger = Object.freeze({
   title: '',
-  groupId: 0,
   canReceivePayment: false,
   kind: 'BANK',
   id: 0,
