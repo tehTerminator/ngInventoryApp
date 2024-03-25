@@ -24,7 +24,6 @@ export class SelectContactComponent
 {
   @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
   label = 'Party';
-  filteredContacts: Observable<any> = EMPTY;
   contactForm = new SelectContactForm();
   private _sub = new Subscription();
 
@@ -32,22 +31,12 @@ export class SelectContactComponent
     private route: ActivatedRoute,
     private router: Router,
     private store: InvoiceStoreService,
-    private api: ApiService,
     private contactsService: ContactsService
   ) {}
 
   ngOnInit(): void {
     this.createSubscription();
     this.contactsService.init();
-    this.filteredContacts = this.contactForm.contactField.valueChanges.pipe(
-      startWith(''),
-      map((value) => {
-        if (typeof value === 'string') {
-          return this._filter(value);
-        }
-        return [value];
-      })
-    );
   }
 
   ngAfterViewInit(): void {
@@ -60,27 +49,14 @@ export class SelectContactComponent
     this._sub.unsubscribe();
   }
 
-  private _filter(title: string): Contact[] {
-    const customer = this.contactsService.getAsList();
-    try {
-      const t = title.toLowerCase();
-      return customer.filter((x) => {
-        const kind = this.label === 'Party' ? 'CUSTOMER' : 'SUPPLIER';
-        return x.title.toLowerCase().indexOf(t) >= 0 && x.kind === kind;
-      });
-    } catch (e) {
-      return customer;
-    }
-  }
-
   onSubmit(): void {
     if (this.contactForm.invalid) {
       return;
     }
 
-    const contact = this.contactForm.value.contact;
+    const contact = this.contactForm.contact;
 
-    if (!!contact) {
+    if (contact > 0) {
       this.store.contact = contact;
       this.navigateToSelectProduct();
     } else {
@@ -89,18 +65,18 @@ export class SelectContactComponent
   }
 
   navigateToSelectProduct() {
-    // Get the current :type parameter from the route
-    const type = this.route.snapshot.paramMap.get('type');
 
     // Navigate to the relative path for select-product
     this.router.navigate(['../select-product'], {
       relativeTo: this.route,
-      queryParams: { type: type },
     });
   }
 
-  get customers(): Observable<Contact[]> {
-    return this.contactsService.getAsObservable();
+  get contacts(): Observable<Contact[]> {
+    const contactKind = this.label === 'Party' ? 'CUSTOMER' : 'SUPPLIER';
+    return this.contactsService.getAsObservable().pipe(map(
+      contacts => contacts.filter(x=> x.kind === contactKind )
+    ));
   }
 
   private createSubscription() {
@@ -118,7 +94,4 @@ export class SelectContactComponent
     });
   }
 
-  displayFn(customer: Contact): string {
-    return customer && customer.title ? customer.title : '';
-  }
 }

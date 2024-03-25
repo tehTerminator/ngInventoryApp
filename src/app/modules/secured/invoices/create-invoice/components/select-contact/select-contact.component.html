@@ -5,18 +5,23 @@
         <input
           type="text"
           matInput
-          [matAutocomplete]="auto"
-          #customerTextField
           [formControl]="contactForm.contactField"
+          list="select-contact"
+          autocomplete="off"
         />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option
-            *ngFor="let customer of filteredContacts | async"
-            [value]="customer"
-          >
-            {{ customer.title }}<br />
-          </mat-option>
-        </mat-autocomplete>
+        <datalist id="select-contact">
+          <option *ngFor="let contact of contacts | async" [value]="contact.id + ':' + contact.title">
+            {{ contact.title }}
+          </option>
+        </datalist> 
+        <mat-error>
+          <span *ngIf="contactForm.contactField.hasError('required')">
+            Contact Field is Required
+          </span>
+          <span *ngIf="contactForm.contactField.hasError('pattern')">
+            Invalid Pattern Data.
+          </span>
+        </mat-error>
       </mat-form-field>
       <button type="submit" class="btn btn-primary">Next</button>
     </form>
