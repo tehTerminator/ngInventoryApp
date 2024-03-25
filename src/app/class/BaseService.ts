@@ -35,7 +35,7 @@ export abstract class BaseService<T extends Entity> {
 
   protected store(data: T[]): void {
     this._data.next(data);
-    this.nextUpdate = new Date().getTime() + this._updateFrequency;
+    this.updateTimeStamp();
   }
 
   getElementById(id: number): T {
@@ -51,11 +51,11 @@ export abstract class BaseService<T extends Entity> {
         return result;
       }
     }
-    throw new Error('Item Not Found');
+    throw new Error(this.table + ' Not Found');
   }
 
   get(index: number): T {
-    return { ...this._data.value[index] };
+    return this.getAsList()[index];
   }
 
   getAsList(): T[] {
@@ -67,20 +67,18 @@ export abstract class BaseService<T extends Entity> {
   }
 
   protected deleteItem(index: number): void {
-    this._data.next(this._data.value.splice(index, 1));
-    this.updateTimeStamp();
+    this.store(this.getAsList().splice(index, 1));
   }
 
   protected insert(item: T): void {
-    this._data.next([...this._data.value, item]);
-    this.updateTimeStamp();
+    this.store([...this.getAsList(), item]);
   }
 
   protected updateItem(item: T): void {
     if (!item.hasOwnProperty('id')) {
       throw new Error(`Unique Field Does Not Exist in Provided Item`);
     }
-    const list = this._data.value;
+    const list = this.getAsList();
     const indexOfItemToBeReplaced = list.findIndex((x) => {
       if (x.hasOwnProperty('id')) {
         return x.id === item.id;
@@ -88,7 +86,7 @@ export abstract class BaseService<T extends Entity> {
       throw new Error('No Unique Field in List');
     });
     list.splice(indexOfItemToBeReplaced, 1, item);
-    this._data.next(list);
+    this.store(list);
     this.updateTimeStamp();
   }
 
