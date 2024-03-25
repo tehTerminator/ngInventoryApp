@@ -13,17 +13,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let t of transactions;let i=index">
+    <tr *ngFor="let t of transactions$ | async;let i=index">
       <td *ngIf="showButtons()" class="text-center">
         <button type="button" class="btn icon-only" (click)="deleteTransaction(i)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
       <td>
-        <div *ngIf="t.itemType !== 'BUNDLE'">
+        <div *ngIf="t.itemType !== 'BUNDLE';else showExpansion">
           {{ getDescription(t) }}
         </div>
-        <div *ngIf="t.itemType === 'BUNDLE'">
+        <ng-template #showExpansion>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>{{ getDescription(t) }}</mat-panel-title>
@@ -34,7 +34,7 @@
               </div>
             </div>
           </mat-expansion-panel>
-        </div>
+        </ng-template>
 
       </td>
       <td class="text-center">{{ t.quantity }}</td>
@@ -55,15 +55,15 @@
   <tfoot>
     <tr class="table-info">
       <td [attr.colspan]="colspan" class="text-end">Gross Amount</td>
-      <td class="text-end pe-3">{{ grossAmount | currency: 'INR' }}</td>
+      <td class="text-end pe-3">{{ store.grossAmount | async | currency: 'INR' }}</td>
     </tr>
     <tr class="table-danger">
       <td [attr.colspan]="colspan" class="text-end">Total Discount</td>
-      <td class="text-end pe-3">{{ totalDiscount | currency: 'INR' }}</td>
+      <td class="text-end pe-3">{{ store.netDiscount | async | currency: 'INR' }}</td>
     </tr>
     <tr class="table-success">
       <td [attr.colspan]="colspan" class="text-end">Net Amount</td>
-      <td class="text-end pe-3 fw-bold">{{ netAmount | currency: 'INR' }} </td>
+      <td class="text-end pe-3 fw-bold">{{ store.netAmount | async | currency: 'INR' }} </td>
     </tr>
   </tfoot>
 </table>

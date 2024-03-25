@@ -1,57 +1,97 @@
-import { Component } from '@angular/core';
-import { Validators, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { Ledger } from '../../../../../../../interface/ledger.interface';
 import { LedgerService } from '../../../../../../../services/ledger/ledger.service';
 import { InvoiceStoreService } from '../../../../services/invoice-store.service';
+import { SECOND } from '../../../../../../../shared/constants';
+import { SelectLedgerFG } from './SelectLedgerFG';
 
 @Component({
-    selector: 'app-select-ledger-form',
-    templateUrl: './select-ledger-form.component.html',
-    styles: []
+  selector: 'app-select-ledger-form',
+  templateUrl: './select-ledger-form.component.html',
+  styles: [],
 })
-export class SelectLedgerFormComponent {
-    paymentMethodForm = this.fb.group({
-        paymentMethod: [null, Validators.required]
+export class SelectLedgerFormComponent implements OnInit, OnDestroy {
+  form = new SelectLedgerFG();
+  selectedLedgerIds: Array<number> = [];
+  unpaidAmount = 0;
+  private netAmount = 0;
+  private notifier$ = new Subject<void>();
+
+  constructor(
+    private ledgerService: LedgerService,
+    private store: InvoiceStoreService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit(): void {
+    console.log('InvoiceStore', this.store.snapshot);
+
+    this.store.paidAmount
+      .pipe(takeUntil(this.notifier$), debounceTime(SECOND))
+      .subscribe({
+        next: (paidAmount) => {
+          this.unpaidAmount = this.netAmount - paidAmount;
+          this.form.amountFC.setValue(this.unpaidAmount);
+        },
+      });
+
+    this.store.netAmount.pipe(takeUntil(this.notifier$)).subscribe({
+      next: (value) => {
+        this.netAmount = value;
+      },
     });
-    constructor(
-        private ledgerService: LedgerService,
-        private store: InvoiceStoreService,
-        private fb: UntypedFormBuilder,
-        private router: Router) { }
 
-    get ledgers(): Observable<Ledger[]> {
-        return (this.ledgerService.getAsObservable() as Observable<Ledger[]>)
-            .pipe(map(
-                ledgers => ledgers.filter(
-                    x => ['BANK', 'CASH', 'WALLET'].includes(x.kind)
-                )
-            )
-            );
+    this.store.paymentInfo$.pipe(takeUntil(this.notifier$)).subscribe({
+      next: (value) => [
+        (this.selectedLedgerIds = value.map((items) => items.dr)),
+      ],
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.notifier$.next();
+    this.notifier$.complete();
+  }
+
+  get ledgers(): Observable<Ledger[]> {
+    return (this.ledgerService.getAsObservable() as Observable<Ledger[]>).pipe(
+      map((ledgers) =>
+        ledgers.filter((x) => ['BANK', 'CASH', 'WALLET'].includes(x.kind))
+      )
+    );
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      console.log('Invalid select-ledger-form Data');
+      return;
     }
 
-    selectPaymentMethod(ledger: Ledger): void {
-        // this.store.paymentMethod = ledger.id;
-        // this.recentPaymentMethod = ledger;
-        // this.store.paid = true;
-        // this.router.navigate(['/invoices', 'wait']);
-    }
+    this.store.addPaymentMethod(this.form.ledger, this.form.amount);
+    this.form.patchValue({ ledger: 0 });
 
-    onSubmit(): void {
-        const paymentMethod = this.paymentMethodForm.get('paymentMethod') as UntypedFormControl;
-        const ledger = paymentMethod.value as Ledger;
-
-        if (paymentMethod.invalid) {
-            return;
-        }
-        this.selectPaymentMethod(ledger);
+    if (this.unpaidAmount === 0) {
+      this.router.navigate(['../final-submit'], {
+        relativeTo: this.route,
+      });
     }
+  }
 
-    set recentPaymentMethod(ledger: Ledger | null) {
-        if (ledger !== null) {
-            localStorage.setItem('recentPaymentMethod', JSON.stringify(ledger));
-        }
+  isSelected(id: number) {
+    return this.selectedLedgerIds.includes(id);
+  }
+
+  set recentPaymentMethod(ledger: Ledger | null) {
+    if (ledger !== null) {
+      localStorage.setItem('recentPaymentMethod', JSON.stringify(ledger));
     }
+  }
+
+  get allowFinalSubmit(): boolean {
+    return this.unpaidAmount === this.form.amount;
+  }
 }

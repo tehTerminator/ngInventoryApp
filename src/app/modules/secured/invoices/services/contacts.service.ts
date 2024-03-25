@@ -6,7 +6,9 @@ import { Contact } from '../../../../interface/contact.interface';
 import { ApiService } from '../../../../services/api/api.service';
 import { HOUR } from '../../../../interface/collection.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContactsService extends BaseService<Contact> {
   constructor(private api: ApiService) {
     super('contacts', HOUR);

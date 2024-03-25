@@ -1,0 +1,32 @@
+.saving-container {
+  background-color: #f0f8ff; /* Light blue */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.saving-icon {
+  width: 8rem;
+  height: 8rem;
+  margin-bottom: 20px;
+  animation: spin 2s linear infinite;
+}
+
+.saving-message {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

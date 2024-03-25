@@ -12,9 +12,7 @@ import { MyLocationStoreService } from '../../../../../services/myLocation/my-lo
 import { BaseService } from '../../../../../class/BaseService';
 import { HOUR } from '../../../../../shared/constants';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class GeneralItemStoreService extends BaseService<GeneralItem> {
   protected fetch(): void {
     const mylocationId = this.myLocationService.snapshot.selected.id;

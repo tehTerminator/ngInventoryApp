@@ -8,11 +8,17 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
-import { EMPTY, Observable, Subscription, map, startWith } from 'rxjs';
-import { ApiService } from './../../../../../../services/api/api.service';
+import {
+  EMPTY,
+  Observable,
+  Subscription,
+  map,
+  startWith,
+} from 'rxjs';
 import { Contact } from './../../../../../../interface/contact.interface';
 import { ContactsService } from '../../../services/contacts.service';
-import { SelectContactForm } from './SelectContactForm';
+import { FormControl, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-select-contact',
@@ -24,7 +30,11 @@ export class SelectContactComponent
 {
   @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
   label = 'Party';
-  contactForm = new SelectContactForm();
+  contactField = new FormControl<Contact | string>('', {
+    nonNullable: true,
+    validators: [Validators.required],
+  });
+  filteredContacts$: Observable<Contact[]> = EMPTY;
   private _sub = new Subscription();
 
   constructor(
@@ -37,6 +47,26 @@ export class SelectContactComponent
   ngOnInit(): void {
     this.createSubscription();
     this.contactsService.init();
+
+    this.filteredContacts$ = this.contactField.valueChanges.pipe(
+      startWith(''),
+      map((value) => {
+        if (typeof value === 'string') {
+          return this._filterContacts(value);
+        }
+        return [];
+      })
+    );
+  }
+
+  private _filterContacts(title: string) {
+    const kind = this.store.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
+    return this.contactsService
+      .getAsList()
+      .filter(
+        (x) =>
+          x.kind === kind && x.title.toLowerCase().includes(title.toLowerCase())
+      );
   }
 
   ngAfterViewInit(): void {
@@ -49,23 +79,15 @@ export class SelectContactComponent
     this._sub.unsubscribe();
   }
 
-  onSubmit(): void {
-    if (this.contactForm.invalid) {
+  onSelectCustomer(event: MatAutocompleteSelectedEvent) {
+    const selectedItem: Contact | string = event.option.value;
+    if (selectedItem === null || typeof selectedItem === 'string') {
       return;
     }
-
-    const contact = this.contactForm.contact;
-
-    if (contact > 0) {
-      this.store.contact = contact;
-      this.navigateToSelectProduct();
-    } else {
-      console.log(this.contactForm.value);
-    }
+    this.store.contact = selectedItem.id;
   }
 
   navigateToSelectProduct() {
-
     // Navigate to the relative path for select-product
     this.router.navigate(['../select-product'], {
       relativeTo: this.route,
@@ -74,9 +96,16 @@ export class SelectContactComponent
 
   get contacts(): Observable<Contact[]> {
     const contactKind = this.label === 'Party' ? 'CUSTOMER' : 'SUPPLIER';
-    return this.contactsService.getAsObservable().pipe(map(
-      contacts => contacts.filter(x=> x.kind === contactKind )
-    ));
+    return this.contactsService
+      .getAsObservable()
+      .pipe(map((contacts) => contacts.filter((x) => x.kind === contactKind)));
+  }
+
+  displayFn(contact: string | Contact): string {
+    if (typeof contact === 'string') {
+      return '';
+    }
+    return contact && contact.title ? contact.title : '';
   }
 
   private createSubscription() {
@@ -93,5 +122,4 @@ export class SelectContactComponent
       },
     });
   }
-
 }

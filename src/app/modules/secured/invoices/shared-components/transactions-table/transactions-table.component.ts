@@ -1,14 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, map, takeUntil } from 'rxjs';
 import { Transaction } from './../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { LedgerService } from '../../../../../services/ledger/ledger.service';
 import { ProductService } from '../../../../../services/product/product.service';
 import { BundleService } from '../../../../../services/bundle/bundle.service';
-import { Product } from '../../../../../interface/product.interface';
-import { Bundle } from '../../../../../interface/bundle.interface';
-import { Ledger } from '../../../../../interface/ledger.interface';
-import { BaseService } from '../../../../../class/BaseService';
 
 @Component({
   selector: 'app-transactions-table',
@@ -16,34 +12,26 @@ import { BaseService } from '../../../../../class/BaseService';
   styles: [''],
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
-  public transactions: Transaction[] = [];
-  public grossAmount = 0;
-  public netAmount = 0;
-  private sub: Subscription = new Subscription();
+  private finally = new BehaviorSubject(1);
 
   constructor(
-    private store: InvoiceStoreService,
+    public store: InvoiceStoreService,
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService
-  ) {}
+  ) {
+    this.ledgerService.init();
+    this.productService.init();
+    this.bundleService.init();
+  }
 
   ngOnInit(): void {
-    this.sub = this.store.invoice.subscribe({
-      next: (invoice => {
-        this.grossAmount = 0;
-        this.netAmount = 0;
-        this.transactions = invoice.transactions;
-        invoice.transactions.forEach(t => {
-          this.grossAmount += t.quantity * t.rate;
-          this.netAmount += this.getRowAmount(t);
-        });
-      })
-    })
+
   }
 
   ngOnDestroy(): void {
-      this.sub.unsubscribe();
+    this.finally.next(1);
+    this.finally.complete();
   }
 
   deleteTransaction(index: number): void {
@@ -51,7 +39,6 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   }
 
   getDescription(transaction: Transaction) {
-    console.log(transaction);
     if (transaction.itemType === 'LEDGER'){
       const title = this.ledgerService.getElementById(transaction.itemId).title;
       return `${title} Payment`;
@@ -77,7 +64,9 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     return 4;
   }
 
-  get totalDiscount(): number {
-    return this.grossAmount - this.netAmount;
+  get transactions$(): Observable<Transaction[]> {
+    return this.store.invoice.pipe(
+      map(value => value.transactions)
+    )
   }
 }

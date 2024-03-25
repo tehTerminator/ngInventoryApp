@@ -7,6 +7,7 @@ import { InvoiceInfoComponent } from './invoice-info/invoice-info.component';
 import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.component';
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 import { PaymentInfoComponent } from './payment-info/payment-info.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,7 @@ import { PaymentInfoComponent } from './payment-info/payment-info.component';
         PaymentInfoComponent
     ],
     imports: [
-        CommonModule, MatIconModule, MatExpansionModule
+        CommonModule, MatIconModule, MatExpansionModule, MatButtonModule
     ],
     exports: [PreviewInvoiceComponent]
 })

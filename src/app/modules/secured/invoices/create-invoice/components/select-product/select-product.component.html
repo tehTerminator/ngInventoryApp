@@ -9,10 +9,10 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-  <button mat-raised-button color="primary" class="w-100" (click)="navigateToCreateTransactions()">
+  <button type="button" mat-raised-button color="primary" class="w-100" (click)="navigateToCreateTransactions()">
     Select
   </button>
-  <button *ngIf="hasTransactions | async" [routerLink]="['../final-submit']" class="btn btn-success mx-auto my-3 w-100">
+  <button type="button" *ngIf="hasTransactions | async" [routerLink]="['../choose-payment-method']" class="btn btn-success mx-auto my-3 w-100">
     Submit Invoice
   </button>
 </div>

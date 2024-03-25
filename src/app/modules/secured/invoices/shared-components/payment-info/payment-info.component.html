@@ -1,11 +1,14 @@
 <strong>Payment Details</strong>
-<ul *ngIf="!isEmpty; else udhaar">
-    <li *ngFor="let voucher of paymentInfo | async">
-        {{ voucher.debtor.title }} - {{ voucher.amount | currency:'INR' }}
+
+<div *ngIf="paidIsZero$ | async">
+    Payment Udhaar
+</div>
+<ul class="list-group">
+    <li *ngFor="let voucher of store.paymentInfo$ | async;"
+        class="list-group-item d-flex justify-content-between">
+        <span>{{ getTitle(voucher.dr) }} - {{ voucher.amount | currency:'INR' }}</span>
+        <button mat-icon-button color="primary" (click)="removeVoucher(voucher)">
+            <mat-icon>close</mat-icon>
+        </button>
     </li>
 </ul>
-
-
-<ng-template #udhaar>
-    UDHAAR
-</ng-template>
