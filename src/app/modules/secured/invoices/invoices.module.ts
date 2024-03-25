@@ -10,6 +10,7 @@ import { ContactsService } from './services/contacts.service';
 import { PleaseWaitPageComponent } from './please-wait-page/please-wait-page.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { SearchInvoiceStoreService } from './search-invoice/search-store/search-store.service';
+import { InvoiceStoreService } from './services/invoice-store.service';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SearchInvoiceStoreService } from './search-invoice/search-store/search-
     MatAutocompleteModule
   ],
   providers: [
+    InvoiceStoreService,
     SearchInvoiceStoreService,
     ContactsService
   ]
