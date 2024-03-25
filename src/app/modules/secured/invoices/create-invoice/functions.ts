@@ -1,9 +1,9 @@
 export function getCreateInvoiceRoutes(
   urlType:
-    | 'SELECT_CUSTOMER'
-    | 'SELECT_PRODUCT'
-    | 'CREATE_TRANSACTION'
-    | 'FINAL_SUBMIT',
+    | 'select-customer'
+    | 'select-product'
+    | 'create-transaction'
+    | 'choose-payment-method',
   invoiceType: 'sales' | 'purchase'
 ) {
   return ['/auth', 'invoices', 'create', invoiceType, urlType];
