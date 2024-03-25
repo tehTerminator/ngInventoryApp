@@ -12,6 +12,17 @@
             <mat-label>Mobile</mat-label>
             <input type="text" matInput maxlength="10" formControlName="mobile">
         </mat-form-field>
+        <mat-form-field class="w-100">
+            <mat-label>Default Ledger</mat-label>
+            <mat-select formControlName="ledger">
+                <mat-option value="0">
+                    CREATE_NEW
+                </mat-option>
+                <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger.id">
+                    {{ ledger.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
         <button mat-raised-button class="w-100" color="primary" type="submit">Save Customer</button>
     </form>

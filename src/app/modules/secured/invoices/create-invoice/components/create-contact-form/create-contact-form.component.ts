@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../../services/api/api.service';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
-import { Subscription } from 'rxjs';
-import { Contact } from './../../../../../../interface/contact.interface';
+import { Observable, Subscription, finalize, map } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactForm } from './ContactForm';
-export const mobilePattern = '^[6-9][0-9]{9}$';
+import { ContactsService } from '../../../services/contacts.service';
+import { LedgerService } from '../../../../../../services/ledger/ledger.service';
+import { NotificationsService } from '../../../../../../services/notification/notification.service';
+import { Contact } from '../../../../../../interface/contact.interface';
 
 @Component({
   selector: 'app-create-contact-form',
@@ -18,16 +19,20 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
   private _sub = new Subscription();
 
   constructor(
-    private api: ApiService,
     private store: InvoiceStoreService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private contactService: ContactsService,
+    private ledgerService: LedgerService,
+    private notification: NotificationsService
   ) {}
 
   ngOnInit(): void {
+    this.ledgerService.init();
     this._sub = this.store.invoice.subscribe({
       next: (invoice) => {
-        this.contactForm.kind = invoice.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
+        this.contactForm.kind =
+          invoice.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
       },
     });
   }
@@ -37,38 +42,68 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
-    console.log('Submit Button Pressed');
     if (!this.contactForm.valid) {
-      console.log('Contact Form Invalid');
+      this.notification.show('Invalid Contact Data');
       return;
     }
 
     this._loading = true;
-    
-    console.log('Sending', this.contactForm.value);
-    this.api.create<Contact>(['contact'], this.contactForm.value).subscribe({
-      next: (contact) => {
-        this.store.contact = contact;
-        this._loading = false;
-        this.navigateToSelectProduct();
-      },
-      error: () => {
-        this._loading = false;
-      }
-    });
+
+    if (this.contactForm.ledger > 0) {
+      console.log('Ledger Already Exists, Storing Contact', this.contactForm.value);
+      this.storeContact();
+      return;
+    }
+
+    console.log('Ledger does not exists, Creating New', this.contactForm.value);
+    this.ledgerService
+      .create({
+        id: 0,
+        title: this.contactForm.title,
+        kind: this.contactForm.kind === 'CUSTOMER' ? 'RECEIVABLE' : 'PAYABLE',
+        canReceivePayment: false,
+      })
+      .subscribe({
+        next: (value) => {
+          this.contactForm.ledgerFormControl.setValue(value.id);
+          this.storeContact();
+        },
+        error: (error) => {
+          console.error('create-contact-form', error);
+          this.notification.show('Unable to Create a Ledger');
+          this._loading = false;
+        },
+      });
   }
 
-  private navigateToSelectProduct() {
+  private storeContact() {
+    this.contactService
+      .create(this.contactForm.value)
+      .pipe(finalize(() => (this._loading = false)))
+      .subscribe({
+        next: (contact) => this.navigateToSelectProduct(contact),
+      });
+  }
+
+  private navigateToSelectProduct(contact: Contact) {
     // Get the current :type parameter from the route
-    const type = this.route.snapshot.paramMap.get('type');
+    this.store.contact = contact.id;
+    const type = this.store.kind.toLowerCase();
     this.router.navigate(['../select-product'], {
       relativeTo: this.route,
-      queryParams: { type: type },
     });
   }
 
-  get loading(): boolean {
+  get loading() {
     return this._loading;
+  }
+
+  get ledgers() {
+    return this.ledgerService.getAsObservable().pipe(
+      map((value) => {
+        const kind = this.store.kind === 'SALES' ? 'RECEIVABLE' : 'PAYABLE';
+        return value.filter(x => x.kind === kind);
+      })
+    );
   }
 }
