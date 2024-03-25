@@ -65,4 +65,8 @@ export class GeneralItemStoreService extends BaseService<GeneralItem> {
         return this.bundleService.getElementById(item.id);
     }
   }
+
+  public isInstanceOfGeneralItem(data: any): data is GeneralItem {
+    return 'type' in data;
+  }
 }
