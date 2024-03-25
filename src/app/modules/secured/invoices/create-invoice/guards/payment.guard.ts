@@ -2,16 +2,14 @@ import { inject } from '@angular/core';
 import { ActivatedRoute, CanActivateFn, Router } from '@angular/router';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { getCreateInvoiceRoutes } from '../functions';
-import { EMPTY_PRODUCT } from '../../../../../interface/product.interface';
 
 
-export const productGuard: CanActivateFn = () => {
+export const paymentGuard: CanActivateFn = () => {
 
     const store: InvoiceStoreService = inject(InvoiceStoreService);
     const router: Router = inject(Router);
-    const route: ActivatedRoute = inject(ActivatedRoute);
 
-    if (store.selectedItem !== EMPTY_PRODUCT) {
+    if (store.snapshot.transactions.length > 0) {
         return true;
     }
 
