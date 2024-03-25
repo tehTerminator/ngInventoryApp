@@ -1,41 +1,24 @@
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Contact } from './../../../../../../interface/contact.interface';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export class SelectContactForm extends FormGroup {
   constructor() {
     super({
-      contact: new FormControl<Contact | null>(null, {validators: [Validators.required, ValidateContact]}),
+      contact: new FormControl<string>('', {
+        validators: [Validators.required, Validators.pattern(/^[0-9]+:[A-Za-z- ]+$/)],
+      }),
     });
   }
 
-  get contactField(): FormControl<Contact> {
-    return this.get('contact') as FormControl<Contact>;
+  get contactField(): FormControl<string> {
+    return this.get('contact') as FormControl<string>;
   }
 
-  get contact(): Contact | null {
-    return this.contactField.value;
+  get contact(): number {
+    try{
+      const id = parseInt(this.contactField.value.split(":")[0]);
+      return id;
+    } catch(e) {
+      return 0;
+    }
   }
-}
-
-function ValidateContact(control: AbstractControl): ValidationErrors | null {
-    console.log('Validating Contact');
-    if (control.value === null) {
-      return { isNull: true }; // No need for type assertion as ValidationErrors is inferred
-    }
-
-    // Option 1: Type assertion (casting) with potential runtime errors
-    if (!(control.value as Contact)) {
-      return { notContact: true };
-    }
-
-    // Option 2: Recommended - Use a type guard function for robust type checking
-    if (!isContact(control.value)) {
-      return { notContact: true };
-    }
-
-    return null;
-}
-
-function isContact(value: any): value is Contact {
-  return value !== null && (value.hasOwnProperty('title') && (value.hasOwnProperty('mobile')));
 }
