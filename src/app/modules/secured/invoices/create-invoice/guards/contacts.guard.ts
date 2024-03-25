@@ -7,7 +7,9 @@ export const contactGuard: CanActivateFn = () => {
   const store: InvoiceStoreService = inject(InvoiceStoreService);
   const router: Router = inject(Router);
 
-  if (store.snapshot.contact_id >= 0) {
+  console.log('contact-guard', store.snapshot.contact_id)
+
+  if (store.snapshot.contact_id > 0) {
     return true;
   }
 
