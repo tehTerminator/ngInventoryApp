@@ -15,6 +15,7 @@ import { ChoosePaymentMethodComponent } from './components/choose-payment-method
 import { RecentPaymentBtnComponent } from './components/choose-payment-method/recent-payment-btn/recent-payment-btn.component';
 import { SelectLedgerFormComponent } from './components/choose-payment-method/select-ledger-form/select-ledger-form.component';
 import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
+import { GeneralItemStoreService } from './services/general-item-store.service';
 
 @NgModule({
   declarations: [
@@ -36,5 +37,8 @@ import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/ud
     SharedComponentModule,
     CoreModule,
   ],
+  providers: [
+    GeneralItemStoreService
+  ]
 })
 export class CreateInvoiceModule {}
