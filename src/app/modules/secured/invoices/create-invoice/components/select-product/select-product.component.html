@@ -2,31 +2,17 @@
 <div class="card-body">
   <mat-form-field class="w-100">
     <mat-label>Select Product</mat-label>
-    <mat-select
-      type="text"
-      matInput
-      [formControl]="productControl"
-    >
-      <mat-option *ngFor="let product of products$ | async" [value]="product">
+    <input type="text" matInput [formControl]="productControl" [matAutocomplete]="auto">
+    <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
         {{ product.title }}
       </mat-option>
-      </mat-select>
+    </mat-autocomplete>
   </mat-form-field>
-  <button
-    mat-raised-button
-    color="primary"
-    class="w-100"
-    (click)="onSelectProduct()"
-  >
+  <button mat-raised-button color="primary" class="w-100" (click)="navigateToCreateTransactions()">
     Select
   </button>
-  <button 
-    *ngIf="hasTransactions | async"
-    [routerLink]="['../final-submit']"
-    class="btn btn-success mx-auto my-3 w-100" 
-  >
+  <button *ngIf="hasTransactions | async" [routerLink]="['../final-submit']" class="btn btn-success mx-auto my-3 w-100">
     Submit Invoice
   </button>
 </div>
-
-
