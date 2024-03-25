@@ -5,6 +5,7 @@ export interface Contact extends Entity {
   address: string;
   mobile: string;
   kind: 'CUSTOMER' | 'SUPPLIER';
+  ledger_id: number;
 }
 
 export const EMPTY_CONTACT: Contact = Object.freeze({
@@ -13,7 +14,6 @@ export const EMPTY_CONTACT: Contact = Object.freeze({
   address: 'NOT SELECTED',
   mobile: '',
   kind: 'CUSTOMER',
-  created_at: '',
-  updated_at: '',
+  ledger_id: 2,
 })
 
