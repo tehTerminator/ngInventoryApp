@@ -5,6 +5,7 @@ import { BundleService } from '../../../../services/bundle/bundle.service';
 import { Ledger } from '../../../../interface/ledger.interface';
 import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { ProductService } from '../../../../services/product/product.service';
+import { ContactsService } from '../../../../services/contacts/contacts.service';
 import {
   BASE_INVOICE,
   BASE_TRANSACTION,
@@ -31,7 +32,8 @@ export class InvoiceStoreService {
   constructor(
     private ledgerService: LedgerService,
     private productService: ProductService,
-    private bundleService: BundleService
+    private bundleService: BundleService,
+    private contactService: ContactsService,
   ) {}
 
   createTransaction(quantity: number, rate: number, discount = 0): void {
@@ -147,10 +149,16 @@ export class InvoiceStoreService {
 
   addPaymentMethod(dr: number, amount: number) {
     const voucher: Voucher = { ...EMPTY_VOUCHER };
-    voucher.dr = dr;
-    voucher.amount = amount;
-    console.log('addPaymentMethod called', voucher);
-    this.paymentInfo$.next([...this.paymentInfo$.value, voucher]);
+    try{
+      const contact = this.contactService.getElementById(
+        this.snapshot.contact_id
+      );
+      voucher.cr = contact.ledger_id;
+    } finally {
+      voucher.dr = dr;
+      voucher.amount = amount;
+      this.paymentInfo$.next([...this.paymentInfo$.value, voucher]);
+    }
   }
 
   removePaymentMethod(voucher: Voucher) {
@@ -167,6 +175,10 @@ export class InvoiceStoreService {
 
   reset(): void {
     this._invoice.next(BASE_INVOICE);
+    this.ledgerService.init();
+    this.productService.init();
+    this.bundleService.init();
+    this.contactService.init();
   }
 
   set contact(id: number) {
