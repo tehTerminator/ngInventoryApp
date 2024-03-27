@@ -1,5 +1,5 @@
 <section class="card mt-2">
-  <div class="card-body">
+  <div class="card-body" [loading]="loading">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Select Payment Method</mat-label>

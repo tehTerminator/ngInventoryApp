@@ -19,19 +19,20 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
   unpaidAmount = 0;
   private netAmount = 0;
   private notifier$ = new Subject<void>();
+  loading = false;
 
   constructor(
     private ledgerService: LedgerService,
     private store: InvoiceStoreService,
     private router: Router,
-    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    console.log('InvoiceStore', this.store.snapshot);
+
+    this.ledgerService.init()
 
     this.store.paidAmount
-      .pipe(takeUntil(this.notifier$), debounceTime(SECOND))
+      .pipe(takeUntil(this.notifier$), debounceTime(200))
       .subscribe({
         next: (paidAmount) => {
           this.unpaidAmount = this.netAmount - paidAmount;
@@ -66,23 +67,31 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.loading = true;
     if (this.form.invalid) {
       console.log('Invalid select-ledger-form Data');
       return;
     }
 
     this.store.addPaymentMethod(this.form.ledger, this.form.amount);
-    this.form.patchValue({ ledger: 0 });
-
-    if (this.unpaidAmount === 0) {
-      this.router.navigate(['../final-submit'], {
-        relativeTo: this.route,
-      });
-    }
+    
+    setTimeout(() => {
+      if (this.unpaidAmount === 0) {
+        this.storeLastPaymentMethod();
+        this.router.navigate(['/auth', 'invoices', 'please-wait']);
+      }
+      this.form.patchValue({ ledger: 0 });
+      this.loading = false;
+    }, 500);
   }
 
   isSelected(id: number) {
     return this.selectedLedgerIds.includes(id);
+  }
+
+  private storeLastPaymentMethod() {
+    const ledger = this.ledgerService.getElementById(this.form.ledger);
+    localStorage.setItem('lastPaymentMethod', JSON.stringify(ledger));
   }
 
   set recentPaymentMethod(ledger: Ledger | null) {
