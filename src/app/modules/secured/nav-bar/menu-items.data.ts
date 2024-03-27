@@ -11,8 +11,7 @@ export const navItems = [
   {
     title: 'Invoices',
     links: [
-      { text: 'Sales Invoices', routerLink: ['invoices', 'create', 'sales', 'choose-payment-method'] },
-      { text: 'Please Wait', routerLink: ['invoices', 'please-wait'] },
+      { text: 'Sales Invoices', routerLink: ['invoices', 'create', 'sales'] },
       {
         text: 'Purchase Invoices',
         routerLink: ['invoices', 'create', 'purchase'],
