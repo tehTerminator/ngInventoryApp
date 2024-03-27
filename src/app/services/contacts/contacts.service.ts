@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { BaseService } from '../../../../class/BaseService';
-import { Contact } from '../../../../interface/contact.interface';
-import { ApiService } from '../../../../services/api/api.service';
-import { HOUR } from '../../../../interface/collection.interface';
+import { BaseService } from '../../class/BaseService';
+import { Contact } from '../../interface/contact.interface';
+import { ApiService } from '../api/api.service';
+import { HOUR } from '../../interface/collection.interface';
 
 @Injectable({
   providedIn: 'root'
