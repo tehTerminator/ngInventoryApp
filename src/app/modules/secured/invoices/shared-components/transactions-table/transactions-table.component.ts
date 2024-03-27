@@ -1,5 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription, map, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  map,
+} from 'rxjs';
 import { Transaction } from './../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { LedgerService } from '../../../../../services/ledger/ledger.service';
@@ -9,7 +13,6 @@ import { BundleService } from '../../../../../services/bundle/bundle.service';
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
-  styles: [''],
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
   private finally = new BehaviorSubject(1);
@@ -25,32 +28,32 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     this.bundleService.init();
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.finally.next(1);
     this.finally.complete();
   }
 
-  deleteTransaction(index: number): void {
-      this.store.deleteTransaction(index);
-  }
+  deleteTransaction = (transaction: Transaction) =>
+    this.store.deleteTransaction(transaction);
 
   getDescription(transaction: Transaction) {
-    if (transaction.itemType === 'LEDGER'){
+    if (transaction.itemType === 'LEDGER') {
       const title = this.ledgerService.getElementById(transaction.itemId).title;
       return `${title} Payment`;
     }
 
-    let service = transaction.itemType === 'BUNDLE' ? this.bundleService : this.productService;
+    let service =
+      transaction.itemType === 'BUNDLE'
+        ? this.bundleService
+        : this.productService;
     const title = service.getElementById(transaction.itemId).title;
     return title;
   }
 
   getRowAmount(t: Transaction): number {
-    return (t.quantity * t.rate) * (1 - t.discount / 100);
+    return t.quantity * t.rate * (1 - t.discount / 100);
   }
 
   showButtons(): boolean {
@@ -65,8 +68,6 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   }
 
   get transactions$(): Observable<Transaction[]> {
-    return this.store.invoice.pipe(
-      map(value => value.transactions)
-    )
+    return this.store.invoice.pipe(map((value) => value.transactions));
   }
 }

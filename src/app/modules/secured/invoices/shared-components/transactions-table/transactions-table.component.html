@@ -13,9 +13,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let t of transactions$ | async;let i=index">
+    <tr *ngFor="let t of transactions$ | async">
       <td *ngIf="showButtons()" class="text-center">
-        <button type="button" class="btn icon-only" (click)="deleteTransaction(i)">
+        <button type="button" class="btn icon-only" (click)="deleteTransaction(t)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
