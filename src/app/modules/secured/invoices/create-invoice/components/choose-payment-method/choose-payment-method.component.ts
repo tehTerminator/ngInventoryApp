@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-choose-payment-method',
-  templateUrl: './choose-payment-method.component.html',
-  styleUrls: ['./choose-payment-method.component.css']
+  template: `
+    <app-recent-payment-btn></app-recent-payment-btn>
+    <app-select-ledger-form></app-select-ledger-form>
+    <app-udhaar-payment-btn></app-udhaar-payment-btn>
+  `,
 })
-export class ChoosePaymentMethodComponent implements OnInit {
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-}
+export class ChoosePaymentMethodComponent {}

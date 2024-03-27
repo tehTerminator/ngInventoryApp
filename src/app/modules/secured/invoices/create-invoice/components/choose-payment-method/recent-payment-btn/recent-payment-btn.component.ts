@@ -5,8 +5,18 @@ import { InvoiceStoreService } from './../../../../services/invoice-store.servic
 
 @Component({
     selector: 'app-recent-payment-btn',
-    templateUrl: './recent-payment-btn.component.html',
-    styles: []
+    template: `
+            <section class="card" *ngIf="recentPaymentMethod">
+                <div class="card-header">Recent Payment Method</div>
+                <div class="card-body">
+                <button
+                    class="btn btn-secondary w-100 p-3 mt-2"
+                    (click)="selectPaymentMethod(recentPaymentMethod)"
+                >
+                    {{ recentPaymentMethod.title }}
+                </button>
+                </div>
+            </section>`
 })
 export class RecentPaymentBtnComponent {
     constructor(
