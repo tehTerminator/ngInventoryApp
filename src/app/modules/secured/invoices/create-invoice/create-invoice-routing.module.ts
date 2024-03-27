@@ -7,6 +7,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { contactGuard } from './guards/contacts.guard';
 import { productGuard } from './guards/products.guard';
 import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
+import { paymentGuard } from './guards/payment.guard';
 
 const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children: [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
   },
   {
     path: 'choose-payment-method',
-    component: ChoosePaymentMethodComponent
+    component: ChoosePaymentMethodComponent,
+    canActivate: [contactGuard, productGuard, paymentGuard]
   },
   {
     path: '**',
