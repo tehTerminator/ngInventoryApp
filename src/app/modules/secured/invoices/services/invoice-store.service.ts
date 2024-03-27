@@ -19,36 +19,20 @@ import {
   EMPTY_VOUCHER,
   Voucher,
 } from '../../../../interface/voucher.interface';
-import { ContactsService } from './contacts.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceStoreService {
-  selectedItem: Product | Ledger | Bundle = {
-    id: 3,
-    title: 'Job Work',
-    rate: 100,
-  };
-  private _invoiceData = new BehaviorSubject<Invoice>(BASE_INVOICE);
+  private _invoice = new BehaviorSubject<Invoice>(BASE_INVOICE);
+  selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
   paymentInfo$ = new BehaviorSubject<Voucher[]>([]);
 
   constructor(
     private ledgerService: LedgerService,
     private productService: ProductService,
-    private bundleService: BundleService,
-    private contactsService: ContactsService
-  ) {
-    this.createTransaction(1, 100, 0);
-  }
-
-  get invoice(): Observable<Invoice> {
-    return this._invoiceData;
-  }
-
-  set invoice(data: Invoice) {
-    this._invoiceData.next(data);
-  }
+    private bundleService: BundleService
+  ) {}
 
   createTransaction(quantity: number, rate: number, discount = 0): void {
     let transaction = { ...BASE_TRANSACTION };
@@ -70,7 +54,6 @@ export class InvoiceStoreService {
         discount
       );
     }
-
     this.appendTransaction(transaction);
   }
 
@@ -99,8 +82,8 @@ export class InvoiceStoreService {
     return transaction;
   }
 
-  appendTransaction(newTransaction: Transaction) {
-    const existingTransactions = this._invoiceData.value.transactions;
+  private appendTransaction(newTransaction: Transaction) {
+    const existingTransactions = this.snapshot.transactions;
     const indexOfSimilarTransaction =
       this.findSimilarTransaction(newTransaction);
     if (indexOfSimilarTransaction > 0) {
@@ -110,16 +93,17 @@ export class InvoiceStoreService {
       existingTransactions.push(newTransaction);
     }
 
-    this.invoice = {
-      ...this._invoiceData.value,
+    this._invoice.next({
+      ...this.snapshot,
       transactions: existingTransactions,
-    };
+    });
   }
 
-  deleteTransaction(index: number) {
-    const existingTransactions = { ...this.snapshot.transactions };
-    existingTransactions.splice(index, 1);
-    this._invoiceData.next({
+  deleteTransaction(transaction: Transaction) {
+    const existingTransactions = this.snapshot.transactions;
+    const indexOfTransaction = existingTransactions.findIndex(x => x === transaction);
+    existingTransactions.splice(indexOfTransaction, 1);
+    this._invoice.next({
       ...this.snapshot,
       transactions: existingTransactions,
     });
@@ -128,7 +112,10 @@ export class InvoiceStoreService {
   private findSimilarTransaction(transaction: Transaction): number {
     const data = this.snapshot.transactions;
     return data.findIndex(
-      (x) => x.id === transaction.id && x.rate === transaction.rate
+      (x) =>
+        x.itemId === transaction.itemId &&
+        x.rate === transaction.rate &&
+        x.itemType === transaction.itemType
     );
   }
 
@@ -179,12 +166,12 @@ export class InvoiceStoreService {
   }
 
   reset(): void {
-    this._invoiceData.next(BASE_INVOICE);
+    this._invoice.next(BASE_INVOICE);
   }
 
   set contact(id: number) {
     const oldInvoiceValue = this.snapshot;
-    this._invoiceData.next({
+    this._invoice.next({
       ...oldInvoiceValue,
       contact_id: id,
     });
@@ -192,33 +179,33 @@ export class InvoiceStoreService {
 
   set kind(data: 'SALES' | 'PURCHASE' | 'sales' | 'purchase') {
     const kind = data.toUpperCase() === 'SALES' ? 'SALES' : 'PURCHASE';
-    const currentInvoice = this._invoiceData.value;
+    const currentInvoice = this.snapshot;
     if (!!currentInvoice) {
-      this.invoice = { ...currentInvoice, kind: kind };
+      this._invoice.next({ ...currentInvoice, kind: kind });
     }
   }
 
   get kind(): 'SALES' | 'PURCHASE' {
-    if (!!this._invoiceData.value) {
-      return this._invoiceData.value.kind;
+    if (!!this._invoice.value) {
+      return this._invoice.value.kind;
     }
     return 'SALES';
   }
 
   get snapshot(): Invoice {
-    return this._invoiceData.value;
+    return this._invoice.value;
   }
 
   set amount(value: number) {
-    this._invoiceData.next({ ...this.snapshot, amount: value });
+    this._invoice.next({ ...this.snapshot, amount: value });
   }
 
   set location(value: number) {
-    this._invoiceData.next({ ...this.snapshot, location_id: value });
+    this._invoice.next({ ...this.snapshot, location_id: value });
   }
 
   get grossAmount() {
-    return this.invoice.pipe(
+    return this._invoice.pipe(
       map((invoice) => {
         let grossAmount = 0;
         invoice.transactions.forEach((t) => {
@@ -230,7 +217,7 @@ export class InvoiceStoreService {
   }
 
   get netAmount() {
-    return this.invoice.pipe(
+    return this._invoice.pipe(
       map((invoice) => {
         let amount = 0;
         invoice.transactions.forEach(
@@ -252,7 +239,7 @@ export class InvoiceStoreService {
   }
 
   get netDiscount() {
-    return this.invoice.pipe(
+    return this._invoice.pipe(
       map((invoice) => {
         let amount = 0;
         invoice.transactions.forEach(
@@ -261,5 +248,13 @@ export class InvoiceStoreService {
         return amount;
       })
     );
+  }
+
+  get invoice(): Observable<Invoice> {
+    return this._invoice;
+  }
+
+  set invoice(data: Invoice) {
+    this._invoice.next(data);
   }
 }
