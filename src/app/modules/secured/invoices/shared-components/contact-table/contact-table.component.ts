@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Contact, EMPTY_CONTACT } from '../../../../../interface/contact.interface';
-import { ContactsService } from './../../services/contacts.service';
+import { ContactsService } from './../../../../../services/contacts/contacts.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 
 @Component({

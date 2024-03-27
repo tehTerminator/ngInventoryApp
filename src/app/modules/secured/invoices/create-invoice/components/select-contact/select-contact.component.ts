@@ -16,7 +16,7 @@ import {
   startWith,
 } from 'rxjs';
 import { Contact } from './../../../../../../interface/contact.interface';
-import { ContactsService } from '../../../services/contacts.service';
+import { ContactsService } from '../../../../../../services/contacts/contacts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 

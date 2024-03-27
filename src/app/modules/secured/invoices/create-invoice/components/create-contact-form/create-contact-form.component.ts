@@ -3,7 +3,7 @@ import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Observable, Subscription, finalize, map } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactForm } from './ContactForm';
-import { ContactsService } from '../../../services/contacts.service';
+import { ContactsService } from '../../../../../../services/contacts/contacts.service';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
 import { Contact } from '../../../../../../interface/contact.interface';

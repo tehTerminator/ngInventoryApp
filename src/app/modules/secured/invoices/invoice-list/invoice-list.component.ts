@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SearchInvoiceStoreService } from '../search-invoice/search-store/search-store.service';
 import { Invoice } from '../../../../interface/invoice.interface';
 import { Observable } from 'rxjs';
-import { ContactsService } from '../services/contacts.service';
+import { ContactsService } from '../../../../services/contacts/contacts.service';
 import { EMPTY_CONTACT } from '../../../../interface/contact.interface';
 
 @Component({
