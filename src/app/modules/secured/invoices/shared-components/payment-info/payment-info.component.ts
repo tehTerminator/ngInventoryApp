@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { LedgerService } from '../../../../../services/ledger/ledger.service';
-import { map } from 'rxjs';
+import { Subject, debounce, debounceTime, map, takeUntil } from 'rxjs';
 import { Voucher } from '../../../../../interface/voucher.interface';
 
 @Component({
@@ -9,8 +9,13 @@ import { Voucher } from '../../../../../interface/voucher.interface';
   templateUrl: './payment-info.component.html',
   styleUrls: ['./payment-info.component.scss'],
 })
-export class PaymentInfoComponent {
+export class PaymentInfoComponent implements OnDestroy, OnInit {
   // Declare dependencies
+  invoiceAmount = 0;
+  paymentAmount = 0;
+  kind = 'SALES';
+  private _notifier$ = new Subject();
+
   constructor(
     public store: InvoiceStoreService,
     private ledgerService: LedgerService
@@ -19,6 +24,20 @@ export class PaymentInfoComponent {
   // Initialize services (logically separate from constructor for clarity)
   ngOnInit() {
     this.ledgerService.init();
+    this.store.netAmount
+      .pipe(takeUntil(this._notifier$), debounceTime(500))
+      .subscribe({ next: (value) => (this.invoiceAmount = value) });
+    this.store.paidAmount
+      .pipe(takeUntil(this._notifier$), debounceTime(300))
+      .subscribe({ next: (value) => (this.paymentAmount = value) });
+    this.store.invoice
+      .pipe(takeUntil(this._notifier$), debounceTime(300))
+      .subscribe({ next: (value) => (this.kind = value.kind) });
+  }
+
+  ngOnDestroy(): void {
+    this._notifier$.next(null);
+    this._notifier$.complete();
   }
 
   // Define component methods
@@ -27,12 +46,18 @@ export class PaymentInfoComponent {
   }
 
   removeVoucher(voucher: Voucher) {
-    console.log('payment-info.removeVoucher', voucher);
     this.store.removePaymentMethod(voucher);
   }
 
-  // Define derived observables
-  get paidIsZero$() {
-    return this.store.paidAmount.pipe(map((value) => value === 0));
+  get paymentStatus(): string {
+    if (this.paymentAmount === 0) {
+      return 'Unpaid';
+    }
+
+    if (this.paymentAmount >= this.invoiceAmount) {
+      return 'Fully Paid';
+    }
+
+    return 'Partially Paid';
   }
 }

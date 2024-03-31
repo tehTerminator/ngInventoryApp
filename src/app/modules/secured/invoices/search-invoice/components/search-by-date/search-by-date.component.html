@@ -1,5 +1,5 @@
 <section>
-    <form class="card" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <form class="card" [formGroup]="searchFormGroup" (ngSubmit)="onSubmit()">
       <div class="card-body">
         <h3 class="fs-4 card-title text-center">Search Invoices</h3>
         <div class="form-group mb-3">
@@ -10,17 +10,18 @@
           <label for="User">Created By</label>
           <select name="userId" class="form-select" formControlName="userId">
             <option value="0" selected>-- Select User --</option>
-            <option [value]="user.id" *ngFor="let user of users">
+            <option [value]="user.id" *ngFor="let user of users$ | async">
               {{ user.name }}
             </option>
           </select>
         </div>
         <button
+        [loading]="loading"
           type="submit"
           class="btn d-block w-100"
           mat-raised-button
           color="primary"
-          [disabled]="searchForm.invalid"
+          [disabled]="searchFormGroup.invalid"
         >
           Search
         </button>

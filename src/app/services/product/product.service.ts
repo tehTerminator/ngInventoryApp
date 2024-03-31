@@ -6,8 +6,6 @@ import { tap, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NotificationsService } from '../notification/notification.service';
 import { Product } from '../../interface/product.interface'; 
-import { AuthStoreService } from '../auth-store/auth-store.service';
-import { MyLocationStoreService } from './../myLocation/my-location.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +13,14 @@ import { MyLocationStoreService } from './../myLocation/my-location.service';
 export class ProductService extends BaseService<Product> {
 
   constructor(
-    private api: ApiService, 
-    private authStore: AuthStoreService,
-    private locationStore: MyLocationStoreService,
+    private api: ApiService,
     private notificationService: NotificationsService
   ) {
-    super('products', HOUR);
+    super('product', HOUR);
   }
 
   protected fetch(): void {
-    this.api.retrieve<Product[]>(this.table).subscribe({
+    this.api.retrieve<Product[]>(this.table + 's').subscribe({
       next: (products => this.store(products)),
       error: (error => {
         this._data.next([]);

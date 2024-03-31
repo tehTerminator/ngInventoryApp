@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from './../../services/authentication/authentication.service';
-import { UserService } from '../../services/user/user.service';
+import { UserStoreService } from '../../services/user/user.service';
 import { LocationService } from '../../services/locations/locations.service';
+import { LedgerService } from '../../services/ledger/ledger.service';
+import { ProductService } from '../../services/product/product.service';
+import { ContactsService } from '../../services/contacts/contacts.service';
+import { BundleService } from '../../services/bundle/bundle.service';
 
 @Component({
   selector: 'app-secured',
@@ -12,13 +16,21 @@ import { LocationService } from '../../services/locations/locations.service';
 export class SecuredComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
-    private userService: UserService,
-    private locationService: LocationService
+    private userService: UserStoreService,
+    private locationService: LocationService,
+    private ledgerService: LedgerService,
+    private productService: ProductService,
+    private contactService: ContactsService,
+    private bundleService: BundleService,
   ) {}
 
   ngOnInit(): void {
     this.userService.init();
     this.locationService.init();
+    this.ledgerService.init();
+    this.productService.init();
+    this.contactService.init();
+    this.bundleService.init();
   }
 
   logout = () => this.authService.signOut();

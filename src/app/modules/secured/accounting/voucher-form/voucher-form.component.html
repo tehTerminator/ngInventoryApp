@@ -13,9 +13,9 @@
                     <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete" [displayWith]="displayFunction">
                         <mat-option *ngFor="let creditor of filteredCreditor | async" [value]="creditor">
                             <div class="d-flex justify-content-between w-100">
-                                <span class="d-none d-md-inline">{{ creditor.id }}</span>
+                                <span>{{ creditor.id }}</span>
                                 <span>{{ creditor.title }}</span>
-                                <span class="d-none d-md-inline">{{ creditor.kind }}</span>
+                                <span>{{ creditor.kind }}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>
@@ -25,10 +25,10 @@
                     <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="dr" [matAutocomplete]="debtor" />
                     <mat-autocomplete autoActiveFirstOption #debtor="matAutocomplete" [displayWith]="displayFunction">
                         <mat-option *ngFor="let debtor of filteredDebtor | async" [value]="debtor">
-                            <div class="d-flex justify-content-between">
-                                <span class="d-none d-md-inline">{{ debtor.id }}</span>
+                            <div class="d-flex justify-content-between w-100">
+                                <span>{{ debtor.id }}</span>
                                 <span>{{ debtor.title }}</span>
-                                <span class="d-none d-md-inline">{{ debtor.kind }}</span>
+                                <span>{{ debtor.kind }}</span>
                             </div>
                         </mat-option>
                     </mat-autocomplete>

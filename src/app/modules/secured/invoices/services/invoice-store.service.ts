@@ -33,7 +33,7 @@ export class InvoiceStoreService {
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService,
-    private contactService: ContactsService,
+    private contactService: ContactsService
   ) {}
 
   createTransaction(quantity: number, rate: number, discount = 0): void {
@@ -57,6 +57,7 @@ export class InvoiceStoreService {
       );
     }
     this.appendTransaction(transaction);
+    this.selectedItem = EMPTY_PRODUCT;
   }
 
   /**
@@ -75,12 +76,14 @@ export class InvoiceStoreService {
     rate: number,
     discount = 0
   ) {
-    let transaction = { ...BASE_TRANSACTION };
-    transaction.itemId = item.id;
-    transaction.rate = rate;
-    transaction.discount = kind === 'PRODUCT' ? discount : 0;
-    transaction.itemType = kind;
-    transaction.quantity = quantity;
+    let transaction = {
+      ...BASE_TRANSACTION,
+      rate,
+      quantity,
+      item_id: item.id,
+      item_type: kind,
+      discount: kind === 'PRODUCT' ? discount : 0
+    };
     return transaction;
   }
 
@@ -103,7 +106,9 @@ export class InvoiceStoreService {
 
   deleteTransaction(transaction: Transaction) {
     const existingTransactions = this.snapshot.transactions;
-    const indexOfTransaction = existingTransactions.findIndex(x => x === transaction);
+    const indexOfTransaction = existingTransactions.findIndex(
+      (x) => x === transaction
+    );
     existingTransactions.splice(indexOfTransaction, 1);
     this._invoice.next({
       ...this.snapshot,
@@ -115,9 +120,9 @@ export class InvoiceStoreService {
     const data = this.snapshot.transactions;
     return data.findIndex(
       (x) =>
-        x.itemId === transaction.itemId &&
+        x.item_id === transaction.item_id &&
         x.rate === transaction.rate &&
-        x.itemType === transaction.itemType
+        x.item_type === transaction.item_type
     );
   }
 
@@ -149,13 +154,18 @@ export class InvoiceStoreService {
 
   addPaymentMethod(dr: number, amount: number) {
     const voucher: Voucher = { ...EMPTY_VOUCHER };
-    try{
+    try {
       const contact = this.contactService.getElementById(
         this.snapshot.contact_id
       );
-      voucher.cr = contact.ledger_id;
+      if (this.snapshot.kind === 'SALES') {
+        voucher.cr = contact.ledger_id;
+        voucher.dr = dr;
+      } else {
+        voucher.dr = contact.ledger_id;
+        voucher.cr = dr;
+      }
     } finally {
-      voucher.dr = dr;
       voucher.amount = amount;
       this.paymentInfo$.next([...this.paymentInfo$.value, voucher]);
     }
@@ -174,11 +184,16 @@ export class InvoiceStoreService {
   }
 
   reset(): void {
-    this._invoice.next(BASE_INVOICE);
+    this._invoice.next({...BASE_INVOICE, transactions: []});
+    this.resetPayment();
     this.ledgerService.init();
     this.productService.init();
     this.bundleService.init();
     this.contactService.init();
+  }
+
+  resetPayment(): void {
+    this.paymentInfo$.next([]);
   }
 
   set contact(id: number) {
@@ -208,11 +223,16 @@ export class InvoiceStoreService {
     return this._invoice.value;
   }
 
+  get vouchers(): Voucher[] {
+    return this.paymentInfo$.value;
+  }
+
   set amount(value: number) {
     this._invoice.next({ ...this.snapshot, amount: value });
   }
 
   set location(value: number) {
+    console.log('Storing Location', value);
     this._invoice.next({ ...this.snapshot, location_id: value });
   }
 
@@ -266,7 +286,37 @@ export class InvoiceStoreService {
     return this._invoice;
   }
 
-  set invoice(data: Invoice) {
-    this._invoice.next(data);
+  set invoice(data: { invoice: Invoice; vouchers: Voucher[] }) {
+    const invoiceData = { ...data.invoice };
+    invoiceData.transactions = [];
+    this._invoice.next(invoiceData);
+    data.invoice.transactions.forEach((item) => {
+      let service: ProductService | LedgerService | BundleService = this.productService;
+      switch(item.item_type) {
+        case 'BUNDLE':
+          service = this.bundleService;
+          break;
+        case 'LEDGER':
+          service = this.ledgerService;
+          break;
+        case 'PRODUCT':
+          service = this.productService;
+          break;
+      }
+      this.selectedItem = service.getElementById(item.item_id);
+      this.createTransaction(item.quantity, item.rate, item.discount);
+    });
+
+    this.paymentInfo$.next(data.vouchers);
+  }
+
+  set id(id: number) {
+    const oldData = this.snapshot;
+    oldData.id = id;
+    this._invoice.next(oldData);
+  }
+
+  get id(): number {
+    return this.snapshot.id;
   }
 }

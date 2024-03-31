@@ -1,11 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'app-choose-payment-method',
-  template: `
-    <app-recent-payment-btn></app-recent-payment-btn>
-    <app-select-ledger-form></app-select-ledger-form>
-    <app-udhaar-payment-btn></app-udhaar-payment-btn>
-  `,
+  templateUrl: './choose-payment-method.component.html',
 })
-export class ChoosePaymentMethodComponent {}
+export class ChoosePaymentMethodComponent implements AfterViewInit  {
+  hasRecent = false;
+
+  ngAfterViewInit(): void {
+    if(localStorage.getItem("recentPaymentMethod")) {
+      this.hasRecent = true;
+    } else {
+      this.hasRecent = false;
+    }
+  }
+
+}

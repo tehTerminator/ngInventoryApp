@@ -1,0 +1,16 @@
+<div class="list-group mt-5">
+    <div (click)="previewInvoice(invoice.id)"
+         class="list-group-item list-group-item-action d-flex justify-content-between"
+         *ngFor="let invoice of invoices$ | async">
+        <div class="text-left">
+            {{ invoice.id }}
+        </div>
+        <div class="text-left">
+            {{ getContactName(invoice.contact_id)}}
+        </div>
+        <div class="text-right">
+            {{ invoice.amount | currency:'INR'}}
+        </div>
+        <mat-icon>delete</mat-icon>
+    </div>
+  </div>

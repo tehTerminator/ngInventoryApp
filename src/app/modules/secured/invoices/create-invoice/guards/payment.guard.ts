@@ -13,8 +13,9 @@ export const paymentGuard: CanActivateFn = () => {
         return true;
     }
 
+    console.log('Transactions length', store.snapshot.transactions);
+
     const type = store.kind.toLowerCase() === 'sales' ? 'sales' : 'purchase';
     const url = getCreateInvoiceRoutes('select-product', type);
-
     return router.createUrlTree(url);
 };

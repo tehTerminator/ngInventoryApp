@@ -11,6 +11,7 @@ export class InvoiceInfoComponent implements OnInit, OnDestroy {
     invoiceId = 0;
     createdAt = '';
     customerId = 0;
+    kind = 'SALES';
     sub: Subscription = new Subscription();
 
     ngOnInit(): void {
@@ -19,6 +20,7 @@ export class InvoiceInfoComponent implements OnInit, OnDestroy {
                 this.invoiceId = invoice.id;
                 this.customerId = invoice.contact_id
                 this.createdAt = invoice.created_at || '';
+                this.kind = invoice.kind;
             });
     }
 

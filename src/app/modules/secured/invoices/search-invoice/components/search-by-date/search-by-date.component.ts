@@ -1,75 +1,81 @@
 import { Component } from '@angular/core';
-import { UntypedFormGroup, Validators, UntypedFormControl, UntypedFormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { retry } from 'rxjs';
-import { ApiService } from '../../../../../../services/api/api.service';
+import {
+  Validators,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 import { SearchInvoiceStoreService } from '../../search-store/search-store.service';
+import { UserStoreService } from '../../../../../../services/user/user.service';
+import { NotificationsService } from '../../../../../../services/notification/notification.service';
+import { finalize } from 'rxjs';
 import { getCurrentDateString } from '../../../../../../shared/functions';
 
 @Component({
   selector: 'app-search-by-date',
   templateUrl: './search-by-date.component.html',
-  styleUrls: ['./search-by-date.component.scss']
+  styleUrls: ['./search-by-date.component.scss'],
 })
 export class SearchByDateComponent {
-  searchForm: UntypedFormGroup = new UntypedFormGroup({});
-  users: UserData[] = [];
+  searchFormGroup = new SearchFormGroup();
+  loading = false;
 
   ngOnInit(): void {
-      this.searchForm = this.formBuilder.group({
-          createdAt: [getCurrentDateString(), [Validators.required]],
-          userId: [0, [Validators.required, Validators.min(1)]]
-      });
-      this.api.retrieve<UserData[]>('users')
-          .pipe(retry(3))
-          .subscribe((data) => this.users = data);
-
-      try {
-          const id = Number(this.route.snapshot.paramMap.get('id'));
-          console.log('id : ', id);
-          if (!!id) {
-              this.store.selectInvoice(id);
-          }
-      } catch (e) {
-          console.log('No Param Found');
-      }
+    this.userStore.init();
+    const currentDate = getCurrentDateString();
+    this.searchFormGroup.createdAtFC.setValue(currentDate);
   }
 
   onSubmit(): void {
-      this.store.fetchUsingUserId(
-          this.createdAtField.value,
-          this.userIdField.value
-      ).subscribe({
-        next: (value) => {
-            console.log('OnSubmit', value);
-            if (value) {
-                this.router.navigate(['/auth', 'invoices', 'view']);
-            }
-        }
-      })
+    if (this.searchFormGroup.invalid) {
+      this.notification.show('Invalid Form Data');
+      return;
+    }
+
+    this.loading = true;
+
+    this.store.fetchUsingUserId(this.searchFormGroup.createdAt, this.searchFormGroup.userId)
+    .pipe(finalize(() => this.loading = false))
+    .subscribe({next: (value => console.log(value))});
+
+
+
   }
 
-  get createdAtField(): UntypedFormControl {
-      return this.searchForm.get('createdAt') as UntypedFormControl;
-  }
-
-  get date(): string {
-      return this.createdAtField.value;
-  }
-
-  get userIdField(): UntypedFormControl {
-      return this.searchForm.get('userId') as UntypedFormControl;
+  get users$() {
+    return this.userStore.getAsObservable();
   }
 
   constructor(
-      private route: ActivatedRoute,
-      private router: Router,
-      private formBuilder: UntypedFormBuilder,
-      private api: ApiService,
-      private store: SearchInvoiceStoreService) { }
+    private notification: NotificationsService,
+    private userStore: UserStoreService,
+    private store: SearchInvoiceStoreService
+  ) {}
 }
 
-interface UserData {
-  id: number;
-  name: string;
+export class SearchFormGroup extends FormGroup {
+  constructor() {
+    super({
+      createdAt: new FormControl<string>('', [Validators.required]),
+      userId: new FormControl<number>(0, [
+        Validators.required,
+        Validators.min(1),
+      ]),
+    });
+  }
+
+  get createdAtFC(): FormControl<string> {
+    return this.get('createdAt') as FormControl<string>;
+  }
+
+  get userIdFC(): FormControl<number> {
+    return this.get('userId') as FormControl<number>;
+  }
+
+  get createdAt(): string {
+    return this.createdAtFC.value;
+  }
+
+  get userId(): number {
+    return this.userIdFC.value;
+  }
 }

@@ -27,7 +27,7 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
   {
     path: 'choose-payment-method',
     component: ChoosePaymentMethodComponent,
-    canActivate: [contactGuard, productGuard, paymentGuard]
+    canActivate: [contactGuard, paymentGuard]
   },
   {
     path: '**',

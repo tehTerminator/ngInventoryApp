@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { navItems } from './menu-items.data';
 import { AuthStoreService } from './../../../services/auth-store/auth-store.service';
 

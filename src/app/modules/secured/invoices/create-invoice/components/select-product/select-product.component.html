@@ -3,7 +3,8 @@
   <mat-form-field class="w-100">
     <mat-label>Select Product</mat-label>
     <input type="text" matInput [formControl]="productControl" [matAutocomplete]="auto">
-    <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn"
+      autoActiveFirstOption="true" autoSelectActiveOption="true">
       <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
         {{ product.title }}
       </mat-option>
@@ -12,7 +13,8 @@
   <button type="button" mat-raised-button color="primary" class="w-100" (click)="navigateToCreateTransactions()">
     Select
   </button>
-  <button type="button" *ngIf="hasTransactions | async" [routerLink]="['../choose-payment-method']" class="btn btn-success mx-auto my-3 w-100">
+  <button type="button" *ngIf="hasTransactions | async" (click)="navigateToPaymentOption()"
+    class="btn btn-success mx-auto my-3 w-100">
     Submit Invoice
   </button>
 </div>

@@ -1,24 +1,20 @@
-<section class="card mt-2">
-  <div class="card-body" [loading]="loading">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Select Payment Method</mat-label>
-        <mat-select name="paymentMethod" formControlName="ledger">
-          <mat-option value="0">
-            -- SELECT LEDGER --
-          </mat-option>
-          <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger.id" [disabled]="isSelected(ledger.id)">
-            {{ ledger.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Amount</mat-label>
-        <input matInput type="number" formControlName="amount">
-      </mat-form-field>
-      <button type="submit" class="btn btn-primary w-100">
-        {{ unpaidAmount === form.amount ? 'Final Submit' : 'Add Amount' }}
-      </button>
-    </form>
-  </div>
-</section>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Select Payment Method</mat-label>
+    <mat-select name="paymentMethod" formControlName="ledger">
+      <mat-option value="0">
+        -- SELECT LEDGER --
+      </mat-option>
+      <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger.id" [disabled]="isSelected(ledger.id)">
+        {{ ledger.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Amount</mat-label>
+    <input matInput type="number" formControlName="amount">
+  </mat-form-field>
+  <button type="submit" class="btn btn-primary w-100" [loading]="loading">
+    {{ unpaidAmount === form.amount ? 'Final Submit' : 'Add Amount' }}
+  </button>
+</form>

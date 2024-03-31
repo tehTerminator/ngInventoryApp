@@ -49,6 +49,7 @@ export class MyLocationStoreService {
       available: this._availableLocations.value
     };
   }
+
 }
 
 interface Snapshot {

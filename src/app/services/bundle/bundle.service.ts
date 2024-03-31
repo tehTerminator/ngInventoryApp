@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap, catchError, map } from 'rxjs/operators';
+import { tap, catchError, map, retry } from 'rxjs/operators';
 import { BaseService } from '../../class/BaseService';
 import { HOUR } from '../../interface/collection.interface';
 import { Bundle, BundleTemplate } from '../../interface/bundle.interface';
@@ -19,7 +19,8 @@ export class BundleService extends BaseService<Bundle> {
   }
 
   protected fetch(): void {
-    this.api.retrieve<Bundle[]>('bundles').subscribe({
+    this.api.retrieve<Bundle[]>('bundles')
+    .subscribe({
       next: (bundles) => this.store(bundles),
       error: (error) => {
         this._data.next([]);

@@ -20,7 +20,7 @@ export class CreateTransactionsComponent implements OnInit {
     private notification: NotificationsService,
     private store: InvoiceStoreService,
     private ledgerService: LedgerService
-  ) {}
+  ) {  }
 
   ngOnInit(): void {
     if (!this.ledgerService.isInstanceOfLedger(this.store.selectedItem)) {

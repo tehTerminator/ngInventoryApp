@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocationService } from './../../../../services/locations/locations.service';
-import { UserService } from './../../../../services/user/user.service';
+import { UserStoreService } from './../../../../services/user/user.service';
 import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { EMPTYLOCATION, StoreLocation } from './../../../../interface/location.interface';
 import { User } from '../../../../interface/user.interface';
@@ -23,7 +23,7 @@ export class AssignLocationComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private locationStore: LocationService,
-    private userStore: UserService,
+    private userStore: UserStoreService,
     private api: ApiService
   ) {}
 

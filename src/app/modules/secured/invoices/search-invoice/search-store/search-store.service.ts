@@ -4,6 +4,7 @@ import { Invoice } from '../../../../../interface/invoice.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { NotificationsService } from './../../../../../services/notification/notification.service';
+import { Voucher } from '../../../../../interface/voucher.interface';
 
 @Injectable()
 export class SearchInvoiceStoreService {
@@ -15,28 +16,22 @@ export class SearchInvoiceStoreService {
     private ns: NotificationsService
   ) {}
 
-  fetchUsingUserId(createdAt: string, userId: number): Observable<boolean> {
+  fetchUsingUserId(created_at: string, user_id: number) {
     return this.api
       .retrieve<Invoice[]>('invoices', {
-        createdAt,
-        userId: userId.toString(),
+        'createdAt:LIKE': created_at + '%',
+        user_id: user_id.toString(),
       })
       .pipe(
         tap((data) => {
-          if (data.length === 0) {
-            this.ns.show('No Record Found');
-            return;
-          }
           this.invoices.next(data);
-          console.log(this.invoices.value);
         }),
-        map((data) => data.length >= 1)
       );
   }
 
   selectInvoice(id: number): void {
     this.api
-      .retrieve<Invoice>('invoices', { id: id.toString() })
+      .retrieve<{invoice: Invoice, vouchers: Voucher[]}>('invoices', { id: id.toString() })
       .subscribe((data) => (this.store.invoice = data));
   }
 

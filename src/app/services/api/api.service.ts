@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { Observable, debounceTime, retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class ApiService {
 
   retrieve<T>(urlData: string | string[], payload?: {[key: string]: string}) {
     const url = this.createUrl('get', urlData);
-    return this.http.get<T>(url, {params: payload})
+    return this.http.get<T>(url, {params: payload}).pipe(debounceTime(this.randomTime()),retry(3))
   }
 
 
@@ -37,6 +37,10 @@ export class ApiService {
   delete<T>(url: string | string[], id: number): Observable<T> {
     const theUrl  = this.createUrl('destroy', url);
     return this.http.delete<T>(`${theUrl}/${id}`);
+  }
+
+  private randomTime(): number {
+    return 100 + Math.floor(Math.random() * 100);
   }
 
 }

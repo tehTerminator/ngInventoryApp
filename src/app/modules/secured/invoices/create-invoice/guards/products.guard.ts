@@ -9,11 +9,12 @@ export const productGuard: CanActivateFn = () => {
 
     const store: InvoiceStoreService = inject(InvoiceStoreService);
     const router: Router = inject(Router);
-    const route: ActivatedRoute = inject(ActivatedRoute);
 
     if (store.selectedItem !== EMPTY_PRODUCT) {
         return true;
     }
+
+    console.log('EMpty Product');
 
     const type = store.kind.toLowerCase() === 'sales' ? 'sales' : 'purchase';
     const url = getCreateInvoiceRoutes('select-product', type);

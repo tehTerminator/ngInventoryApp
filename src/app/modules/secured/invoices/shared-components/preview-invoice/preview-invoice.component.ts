@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, distinctUntilChanged } from 'rxjs';
 import { ApiService } from './../../../../../services/api/api.service';
 import { Invoice } from '../../../../../interface/invoice.interface';
+import { Voucher } from '../../../../../interface/voucher.interface';
 
 @Component({
   selector: 'app-preview-invoice',
@@ -11,7 +12,6 @@ import { Invoice } from '../../../../../interface/invoice.interface';
   styleUrls: ['preview-invoice.component.css']
 })
 export class PreviewInvoiceComponent implements OnInit {
-  private _sub = new Subscription();
   constructor(
     public store: InvoiceStoreService,
     private api: ApiService,
@@ -19,23 +19,24 @@ export class PreviewInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id')
+    const id = this.route.snapshot.paramMap.get('id');
     if (id === undefined || id === null) {
-      return 
+      return;
     }
 
     this.loadInvoices(id);
   }
 
   private loadInvoices(id: string) {
-    this.api.retrieve<Invoice>('invoice', {id})
+    this.api.retrieve<{invoice: Invoice, vouchers: Voucher[]}>(['invoice', id])
     .subscribe({
-      next: (value) => this.store.invoice = value
+      next: (value) => {
+        this.store.invoice = value
+      }
     })
   }
 
   get invoiceId(): number {
-    // return this.store.invoice.value.id;
-    return 0;
+    return this.store.snapshot.id;
   }
 }

@@ -20,7 +20,7 @@
         </button>
       </td>
       <td>
-        <div *ngIf="t.itemType !== 'BUNDLE';else showExpansion">
+        <div *ngIf="t.item_type !== 'BUNDLE';else showExpansion">
           {{ getDescription(t) }}
         </div>
         <ng-template #showExpansion>

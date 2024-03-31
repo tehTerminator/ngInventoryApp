@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { UserService } from './../../../../../../services/user/user.service';
+import { UserStoreService } from './../../../../../../services/user/user.service';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +16,7 @@ export class FormComponent {
   @Input('location') location = 0;
   userFormControl = new FormControl(0);
 
-  constructor(private userStore: UserService, private api: ApiService) {}
+  constructor(private userStore: UserStoreService, private api: ApiService) {}
 
   get users(): Observable<User[]> {
     return this.userStore.getAsObservable();

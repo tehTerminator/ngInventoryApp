@@ -9,7 +9,7 @@ import { User } from './../../interface/user.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseService<User> {
+export class UserStoreService extends BaseService<User> {
 
   constructor(private api: ApiService, private notification: NotificationsService) {
     super('users', HOUR);

@@ -16,6 +16,7 @@ import { RecentPaymentBtnComponent } from './components/choose-payment-method/re
 import { SelectLedgerFormComponent } from './components/choose-payment-method/select-ledger-form/select-ledger-form.component';
 import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
 import { GeneralItemStoreService } from './services/general-item-store.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { GeneralItemStoreService } from './services/general-item-store.service';
     CreateInvoiceRoutingModule,
     SharedComponentModule,
     CoreModule,
+    MatExpansionModule
   ],
   providers: [
     GeneralItemStoreService

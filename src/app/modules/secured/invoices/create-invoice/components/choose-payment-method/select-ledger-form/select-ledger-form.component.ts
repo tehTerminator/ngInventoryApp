@@ -91,7 +91,7 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
 
   private storeLastPaymentMethod() {
     const ledger = this.ledgerService.getElementById(this.form.ledger);
-    localStorage.setItem('lastPaymentMethod', JSON.stringify(ledger));
+    this.recentPaymentMethod = ledger;
   }
 
   set recentPaymentMethod(ledger: Ledger | null) {

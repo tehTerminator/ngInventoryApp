@@ -6,6 +6,7 @@ import { NotificationsService } from './../../../../services/notification/notifi
 import { StoreLocation } from './../../../../interface/location.interface';
 import { Observable, Subscription, finalize } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { LocationService } from '../../../../services/locations/locations.service';
 
 @Component({
   selector: 'app-locations-form',
@@ -19,7 +20,8 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private notice: NotificationsService
+    private notice: NotificationsService,
+    private locationStore: LocationService,
   ) {}
 
   ngOnInit(): void {
@@ -63,12 +65,12 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
   }
 
   private addNewLocation(location: StoreLocation) {
-    return this.api.create<StoreLocation>(['location'], location)
+    return this.locationStore.create(location)
     .pipe(finalize(() => this._loading = false));
   }
 
   private updateLocation(location: StoreLocation) {
-    return this.api.update<StoreLocation>(['location'], location)
+    return this.locationStore.update(location)
     .pipe(finalize(() => this._loading = false));
   }
 
@@ -90,15 +92,15 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
 
   private populateForm(id: string) {
     this._loading = true;
-    this.api
-      .retrieve<StoreLocation>(['location', id])
-      .pipe(finalize(() => (this._loading = false)))
-      .subscribe({
-        next: (value) =>
-          this.form.patchValue({
-            id: value.id,
-            title: value.title,
-          }),
+    try {
+      const location = this.locationStore.getElementById(parseInt(id));
+      this.form.patchValue({
+        id: location.id,
+        title: location.title
       });
+    } catch (e) {
+      this.notice.show('No Location # ' + id + ' found');
+      this.form.reset();
+    }
   }
 }

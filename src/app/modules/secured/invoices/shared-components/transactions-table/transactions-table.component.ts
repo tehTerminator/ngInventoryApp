@@ -1,9 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  map,
-} from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { Transaction } from './../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { LedgerService } from '../../../../../services/ledger/ledger.service';
@@ -28,7 +24,9 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     this.bundleService.init();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.store.snapshot.transactions);
+  }
 
   ngOnDestroy(): void {
     this.finally.next(1);
@@ -39,16 +37,18 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     this.store.deleteTransaction(transaction);
 
   getDescription(transaction: Transaction) {
-    if (transaction.itemType === 'LEDGER') {
-      const title = this.ledgerService.getElementById(transaction.itemId).title;
+    if (transaction.item_type === 'LEDGER') {
+      const title = this.ledgerService.getElementById(
+        transaction.item_id
+      ).title;
       return `${title} Payment`;
     }
 
     let service =
-      transaction.itemType === 'BUNDLE'
+      transaction.item_type === 'BUNDLE'
         ? this.bundleService
         : this.productService;
-    const title = service.getElementById(transaction.itemId).title;
+    const title = service.getElementById(transaction.item_id).title;
     return title;
   }
 
@@ -67,7 +67,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     return 4;
   }
 
-  get transactions$(): Observable<Transaction[]> {
+  get transactions$() {
     return this.store.invoice.pipe(map((value) => value.transactions));
   }
 }

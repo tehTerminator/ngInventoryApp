@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { Contact, EMPTY_CONTACT } from '../../../../../interface/contact.interface';
 import { ContactsService } from './../../../../../services/contacts/contacts.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
@@ -19,7 +19,10 @@ export class ContactTableComponent implements OnInit, OnDestroy {
     ) {}
     
     ngOnInit(): void {
-        this._sub = this.store.invoice.subscribe({
+        this.contactService.init();
+        this._sub = this.store.invoice
+        .pipe(debounceTime(300))
+        .subscribe({
             next: (invoice) =>  {
                 try {
                     this.contact = this.contactService.getElementById(invoice.contact_id); 
