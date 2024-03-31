@@ -11,10 +11,10 @@ export interface Invoice extends Entity {
 }
 
 export interface Transaction extends Entity {
-  invoiceId: number;
-  itemId: number;
-  itemType: 'PRODUCT' | 'LEDGER' | 'BUNDLE';
-  userId: number;
+  invoice_id: number;
+  item_id: number;
+  item_type: 'PRODUCT' | 'LEDGER' | 'BUNDLE';
+  user_id: number;
   quantity: number;
   rate: number;
   discount: number;
@@ -23,10 +23,10 @@ export interface Transaction extends Entity {
 
 export const BASE_TRANSACTION: Transaction = Object.freeze({
   id: 0,
-  invoiceId: 0,
-  itemId: 0,
-  itemType: 'PRODUCT',
-  userId: 0,
+  invoice_id: 0,
+  item_id: 0,
+  item_type: 'PRODUCT',
+  user_id: 0,
   quantity: 0,
   rate: 0,
   discount: 0,
