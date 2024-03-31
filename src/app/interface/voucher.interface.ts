@@ -7,7 +7,6 @@ export interface Voucher extends Entity {
     narration: string;
     amount: number;
     user_id: number;
-    state: boolean;
     creditor: Ledger;
     debtor: Ledger;
 }
@@ -19,7 +18,6 @@ export const EMPTY_VOUCHER: Voucher = Object.freeze({
     narration: '',
     amount: 0,
     user_id: 0,
-    state: false,
     creditor: EMPTY_LEDGER,
     debtor: EMPTY_LEDGER,
 })
