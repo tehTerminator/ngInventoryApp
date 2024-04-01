@@ -5,6 +5,7 @@ import { Ledger } from './../../../../../../interface/ledger.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatementFormGroup } from './StatementFormGroup';
 import { StatementService } from '../../statement-service/statement.service';
+import { getCurrentDateString } from '../../../../../../shared/functions';
 
 @Component({
   selector: 'app-form',
@@ -20,6 +21,9 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.ledgerService.init();
+    const currentDate = getCurrentDateString();
+    this.form.fromDateFormControl.setValue(currentDate);
+    this.form.toDateFormControl.setValue(currentDate);
   }
 
 
@@ -27,9 +31,11 @@ export class FormComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
+    // console.log(this.form.value);
+    
+    const ledger = this.ledgerService.getElementById(+this.form.ledger);
 
-
-    this.statementService.fetchData(this.form.ledger, this.form.fromDate, this.form.toDate);
+    this.statementService.fetchData(ledger, this.form.fromDate, this.form.toDate);
   }
 
   get ledgers(): Observable<Ledger[]> {
