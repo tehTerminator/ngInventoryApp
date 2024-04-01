@@ -33,29 +33,21 @@ export abstract class BaseService<T extends Entity> {
     this.fetch();
   }
 
-  protected store(data: T[]): void {
+  store(data: T[]): void {
     this._data.next(data);
     this.updateTimeStamp();
   }
 
   getElementById(id: number): T {
-    const list = this._data.value;
-    if (list.length > 0) {
-      const result = list.find((x) => {
-        if (x.hasOwnProperty('id')) {
-          return x.id === id;
-        }
-        throw new Error('ID field Not Found in List');
-      });
-      if (!!result) {
-        return result;
-      }
+    const item = this.getAsList().find(x => x.id === +id);
+    if (!!item) {
+      return item;
     }
-    throw new Error(this.table + ' Not Found');
+    throw new Error(this.table + ' Not Found with Id' + id);
   }
 
   get(index: number): T {
-    return this.getAsList()[index];
+    return this.getAsList()[+index];
   }
 
   getAsList(): T[] {
