@@ -4,17 +4,17 @@ import { Ledger } from '../../../../../../interface/ledger.interface';
 export class StatementFormGroup extends FormGroup {
   constructor() {
     super({
-      ledger: new FormControl(0, Validators.required),
-      fromDate: new FormControl(null, Validators.required),
-      toDate: new FormControl(null, Validators.required)
+      ledger: new FormControl<number>(0, Validators.required),
+      fromDate: new FormControl<string>('', Validators.required),
+      toDate: new FormControl<string>('', Validators.required)
     });
   }
 
-  get ledgerFormControl(): FormControl<Ledger> {
-    return this.get('ledger') as FormControl<Ledger>;
+  get ledgerFormControl(): FormControl<number> {
+    return this.get('ledger') as FormControl<number>;
   }
 
-  get ledger(): Ledger {
+  get ledger(): number {
     return this.ledgerFormControl.value;
   }
 
