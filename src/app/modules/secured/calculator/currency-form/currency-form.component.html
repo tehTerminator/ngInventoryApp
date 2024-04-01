@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col">
+      <form [formGroup]="calcForm" (ngSubmit)="addCurrency()">
+        <div class="row gt-1">
+          <mat-form-field class="col-6" appearance="fill">
+            <mat-label>Denomination</mat-label>
+            <input
+              #denoField
+              matInput
+              formControlName="denomination"
+              class="text-center"
+            />
+            <mat-error *ngIf="denomination.invalid">
+              Please Enter Correct Value
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-6" appearance="fill">
+            <mat-label> Count </mat-label>
+            <input
+              matInput
+              formControlName="count"
+              class="text-center"
+              type="number"
+              min="1"
+              step="1"
+            />
+            <mat-error *ngIf="count.hasError('min')">
+              Please Enter Count
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          class="btn w-100 mb-3"
+          [disabled]="calcForm.invalid"
+        >
+          Add Currency
+        </button>
+      </form>
+    </div>
+  </div>
