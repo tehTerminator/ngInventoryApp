@@ -1,0 +1,44 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <h3 class="fs-3 mb-0 mt-1">Ledger Opening And Closing Balance</h3>
+      <div class="form-group">
+          <input type="date" class="form-control" [formControl]="dateField" (change)="this.updateList()">
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table bg-light text-center" *ngIf="hasData; else noData">
+        <thead>
+          <tr>
+            <th>Ledger Name</th>
+            <th>Opening Balance</th>
+            <th>Closing Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data | async">
+            <td>{{ item.ledger.title }}</td>
+            <td class="text-center">{{ item.opening | currency: "INR" }}</td>
+            <td class="text-center">{{ item.closing | currency: "INR" }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="border border-top">
+          <tr>
+            <td>
+              Diff : {{ totalClosing - totalOpening | currency:'INR' }}
+            </td>
+            <td>
+              Opening : {{ totalOpening | currency:'INR' }}
+            </td>
+            <td>
+              Closing : {{ totalClosing | currency:'INR'}}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  
+  
+  <ng-template #noData>
+    <h1 class="fs-1 text-center">Sorry No Data To Display</h1>
+  </ng-template>
