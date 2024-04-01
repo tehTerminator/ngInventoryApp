@@ -1,22 +1,21 @@
-<form [formGroup]="form" class="card shadow" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" class="card shadow mb-3" (ngSubmit)="onSubmit()">
     <div class="card-body">
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Account</mat-label>
-            <mat-select formControlName="ledger">
-                <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger">
+        <div class="form-group">
+            <label for="ledger" class="form-label">Account</label>
+            <select class="form-select w-100" formControlName="ledger" >
+                <option *ngFor="let ledger of ledgers | async" [value]="ledger.id">
                     {{ ledger.title }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>From Date</mat-label>
-            <input matInput type="date" formControlName="fromDate">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>To Date</mat-label>
-            <input matInput type="date" formControlName="toDate">
-        </mat-form-field>
-
-        <button class="btn btn-primary shadow w-100" type="submit">View</button>
+                </option>
+            </select>
+        </div>
+        <div class="form-group mt-3">
+            <label for="fromDate" class="form-label">From Date</label>
+            <input type="date" class="form-control w-100" formControlName="fromDate">
+        </div>
+        <div class="form-group mt-3">
+            <label for="toDate" class="form-label">To Date</label>
+            <input type="date" class="form-control w-100" formControlName="toDate">
+        </div>
+        <button type="submit" class="btn btn-primary shadow w-100 mt-3">View</button>
     </div>
 </form>
