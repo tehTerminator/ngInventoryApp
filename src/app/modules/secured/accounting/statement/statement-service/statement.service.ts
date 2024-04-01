@@ -15,6 +15,7 @@ export class StatementService {
   constructor(private api: ApiService) {}
 
   fetchData(ledger: Ledger, fromDate: string, toDate: string): void {
+    console.log('Fetch Data Called');
     this.api
       .retrieve<Statement>('ledger-statement', {
         ledger: ledger.id.toString(),
