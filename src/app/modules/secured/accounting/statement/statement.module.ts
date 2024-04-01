@@ -7,6 +7,7 @@ import { FormComponent } from './components/form/form.component';
 import { TableComponent } from './components/table/table.component';
 
 import { CoreModule } from './../../../core/core.module';
+import { StatementService } from './statement-service/statement.service';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CoreModule } from './../../../core/core.module';
     CommonModule,
     StatementRoutingModule,
     CoreModule
-  ]
+  ],
+  providers: [StatementService]
 })
 export class StatementModule { }
