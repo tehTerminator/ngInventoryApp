@@ -1,3 +1,3 @@
 export const environment = {
-    baseUrl: 'https://apidemo.maharajac.in/public',
+    baseUrl: 'https://api2.maharajac.in/public',
 };

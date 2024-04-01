@@ -5,7 +5,8 @@ export interface Invoice extends Entity {
   contact_id: number;
   location_id: number;
   paid: boolean;
-  amount: number;
+  gross_amount: number;
+  discount_amount: number;
   user_id: number;
   transactions: Transaction[];
 }
@@ -17,7 +18,6 @@ export interface Transaction extends Entity {
   user_id: number;
   quantity: number;
   rate: number;
-  discount: number;
   transactions?: Transaction[];
 }
 
@@ -29,7 +29,6 @@ export const BASE_TRANSACTION: Transaction = Object.freeze({
   user_id: 0,
   quantity: 0,
   rate: 0,
-  discount: 0,
 });
 
 export const BASE_INVOICE: Invoice = Object.freeze({
@@ -37,7 +36,8 @@ export const BASE_INVOICE: Invoice = Object.freeze({
   contact_id: 0,
   user_id: 0,
   paid: false,
-  amount: 0,
+  gross_amount: 0,
+  discount_amount: 0,
   kind: 'SALES',
   location_id: 0,
   created_at: '',

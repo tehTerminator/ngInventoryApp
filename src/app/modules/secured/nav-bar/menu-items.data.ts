@@ -6,6 +6,7 @@ export const navItems = [
       { text: 'Vouchers', routerLink: ['accounting', 'voucher'] },
       { text: 'Statement', routerLink: ['accounting', 'statement'] },
       { text: 'Day Book', routerLink: ['accounting', 'daybook'] },
+      { text: 'Balance', routerLink: ['accounting', 'ledger-balance'] }
     ],
   },
   {

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { FormControl, UntypedFormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Subject, takeUntil, Observable } from 'rxjs';
 import { LedgerBalanceService, LedgerBalance } from '../ledger-balance.service';
+import { getCurrentDateString } from '../../../../../shared/functions';
 
 @Component({
   selector: 'app-ledger-balance-list',
@@ -45,8 +46,5 @@ export class LedgerBalanceListComponent {
     return this.store.accountBalance;
   }
 
-  updateList = () => this.store.fetchData(this.dateField.value);
-}
-function getCurrentDateString(): any {
-  throw new Error('Function not implemented.');
+  updateList = () => this.store.fetchData(this.dateField.value || getCurrentDateString());
 }

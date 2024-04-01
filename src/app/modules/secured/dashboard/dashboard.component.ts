@@ -25,6 +25,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   get myLocation(): StoreLocation {
-    return this._myLocation;
+    if(!!this._myLocation) {
+      return this._myLocation;
+    }
+    return EMPTYLOCATION;
   }
 }

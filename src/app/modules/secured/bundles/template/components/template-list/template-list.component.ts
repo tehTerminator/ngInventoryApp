@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BundleStoreService } from './../../services/bundle-store.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { BundleTemplate } from '../../../../../../interface/bundle.interface';
 
 @Component({
@@ -19,7 +19,14 @@ export class TemplateListComponent {
     return this.store.templates$;
   }
 
-  get totalAmount(): number {
-    return this.store.totalAmount;
+  getTotalAmount$(): Observable<number> {
+    return this.store.templates$.pipe(map(value => {
+      let amount = 0;
+      value.forEach(item => {
+        amount += (item.quantity * item.rate);
+      })
+
+      return amount;
+    }))
   }
 }

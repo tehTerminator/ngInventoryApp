@@ -36,12 +36,12 @@ export class InvoiceStoreService {
     private contactService: ContactsService
   ) {}
 
-  createTransaction(quantity: number, rate: number, discount = 0): void {
+  createTransaction(quantity: number, rate: number): void {
     let transaction = { ...BASE_TRANSACTION };
     if (this.bundleService.isInstanceOfBundle(this.selectedItem)) {
       transaction = this.createTransactionFromBundle(
         this.selectedItem,
-        quantity
+        +quantity
       );
     } else {
       const kind = this.ledgerService.isInstanceOfLedger(this.selectedItem)
@@ -51,9 +51,8 @@ export class InvoiceStoreService {
       transaction = this.makeTransation(
         this.selectedItem,
         kind,
-        quantity,
-        rate,
-        discount
+        +quantity,
+        +rate,
       );
     }
     this.appendTransaction(transaction);
@@ -66,7 +65,6 @@ export class InvoiceStoreService {
    * @param kind is a String "PRODUCT" | "LEDGER" | "BUNDLE"
    * @param quantity is a number
    * @param rate is a number
-   * @param discount is a number
    * @returns a Transaction
    */
   private makeTransation(
@@ -74,15 +72,13 @@ export class InvoiceStoreService {
     kind: 'PRODUCT' | 'LEDGER' | 'BUNDLE',
     quantity: number,
     rate: number,
-    discount = 0
   ) {
     let transaction = {
       ...BASE_TRANSACTION,
-      rate,
-      quantity,
-      item_id: item.id,
+      rate: +rate,
+      quantity: +quantity,
+      item_id: +item.id,
       item_type: kind,
-      discount: kind === 'PRODUCT' ? discount : 0
     };
     return transaction;
   }
@@ -98,8 +94,12 @@ export class InvoiceStoreService {
       existingTransactions.push(newTransaction);
     }
 
+    let grossAmount = 0;
+    existingTransactions.forEach(item => grossAmount += item.quantity * item.rate);
+
     this._invoice.next({
       ...this.snapshot,
+      gross_amount: grossAmount,
       transactions: existingTransactions,
     });
   }
@@ -120,15 +120,15 @@ export class InvoiceStoreService {
     const data = this.snapshot.transactions;
     return data.findIndex(
       (x) =>
-        x.item_id === transaction.item_id &&
-        x.rate === transaction.rate &&
+        x.item_id === +transaction.item_id &&
+        x.rate === +transaction.rate &&
         x.item_type === transaction.item_type
     );
   }
 
   private createTransactionFromBundle(
     bundle: Bundle,
-    quantity: number
+    quantity: number,
   ): Transaction {
     const rate = this.bundleService.getElementById(bundle.id).rate;
     const transaction = this.makeTransation(bundle, 'BUNDLE', quantity, rate);
@@ -139,9 +139,9 @@ export class InvoiceStoreService {
           template.kind === 'PRODUCT'
             ? this.productService.getElementById(template.item_id)
             : this.ledgerService.getElementById(template.item_id);
-        quantity = template.quantity * quantity;
+        const newQuantity = template.quantity * quantity;
         transaction.transactions.push(
-          this.makeTransation(item, template.kind, quantity, template.rate)
+          this.makeTransation(item, template.kind, newQuantity, template.rate)
         );
       } catch (e) {
         throw new Error(
@@ -228,12 +228,26 @@ export class InvoiceStoreService {
   }
 
   set amount(value: number) {
-    this._invoice.next({ ...this.snapshot, amount: value });
+    this._invoice.next({ ...this.snapshot, gross_amount: value });
   }
 
   set location(value: number) {
     console.log('Storing Location', value);
     this._invoice.next({ ...this.snapshot, location_id: value });
+  }
+
+  set discount(value: number) {
+    const oldData = this.snapshot;
+    const grossAmount = oldData.gross_amount;
+    if (value / grossAmount >= 0.5) {
+      this._invoice.next({...oldData, discount_amount: (grossAmount * 0.49)});
+    } else {
+      this._invoice.next({...oldData, discount_amount: value});
+    }
+  }
+
+  get discount(): number {
+    return this.snapshot.discount_amount;
   }
 
   get grossAmount() {
@@ -251,11 +265,9 @@ export class InvoiceStoreService {
   get netAmount() {
     return this._invoice.pipe(
       map((invoice) => {
-        let amount = 0;
-        invoice.transactions.forEach(
-          (t) => (amount += t.quantity * t.rate * (1 - t.discount / 100))
-        );
-        return amount;
+        const netAmount = invoice.gross_amount - invoice.discount_amount;
+        console.log('Net Amount', netAmount);
+        return netAmount;
       })
     );
   }
@@ -273,11 +285,9 @@ export class InvoiceStoreService {
   get netDiscount() {
     return this._invoice.pipe(
       map((invoice) => {
-        let amount = 0;
-        invoice.transactions.forEach(
-          (t) => (amount += t.quantity * t.rate * (t.discount / 100))
-        );
-        return amount;
+        const dis = invoice.discount_amount;
+        console.log('Discount', dis);
+        return dis;
       })
     );
   }
@@ -304,7 +314,7 @@ export class InvoiceStoreService {
           break;
       }
       this.selectedItem = service.getElementById(item.item_id);
-      this.createTransaction(item.quantity, item.rate, item.discount);
+      this.createTransaction(item.quantity, item.rate);
     });
 
     this.paymentInfo$.next(data.vouchers);

@@ -17,6 +17,8 @@ import { SelectLedgerFormComponent } from './components/choose-payment-method/se
 import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
 import { GeneralItemStoreService } from './services/general-item-store.service';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SetDiscountComponent } from './components/set-discount/set-discount.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -31,13 +33,15 @@ import { MatExpansionModule } from '@angular/material/expansion';
     RecentPaymentBtnComponent,
     SelectLedgerFormComponent,
     UdhaarPaymentBtnComponent,
+    SetDiscountComponent,
   ],
   imports: [
     CommonModule,
     CreateInvoiceRoutingModule,
     SharedComponentModule,
     CoreModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule
   ],
   providers: [
     GeneralItemStoreService

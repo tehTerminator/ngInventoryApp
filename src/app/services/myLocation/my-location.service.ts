@@ -10,7 +10,7 @@ import { ApiService } from './../api/api.service';
   providedIn: 'root',
 })
 export class MyLocationStoreService {
-  private _availableLocations = new BehaviorSubject<StoreLocation[]>([]);
+  private _availableLocations = new BehaviorSubject<StoreLocation[]>([EMPTYLOCATION]);
   private _selectedLocation = new BehaviorSubject<StoreLocation>(EMPTYLOCATION);
   private _init = false;
 
@@ -22,8 +22,11 @@ export class MyLocationStoreService {
       return;
     }
 
+    console.log('INitializing Data');
+
     const selectedLocationData = localStorage.getItem('selectedLocation');
     if (!!selectedLocationData) {
+      console.log('Selected Location Data', selectedLocationData);
       const selectedLocation = JSON.parse(
         selectedLocationData
       ) as StoreLocation;
@@ -33,11 +36,15 @@ export class MyLocationStoreService {
     this.api.retrieve<StoreLocation[]>(['user', 'locations']).subscribe({
       next: (value) => {
         this._availableLocations.next(value);
-        if (this.snapshot.selected === EMPTYLOCATION) {
+        if (this.snapshot.selected === EMPTYLOCATION && value.length > 0) {
           this._selectedLocation.next(value[0]);
         }
         this._init = true;
       },
+      error: (() => {
+        this._selectedLocation.next(EMPTYLOCATION);
+        this._init = false;
+      })
     });
   }
 

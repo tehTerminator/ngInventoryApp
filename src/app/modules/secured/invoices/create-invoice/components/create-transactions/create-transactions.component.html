@@ -1,6 +1,6 @@
 <section class="card">
     <h2 class="card-header">
-      {{ productName }}
+      Item: {{ productName }}
     </h2>
     <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="card-body">
       <div class="row">
@@ -14,6 +14,7 @@
               matInput
               formControlName="quantity"
               required
+              class="text-center"
             />
             <mat-error
               *ngIf="transactionForm.quantityFormControl.invalid && (transactionForm.quantityFormControl.touched || transactionForm.quantityFormControl.dirty)"
@@ -30,24 +31,17 @@
         <div class="col-md-6">
           <mat-form-field class="d-block" appearance="outline">
             <mat-label>Rate</mat-label>
-            <input type="number" name="rate" matInput formControlName="rate" required />
+            <input type="number" name="rate" matInput formControlName="rate" required class="text-center" />
             <mat-error *ngIf="transactionForm.rateFormControl.invalid && (transactionForm.rateFormControl.touched || transactionForm.rateFormControl.dirty)">
               <span *ngIf="transactionForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
               <span *ngIf="transactionForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col-md-12">
-          <mat-form-field class="d-block" appearance="outline">
-            <mat-label>Discount</mat-label>
-            <input
-              type="number"
-              name="discount"
-              matInput
-              formControlName="discount"
-            />
-          </mat-form-field>
-        </div>
+      </div>
+
+      <div class="col-md-12 text-center border border-1 p-2">
+        <strong class="fs-3">{{ transactionForm.grossAmount | currency: 'INR'}}</strong>
       </div>
       
       <div class="p-1 flex-fill">
@@ -62,44 +56,4 @@
       </div>
   
     </form>
-  </section>
-  <section>
-    
-    <table class="table bg-light mt-3 text-center">
-      <thead>
-        <tr>
-          <th *ngIf="transactionForm.netAmount < 5000">
-            <span class="d-block">Gross Amount</span>
-            <span class="d-block text-center">A</span>
-          </th>
-          <th *ngIf="transactionForm.netAmount < 5000">
-            <span class="d-block">Total Discount</span>
-            <span class="d-block text-center">B</span>
-          </th>
-          <th>
-            <span class="d-block">Net Amount</span>
-            <span class="d-block text-center">A - B</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="text-center">
-          <td *ngIf="transactionForm.netAmount < 5000">
-            <span class="d-block">
-              {{ transactionForm.grossAmount | currency: 'INR' }}
-            </span>
-            <span class="d-block">
-              {{ transactionForm.quantity }} &#64; {{ transactionForm.rate }}
-            </span>
-          </td>
-          <td *ngIf="transactionForm.netAmount < 5000">
-            <span class="d-block">{{ transactionForm.discount | currency: 'INR'}}</span>
-            <span class="d-block">{{ transactionForm.discountPercentage | number:'1.2-2' }} %</span>
-          </td>
-          <td class="fw-bold fs-1 align-middle">
-            {{ transactionForm.netAmount | currency: 'INR' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </section>

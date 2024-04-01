@@ -51,7 +51,6 @@ export class CreateTransactionsComponent implements OnInit {
     this.store.createTransaction(
       this.transactionForm.quantity,
       this.transactionForm.rate,
-      this.transactionForm.discountPercentage
     );
     this.navigateToSelectProduct();
   }

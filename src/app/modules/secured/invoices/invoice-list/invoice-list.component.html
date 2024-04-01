@@ -9,7 +9,7 @@
                 <span class="fw-bold">{{ contact(invoice.contact_id) }}</span>
                 <div class="div">
                     <span class="badge bg-primary me-1">
-                        {{ invoice.amount | currency:'INR' }}
+                        {{ invoice.gross_amount - invoice.discount_amount | currency:'INR' }}
                     </span>
                     <span class="badge bg-primary me-1">
                         {{ invoice.kind }}

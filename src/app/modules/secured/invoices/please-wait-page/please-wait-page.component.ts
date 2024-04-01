@@ -37,6 +37,10 @@ export class PleaseWaitPageComponent implements OnInit {
       )
       .subscribe({
         next: (value) => (this.store.amount = value),
+        error: (() => {
+          this.message = 'An Error Encountered While Saving';
+          this.navigateToCreateInvoice();
+        })
       });
   }
 

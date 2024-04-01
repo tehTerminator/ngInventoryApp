@@ -4,7 +4,12 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span>Inventory App</span>
-        <button mat-icon-button class="ms-auto" [matMenuTriggerFor]="userMenu">
+        <button mat-icon-button class="ms-auto me-0" (click)="onOpenCalc()">
+            <mat-icon>
+                calculate
+            </mat-icon>
+        </button>
+        <button mat-icon-button class="" [matMenuTriggerFor]="userMenu">
             <mat-icon>
                 account_circle
             </mat-icon>

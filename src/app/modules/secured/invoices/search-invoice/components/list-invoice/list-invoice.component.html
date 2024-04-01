@@ -9,7 +9,7 @@
             {{ getContactName(invoice.contact_id)}}
         </div>
         <div class="text-right">
-            {{ invoice.amount | currency:'INR'}}
+            {{ invoice.gross_amount - invoice.discount_amount | currency:'INR'}}
         </div>
         <mat-icon>delete</mat-icon>
     </div>

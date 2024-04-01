@@ -17,7 +17,10 @@ export class SelectLocationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._sub = this.myLocationStore.selectedLocation.subscribe({
-      next: (value) => this._selectedLocation = value
+      next: (value) => {
+        console.log('Selected Location', value);
+        this._selectedLocation = value
+      }
     });
   }
 

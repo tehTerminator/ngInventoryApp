@@ -8,6 +8,8 @@ import { contactGuard } from './guards/contacts.guard';
 import { productGuard } from './guards/products.guard';
 import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
 import { paymentGuard } from './guards/payment.guard';
+import { SetDiscountComponent } from './components/set-discount/set-discount.component';
+import { discountGuard } from './guards/discount.guard';
 
 const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children: [
   {
@@ -24,6 +26,12 @@ const routes: Routes = [{ path: '', component: CreateInvoiceComponent, children:
     component: CreateTransactionsComponent,
     canActivate: [contactGuard, productGuard]
   },
+  {
+    path: 'set-discount',
+    component: SetDiscountComponent,
+    canActivate: [discountGuard, contactGuard, paymentGuard]
+  },
+  
   {
     path: 'choose-payment-method',
     component: ChoosePaymentMethodComponent,

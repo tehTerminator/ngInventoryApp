@@ -9,6 +9,7 @@ import {
   startWith,
   debounceTime,
   EMPTY,
+  take,
 } from 'rxjs';
 import { GeneralItem } from '../../../../../../interface/general-item.interface';
 import { GeneralItemStoreService } from '../../services/general-item-store.service';
@@ -81,8 +82,18 @@ export class SelectProductComponent implements OnInit, OnDestroy {
   }
 
   navigateToPaymentOption() {
-    this.router.navigate(['../choose-payment-method'], {
-      relativeTo: this.route,
+    this.store.invoice.pipe(take(1)).subscribe({
+      next: (value) => {
+        if (value.kind === 'PURCHASE') {
+          this.router.navigate(['../choose-payment-method'], {
+            relativeTo: this.route,
+          });
+        } else {
+          this.router.navigate(['../set-discount'], {
+            relativeTo: this.route,
+          });
+        }
+      },
     });
   }
 

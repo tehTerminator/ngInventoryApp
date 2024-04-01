@@ -13,11 +13,6 @@ import { NotificationsService } from '../notification/notification.service';
   providedIn: 'root',
 })
 export class LocationService extends BaseService<StoreLocation> {
-
-  private _availableLocations = new BehaviorSubject<StoreLocation[]>([]);
-  private _selectedLocation = new BehaviorSubject<StoreLocation>(EMPTYLOCATION);
-  private _init = false;
-  
   constructor(
     private api: ApiService,
     private notification: NotificationsService

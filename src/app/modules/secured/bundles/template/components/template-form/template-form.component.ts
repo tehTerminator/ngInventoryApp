@@ -4,7 +4,7 @@ import { LedgerService } from './../../../../../../services/ledger/ledger.servic
 import { ProductService } from './../../../../../../services/product/product.service';
 import { TemplateFormGroup } from './TemplateFormGroup';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, finalize, takeUntil } from 'rxjs';
 import { BundleTemplate } from './../../../../../../interface/bundle.interface';
 import { BundleStoreService } from '../../services/bundle-store.service';
 
@@ -14,6 +14,7 @@ import { BundleStoreService } from '../../services/bundle-store.service';
   styleUrl: './template-form.component.scss',
 })
 export class TemplateFormComponent implements OnInit, OnDestroy {
+  loading = false;
   constructor(
     private api: ApiService,
     private store: BundleStoreService,
@@ -52,13 +53,15 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.loading = true;
+
     
 
     this.api
       .create<BundleTemplate>(
         ['bundle', this.store.id.toString(), 'template'],
         this.templateFormGroup.value
-      )
+      ).pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (data) => this.handleSuccess(data),
         error: () => this.notification.show('Unable to Create Template'),
