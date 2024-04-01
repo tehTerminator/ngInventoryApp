@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: () => import('./voucher-form/voucher-form.module').then((m) => m.VoucherFormModule),
   },
   {
+    path: 'voucher/:id',
+    loadChildren: () => import('./voucher-form/voucher-form.module').then((m) => m.VoucherFormModule),
+  },
+  {
     path: 'statement',
     loadChildren: () =>
       import('./statement/statement.module').then((m) => m.StatementModule),
@@ -23,6 +27,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./daybook/daybook.module').then((m) => m.DaybookModule),
   },
+  { path: 'ledger-balance', loadChildren: () => import('./ledger-balance/ledger-balance.module').then(m => m.LedgerBalanceModule) },
 ];
 
 @NgModule({
