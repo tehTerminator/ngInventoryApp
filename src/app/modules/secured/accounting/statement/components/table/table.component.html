@@ -15,7 +15,7 @@
             <tbody>
                 <tr *ngFor="let v of rows| async;let i = index">
                     <td>
-                        <a [routerLink]="['/cashbook', 'voucher', v.id]">
+                        <a [routerLink]="['/auth', 'accounting', 'voucher', v.id]">
                             {{ v.id }}
                         </a>
                     </td>
@@ -25,7 +25,7 @@
                         <span>
                            {{ splitText(v.narration)[0] }}
                        </span>
-                        <a [routerLink]="['/invoices', 'search', 'search-by-operator',  splitText(v.narration)[1]]">
+                        <a [routerLink]="['/auth', 'invoices', 'view',  splitText(v.narration)[1]]">
                             {{ splitText(v.narration)[1] }}
                        </a>
                     </td>
