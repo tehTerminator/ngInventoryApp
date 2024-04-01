@@ -7,6 +7,7 @@ import { LedgerService } from '../../services/ledger/ledger.service';
 import { ProductService } from '../../services/product/product.service';
 import { ContactsService } from '../../services/contacts/contacts.service';
 import { BundleService } from '../../services/bundle/bundle.service';
+import { MyLocationStoreService } from '../../services/myLocation/my-location.service';
 
 @Component({
   selector: 'app-secured',
@@ -22,6 +23,7 @@ export class SecuredComponent implements OnInit {
     private productService: ProductService,
     private contactService: ContactsService,
     private bundleService: BundleService,
+    private myLocationStore: MyLocationStoreService,
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +33,7 @@ export class SecuredComponent implements OnInit {
     this.productService.init();
     this.contactService.init();
     this.bundleService.init();
+    this.myLocationStore.retrieveData();
   }
 
   logout = () => this.authService.signOut();
