@@ -32,32 +32,29 @@
                 </div>
                 <div class="col-6">
                     <p class="text-end print-only">
-                        Proprietor<br /><br /> COMPANY
+                        Proprietor<br /><br /> Maharaja Computers
                     </p>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <ul class="print-only">
-                        <li>Goods / Services onces Rendered Shall Not be Taken Back.</li>
-                        <li>
-                            Please Make all your payments in the name of COMPANY.
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-12 justify-content-end">
-                    <table class="table print-only">
+            <div class="row mt-3 g-3 print-only">
+                <div class="col-6">
+                    <h3 class="fs-5">Bank Details</h3>
+                    <table class="table">
                         <tbody>
                             <tr>
                                 <th>Name</th>
-                                <td>COMPANY</td>
-                                <th>A/c No.</th>
-                                <td>xxxxxxxxxxxxxxxxxxxxx</td>
+                                <td>MAHARAJA COMPUTERS</td>
+                            </tr>
+                            <tr>
+                                <th>A/c</th>
+                                <td>3514 9275 310</td>
                             </tr>
                             <tr>
                                 <th>IFSC</th>
-                                <td>SBIN 000 xxxx</td>
+                                <td>SBIN 000 5089</td>
+                            </tr>
+                            <tr>
                                 <th>Bank</th>
                                 <td>State Bank Of India</td>
                             </tr>
@@ -68,7 +65,27 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-5">
+                    <ul class="print-only border border-2 m-3 p-3">
+                        <li>Thank you for Doing Business with Maharaja Computers</li>
+                        <li>Goods / Services onces Rendered Shall Not be Taken Back.</li>
+                        <li>
+                            Please Make all your payments in the name of Maharaja Computers.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="mt-2 d-print-none">
+    <a class="btn btn-primary me-2 " [hidden]="invoiceId <= 0" [routerLink]="['/auth', 'invoices', 'create', 'sales']">
+        Create New
+    </a>
+
+    <button type="button" class="btn btn-danger" [hidden]="invoiceId <= 0" (click)="onDeleteBtn()">
+        Delete Invoice
+    </button>
 </div>

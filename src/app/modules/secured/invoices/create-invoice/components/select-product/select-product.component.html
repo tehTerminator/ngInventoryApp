@@ -1,4 +1,4 @@
-<div class="card">
+<form class="card" [formGroup]="productForm" (ngSubmit)="navigateToCreateTransactions()">
   <h2 class="card-header">Select Product</h2>
   <div class="card-body">
     <mat-form-field class="w-100">
@@ -11,7 +11,7 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <button type="button" mat-raised-button color="primary" class="w-100" (click)="navigateToCreateTransactions()">
+    <button type="submit" mat-raised-button color="primary" class="w-100">
       Select
     </button>
     <button type="button" *ngIf="hasTransactions | async" (click)="navigateToPaymentOption()"
@@ -19,4 +19,4 @@
       Submit Invoice
     </button>
   </div>
-</div>
+</form>

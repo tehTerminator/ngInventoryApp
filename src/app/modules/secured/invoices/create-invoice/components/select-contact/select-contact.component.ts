@@ -17,7 +17,7 @@ import {
 } from 'rxjs';
 import { Contact } from './../../../../../../interface/contact.interface';
 import { ContactsService } from '../../../../../../services/contacts/contacts.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
@@ -34,6 +34,7 @@ export class SelectContactComponent
     nonNullable: true,
     validators: [Validators.required],
   });
+  contactForm = new FormGroup({contact: this.contactField});
   filteredContacts$: Observable<Contact[]> = EMPTY;
   private _sub = new Subscription();
 

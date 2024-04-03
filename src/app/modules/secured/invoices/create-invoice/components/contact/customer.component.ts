@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { EMPTY, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 
 @Component({
@@ -18,7 +17,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
       next: (invoice) => {
         const type = invoice.kind;
         switch (type) {
-          case 'sales':
+          case 'SALES':
             this.contactType = 'Party'
             break;
           default:

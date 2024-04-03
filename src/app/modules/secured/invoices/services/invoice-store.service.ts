@@ -52,7 +52,7 @@ export class InvoiceStoreService {
         this.selectedItem,
         kind,
         +quantity,
-        +rate,
+        +rate
       );
     }
     this.appendTransaction(transaction);
@@ -71,7 +71,7 @@ export class InvoiceStoreService {
     item: Product | Ledger | Bundle,
     kind: 'PRODUCT' | 'LEDGER' | 'BUNDLE',
     quantity: number,
-    rate: number,
+    rate: number
   ) {
     let transaction = {
       ...BASE_TRANSACTION,
@@ -87,7 +87,7 @@ export class InvoiceStoreService {
     const existingTransactions = this.snapshot.transactions;
     const indexOfSimilarTransaction =
       this.findSimilarTransaction(newTransaction);
-    if (indexOfSimilarTransaction > 0) {
+    if (indexOfSimilarTransaction >= 0) {
       existingTransactions[indexOfSimilarTransaction].quantity +=
         newTransaction.quantity;
     } else {
@@ -95,7 +95,9 @@ export class InvoiceStoreService {
     }
 
     let grossAmount = 0;
-    existingTransactions.forEach(item => grossAmount += item.quantity * item.rate);
+    existingTransactions.forEach(
+      (item) => (grossAmount += item.quantity * item.rate)
+    );
 
     this._invoice.next({
       ...this.snapshot,
@@ -120,15 +122,15 @@ export class InvoiceStoreService {
     const data = this.snapshot.transactions;
     return data.findIndex(
       (x) =>
-        x.item_id === +transaction.item_id &&
-        x.rate === +transaction.rate &&
-        x.item_type === transaction.item_type
+        x.rate === transaction.rate &&
+        x.item_type === transaction.item_type &&
+        x.item_id === transaction.item_id
     );
   }
 
   private createTransactionFromBundle(
     bundle: Bundle,
-    quantity: number,
+    quantity: number
   ): Transaction {
     const rate = this.bundleService.getElementById(bundle.id).rate;
     const transaction = this.makeTransation(bundle, 'BUNDLE', quantity, rate);
@@ -184,7 +186,7 @@ export class InvoiceStoreService {
   }
 
   reset(): void {
-    this._invoice.next({...BASE_INVOICE, transactions: []});
+    this._invoice.next({ ...BASE_INVOICE, transactions: [] });
     this.resetPayment();
     this.ledgerService.init();
     this.productService.init();
@@ -232,7 +234,6 @@ export class InvoiceStoreService {
   }
 
   set location(value: number) {
-    console.log('Storing Location', value);
     this._invoice.next({ ...this.snapshot, location_id: value });
   }
 
@@ -240,9 +241,9 @@ export class InvoiceStoreService {
     const oldData = this.snapshot;
     const grossAmount = oldData.gross_amount;
     if (value / grossAmount >= 0.5) {
-      this._invoice.next({...oldData, discount_amount: (grossAmount * 0.49)});
+      this._invoice.next({ ...oldData, discount_amount: grossAmount * 0.49 });
     } else {
-      this._invoice.next({...oldData, discount_amount: value});
+      this._invoice.next({ ...oldData, discount_amount: value });
     }
   }
 
@@ -266,7 +267,6 @@ export class InvoiceStoreService {
     return this._invoice.pipe(
       map((invoice) => {
         const netAmount = invoice.gross_amount - invoice.discount_amount;
-        console.log('Net Amount', netAmount);
         return netAmount;
       })
     );
@@ -286,7 +286,6 @@ export class InvoiceStoreService {
     return this._invoice.pipe(
       map((invoice) => {
         const dis = invoice.discount_amount;
-        console.log('Discount', dis);
         return dis;
       })
     );
@@ -301,8 +300,9 @@ export class InvoiceStoreService {
     invoiceData.transactions = [];
     this._invoice.next(invoiceData);
     data.invoice.transactions.forEach((item) => {
-      let service: ProductService | LedgerService | BundleService = this.productService;
-      switch(item.item_type) {
+      let service: ProductService | LedgerService | BundleService =
+        this.productService;
+      switch (item.item_type) {
         case 'BUNDLE':
           service = this.bundleService;
           break;

@@ -1,16 +1,31 @@
-<div class="list-group mt-5">
-    <div (click)="previewInvoice(invoice.id)"
-         class="list-group-item list-group-item-action d-flex justify-content-between"
-         *ngFor="let invoice of invoices$ | async">
-        <div class="text-left">
-            {{ invoice.id }}
-        </div>
-        <div class="text-left">
-            {{ getContactName(invoice.contact_id)}}
-        </div>
-        <div class="text-right">
-            {{ invoice.gross_amount - invoice.discount_amount | currency:'INR'}}
-        </div>
-        <mat-icon>delete</mat-icon>
+<table class="table table-hover table-striped mt-4">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Contact Name</th>
+        <th scope="col">Amount (INR)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices$ | async" (click)="previewInvoice(invoice.id)">
+        <td>{{ invoice.id }}</td>
+        <td>{{ getContactName(invoice.contact_id) }}</td>
+        <td class="text-right">{{ invoice.gross_amount - invoice.discount_amount | currency:'INR' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row mt-2">
+    <div class="col">
+        <button mat-raised-button color="primary" class="p-3 w-100" [disabled]="isFirst()" (click)="previousPage()">
+            <mat-icon>arrow_back</mat-icon>
+            Prev
+        </button>
     </div>
-  </div>
+    <div class="col">
+        <button mat-raised-button color="primary" class="p=3 w-100" [disabled]="isLast()" (click)="nextPage()">
+            Next
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+</div>

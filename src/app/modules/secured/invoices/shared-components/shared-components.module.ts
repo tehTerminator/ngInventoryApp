@@ -8,18 +8,23 @@ import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.compo
 import { TransactionsTableComponent } from './transactions-table/transactions-table.component';
 import { PaymentInfoComponent } from './payment-info/payment-info.component';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    declarations: [
-        ContactTableComponent,
-        InvoiceInfoComponent,
-        PreviewInvoiceComponent,
-        TransactionsTableComponent,
-        PaymentInfoComponent
-    ],
-    imports: [
-        CommonModule, MatIconModule, MatExpansionModule, MatButtonModule
-    ],
-    exports: [PreviewInvoiceComponent]
+  declarations: [
+    ContactTableComponent,
+    InvoiceInfoComponent,
+    PreviewInvoiceComponent,
+    TransactionsTableComponent,
+    PaymentInfoComponent,
+  ],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatButtonModule,
+    RouterModule,
+  ],
+  exports: [PreviewInvoiceComponent],
 })
-export class SharedComponentModule { }
+export class SharedComponentModule {}

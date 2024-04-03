@@ -1,4 +1,4 @@
-<section class="card card-body">
+<form class="card card-body" [formGroup]="contactForm" (ngSubmit)="navigateToSelectProduct()">
     <mat-form-field class="w-100">
       <mat-label>Existing Customer</mat-label>
       <input type="text" matInput [matAutocomplete]="auto" #customerTextField
@@ -10,5 +10,5 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <button type="button" (click)="navigateToSelectProduct()" class="btn btn-primary w-100">Next</button>
-</section>
+    <button type="submit" class="btn btn-primary w-100">Next</button>
+</form>

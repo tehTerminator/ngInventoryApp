@@ -1,8 +1,4 @@
-import {
-  Validators,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { Ledger } from './../../../../interface/ledger.interface';
 
 export class VoucherFormGroup extends FormGroup {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   Observable,
   Subscription,
@@ -28,6 +28,7 @@ export class SelectProductComponent implements OnInit, OnDestroy {
   productControl = new FormControl<GeneralItem | Product | ''>('', {
     nonNullable: true,
   });
+  productForm = new FormGroup({product: this.productControl});
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
   private _sub = new Subscription();
 

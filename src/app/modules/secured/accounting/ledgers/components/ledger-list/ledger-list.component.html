@@ -3,11 +3,26 @@
     <div class="card-body">
 
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let ledger of ledgers | async">
-                <div class="fw-bold">{{ ledger.title }}</div>
-                {{ ledger.kind }}
+            <li class="list-group-item" *ngFor="let ledger of getLedgerList() | async">
+                <div class="fw-bold"> {{ ledger.id }} - {{ ledger.title }}</div>
+                {{ ledger.kind }} 
             </li>
         </ul>
+
+        <div class="row mt-2">
+            <div class="col">
+                <button mat-raised-button color="primary" class="p-3 w-100" [disabled]="isFirst()" (click)="previousPage()">
+                    <mat-icon>arrow_back</mat-icon>
+                    Prev
+                </button>
+            </div>
+            <div class="col">
+                <button mat-raised-button color="primary" class="p=3 w-100" [disabled]="isLast()" (click)="nextPage()">
+                    Next
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+        </div>
 
     </div>
 </div>
