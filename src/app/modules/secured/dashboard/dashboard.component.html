@@ -1,11 +1,10 @@
 <mat-tab-group>
     <mat-tab label="Overview">
-        <div class="row d-flex vh-100">
-            <div class="col-lg-3 col-md-4">
-                <div class="card shadow card-body">
-                    {{ myLocation.title || 'Please Wait' }}
-                </div>
-            </div>
+        <div class="row mx-4 mt-4 g-4">
+            <app-card-with-text class="col-md-4 col-lg-3" title="Current Location"
+                [text]="myLocation.title"></app-card-with-text>
+            <app-card-with-text class="col-md-4 col-lg-3" title="Income" dataUrl="todaysIncome"></app-card-with-text>
+            <app-card-with-text class="col-md-4 col-lg-3" title="Expense" dataUrl="todaysExpense"></app-card-with-text>
         </div>
     </mat-tab>
     <mat-tab label="Accounts">

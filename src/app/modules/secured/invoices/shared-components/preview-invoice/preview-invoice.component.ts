@@ -35,6 +35,9 @@ export class PreviewInvoiceComponent implements OnInit {
         next: (value) => {
           this.store.invoice = value;
         },
+        error: (err) => {
+          this;
+        },
       });
   }
 
@@ -50,8 +53,11 @@ export class PreviewInvoiceComponent implements OnInit {
     this.api.delete<any>('invoice', this.invoiceId).subscribe({
       next: (value) => {
         console.log(value);
-        this.router.navigate(['/auth', 'invoices', 'search']);
+        this.routeToSearchInvoice();
       },
     });
   }
+
+  private routeToSearchInvoice = () =>
+    this.router.navigate(['/auth', 'invoices', 'search']);
 }

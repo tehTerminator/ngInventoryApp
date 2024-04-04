@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -13,6 +13,9 @@ export class SetDiscountComponent {
     Validators.required,
     Validators.min(0),
   ]);
+  discountFG = new FormGroup({
+    discount: this.discountAmountFC,
+  });
 
   onSetDiscount() {
     const discount = this.discountAmountFC.value;
@@ -21,9 +24,15 @@ export class SetDiscountComponent {
     this.navigateToChoosePayment();
   }
 
-  private navigateToChoosePayment(){
-    this.router.navigate(['../choose-payment-method'], {relativeTo: this.route});
+  private navigateToChoosePayment() {
+    this.router.navigate(['../choose-payment-method'], {
+      relativeTo: this.route,
+    });
   }
 
-  constructor(private router: Router, private route: ActivatedRoute, private store: InvoiceStoreService) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: InvoiceStoreService
+  ) {}
 }

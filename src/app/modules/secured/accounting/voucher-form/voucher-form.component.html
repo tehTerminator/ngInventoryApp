@@ -48,26 +48,35 @@
                     <mat-label>Narration</mat-label>
                     <textarea matInput formControlName="narration" rows="5"></textarea>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="d-block">
-                    <mat-label>Amount</mat-label>
-                    <input type="number" matInput formControlName="amount" min="0" (focus)="onAmountFieldFocus()" />
-                    <mat-error
-                        *ngIf="voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)">
-                        <span *ngIf="voucherForm.amountFormControl.hasError('required')">
-                            Amount is Required for Voucher Entry
-                        </span>
-                        <span *ngIf="voucherForm.hasError('min')">
-                            Amount Must Be A Greater than 0
-                        </span>
-                    </mat-error>
-                </mat-form-field>
-                <button type="submit" class="btn m-1" mat-raised-button color="primary"
-                    [disabled]="voucherForm.invalid">
-                    Submit
-                </button>
-                <button type="reset" class="btn m-1" mat-raised-button color="warn">
-                    Reset Form
-                </button>
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Amount</mat-label>
+                            <input type="number" matInput formControlName="amount" min="0" (focus)="onAmountFieldFocus()" />
+                            <mat-error
+                                *ngIf="voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)">
+                                <span *ngIf="voucherForm.amountFormControl.hasError('required')">
+                                    Amount is Required for Voucher Entry
+                                </span>
+                                <span *ngIf="voucherForm.hasError('min')">
+                                    Amount Must Be A Greater than 0
+                                </span>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="submit" class="w-100 mt-2 py-3" mat-raised-button color="primary"
+                            [disabled]="voucherForm.invalid">
+                            Submit
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="reset" class="w-100 mt-2 py-3" mat-raised-button color="warn">
+                            Reset Form
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

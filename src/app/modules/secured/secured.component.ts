@@ -21,11 +21,10 @@ import { CalculatorComponent } from './calculator/calculator.component';
 @Component({
   selector: 'app-secured',
   templateUrl: './secured.component.html',
-  styleUrls: ['./secured.component.scss']
+  styleUrls: ['./secured.component.scss'],
 })
 export class SecuredComponent implements OnInit {
   constructor(
-    private authService: AuthenticationService,
     private userService: UserStoreService,
     private locationService: LocationService,
     private ledgerService: LedgerService,
@@ -39,30 +38,28 @@ export class SecuredComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.retrieve<CombinedData>('data').subscribe({
-      next: (value=>{
+      next: (value) => {
         this.productService.store(value.products);
         this.ledgerService.store(value.ledgers);
         this.userService.store(value.users);
         this.bundleService.store(value.bundles);
         this.locationService.store(value.locations);
         this.contactService.store(value.contacts);
-      })
-    })
+      },
+    });
     this.myLocationStore.retrieveData();
   }
 
   onOpenCalc() {
     this.dialog.open(CalculatorComponent);
   }
-
-  logout = () => this.authService.signOut();
 }
 
 interface CombinedData {
-  products: Product[],
-  ledgers: Ledger[],
-  users: User[],
-  bundles: Bundle[],
-  locations: StoreLocation[],
-  contacts: Contact[]
+  products: Product[];
+  ledgers: Ledger[];
+  users: User[];
+  bundles: Bundle[];
+  locations: StoreLocation[];
+  contacts: Contact[];
 }

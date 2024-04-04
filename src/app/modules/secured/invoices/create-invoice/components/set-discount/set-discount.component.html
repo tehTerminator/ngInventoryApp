@@ -2,11 +2,11 @@
     <div class="card-header">
         <label for="discount_amount">Set Discount</label>
     </div>
-    <div class="card-body">
+    <form class="card-body" [formGroup]="discountFG" (ngSubmit)="onSetDiscount()">
         <div class="form-group w-100">
-            <input type="number" [formControl]="discountAmountFC" class="form-control text-center">
+            <input type="number" [formControl]="discountAmountFC" class="form-control text-center" step="1" min="0">
         </div>
 
-        <button type="button" class="btn btn-primary p-2 w-100 mt-2" (click)="onSetDiscount()">Submit</button>
-    </div>
+        <button type="button" class="btn btn-primary p-2 w-100 mt-2">Submit</button>
+    </form>
 </div>

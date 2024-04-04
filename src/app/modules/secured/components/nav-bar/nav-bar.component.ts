@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { navItems } from './menu-items.data';
-import { AuthStoreService } from './../../../services/auth-store/auth-store.service';
+import { AuthStoreService } from './../../../../services/auth-store/auth-store.service';
 
 @Component({
   selector: 'app-nav-bar',

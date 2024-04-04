@@ -1,1 +1,8 @@
-<p>card-with-text works!</p>
+<div class="card" [loading]="loading">
+    <div class="card-header">
+        {{ title }}
+    </div>
+    <div class="card-body text-center">
+        <h1 class="display-4 fw-bold">{{ text }}</h1>
+    </div>
+</div>

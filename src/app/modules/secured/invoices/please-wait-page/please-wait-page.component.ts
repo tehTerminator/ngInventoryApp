@@ -14,8 +14,9 @@ export class PleaseWaitPageComponent implements OnInit {
   message = 'Please Wait, Invoice is Being Saved';
   constructor(
     private router: Router,
-    private store: InvoiceStoreService, 
-    private api: ApiService) {}
+    private store: InvoiceStoreService,
+    private api: ApiService
+  ) {}
 
   ngOnInit(): void {
     this.setAmount();
@@ -31,35 +32,46 @@ export class PleaseWaitPageComponent implements OnInit {
             this.message = 'Please Wait, Now You Can Create New Invoice.';
             this.navigateToCreateInvoice();
           } else {
-            this.storeInvoice()
+            this.storeInvoice();
           }
         })
       )
       .subscribe({
         next: (value) => (this.store.amount = value),
-        error: (() => {
-          this.message = 'An Error Encountered While Saving';
+        error: () => {
+          this.message = 'An Error Encountered While Calculating Amount';
           this.navigateToCreateInvoice();
-        })
+        },
       });
   }
 
   private storeInvoice() {
-    this.api.create<Invoice>('invoice', {
-      invoice: this.store.snapshot,
-      vouchers: this.store.vouchers,
-    }).subscribe({
-      next: ((value) => {
-        this.store.id = value.id
-        this.message = `Invoice #${value.id} Saved Successfully. Redirecting Please Wait.`
-        this.navigateToPrintInvoice();
-      }),
-    })
+    this.api
+      .create<Invoice>('invoice', {
+        invoice: this.store.snapshot,
+        vouchers: this.store.vouchers,
+      })
+      .subscribe({
+        next: (value) => {
+          this.store.id = value.id;
+          this.message = `Invoice #${value.id} Saved Successfully. Redirecting Please Wait.`;
+          this.navigateToPrintInvoice();
+        },
+        error: () => {
+          (this.message = 'An Error Encountered While Saving Invoice'),
+            this.navigateToCreateInvoice();
+        },
+      });
   }
 
-  private navigateToPrintInvoice(){
+  private navigateToPrintInvoice() {
     setTimeout(() => {
-      this.router.navigate(['/auth', 'invoices', 'view', this.store.snapshot.id])
+      this.router.navigate([
+        '/auth',
+        'invoices',
+        'view',
+        this.store.snapshot.id,
+      ]);
     }, 1000);
   }
 
