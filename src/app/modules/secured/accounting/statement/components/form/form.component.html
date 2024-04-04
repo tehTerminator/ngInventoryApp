@@ -1,14 +1,21 @@
 <form [formGroup]="form" class="card shadow mb-3" (ngSubmit)="onSubmit()">
     <div class="card-body">
+        <mat-form-field class="d-block" appearance="outline">
+            <mat-label>Giver</mat-label>
+            <input type="text" placeholder="Pick one" aria-label="Creditor" matInput
+                formControlName="ledger" #firstInputField [matAutocomplete]="creditor" />
+            <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete"
+                [displayWith]="displayFunction">
+                <mat-option *ngFor="let creditor of filteredLedgers | async" [value]="creditor">
+                    <div class="d-flex flex-column w-100 border-top">
+                        <strong>{{ creditor.title }}</strong>
+                        <small>{{ creditor.kind }}</small>
+                    </div>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
         <div class="form-group">
-            <label for="ledger" class="form-label">Account</label>
-            <select class="form-select w-100" formControlName="ledger" >
-                <option *ngFor="let ledger of ledgers | async" [value]="ledger.id">
-                    {{ ledger.title }}
-                </option>
-            </select>
-        </div>
-        <div class="form-group mt-3">
             <label for="fromDate" class="form-label">From Date</label>
             <input type="date" class="form-control w-100" formControlName="fromDate">
         </div>
