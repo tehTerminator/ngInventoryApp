@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -24,11 +31,15 @@ import { LedgerService } from '../../../../../../services/ledger/ledger.service'
   templateUrl: './select-product.component.html',
   styleUrls: ['./select-product.component.scss'],
 })
-export class SelectProductComponent implements OnInit, OnDestroy {
+export class SelectProductComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
+
   productControl = new FormControl<GeneralItem | Product | ''>('', {
     nonNullable: true,
   });
-  productForm = new FormGroup({product: this.productControl});
+  productForm = new FormGroup({ product: this.productControl });
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
   private _sub = new Subscription();
 
@@ -58,6 +69,12 @@ export class SelectProductComponent implements OnInit, OnDestroy {
         return [];
       })
     );
+  }
+
+  ngAfterViewInit(): void {
+    if (this.input !== null) {
+      this.input.nativeElement.focus();
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, EMPTY, startWith, map, distinctUntilChanged } from 'rxjs';
 import { Ledger } from './../../../../interface/ledger.interface';
@@ -14,9 +20,8 @@ import { VoucherFormGroup } from './VoucherFormGroup';
   templateUrl: './voucher-form.component.html',
   styleUrls: ['./voucher-form.component.scss'],
 })
-export class VoucherFormComponent {
-
-  @ViewChild('firstImputField') input!: ElementRef<HTMLInputElement>;
+export class VoucherFormComponent implements OnInit, AfterViewInit {
+  @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
   voucherForm = new VoucherFormGroup();
   isLoading = false;
   filteredCreditor: Observable<Ledger[]> = EMPTY;
@@ -54,6 +59,12 @@ export class VoucherFormComponent {
     );
 
     this.loadIdFromRoute();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.input !== null) {
+      this.input.nativeElement.focus();
+    }
   }
 
   private loadIdFromRoute(): void {
@@ -186,5 +197,3 @@ export class VoucherFormComponent {
     return ledger && ledger.title ? `${ledger.title} - ${ledger.kind}` : '';
   }
 }
-
-

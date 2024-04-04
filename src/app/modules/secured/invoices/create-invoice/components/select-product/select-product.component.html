@@ -1,9 +1,8 @@
 <form class="card" [formGroup]="productForm" (ngSubmit)="navigateToCreateTransactions()">
-  <h2 class="card-header">Select Product</h2>
   <div class="card-body">
     <mat-form-field class="w-100">
       <mat-label>Select Product</mat-label>
-      <input type="text" matInput [formControl]="productControl" [matAutocomplete]="auto">
+      <input type="text" #firstInputField matInput [formControl]="productControl" [matAutocomplete]="auto">
       <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn"
         autoActiveFirstOption="true" autoSelectActiveOption="true">
         <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
