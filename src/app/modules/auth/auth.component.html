@@ -1,10 +1,10 @@
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6 col-xl-4 mt-5" [loading]="isLoading">
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-6 col-xl-3 col-lg-4 mt-5" [loading]="isLoading">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <mat-card>
                     <mat-card-header>
-                        <h2 class="fs-2">User Login</h2>
+                        <h2 class="fs-2"><mat-icon class="me-3">person</mat-icon>User Login</h2>
                     </mat-card-header>
                     <mat-card-content class="border-top pt-3">
                         <main>
@@ -37,10 +37,9 @@
                     </mat-card-content>
 
                     <mat-card-actions class="card-footer d-flex justify-content-between border-top pt-3">
-                        <button type="submit" mat-flat-button color="primary" class="me-2 w-50" [disabled]="loginForm.invalid">
+                        <button type="submit" mat-flat-button color="primary" class="w-100" [disabled]="loginForm.invalid">
                             Submit
                         </button>
-                        <button type="reset" mat-flat-button color="warn" class="w-50">Reset</button>
                     </mat-card-actions>
                 </mat-card>
             </form>
