@@ -30,11 +30,11 @@ export class DaybookComponent {
     },
     {
       creditor: 'BANK,WALLET,CASH',
-      debtor: 'EXPENSE',
+      debtor: 'EXPENSE,PURCHASE AC',
       title: 'EXPENSES',
     },
     {
-      creditor: 'INCOME',
+      creditor: 'INCOME,SALES AC',
       debtor: 'BANK,WALLET,CASH,RECEIVABLE,PAYABLE',
       title: 'INCOME',
     },

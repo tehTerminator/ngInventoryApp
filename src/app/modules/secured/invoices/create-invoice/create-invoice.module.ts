@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CreateInvoiceRoutingModule } from './create-invoice-routing.module';
 import { CreateInvoiceComponent } from './create-invoice.component';
 import { SharedComponentModule } from './../shared-components/shared-components.module';
-import { GoBackBtnComponent } from './components/go-back-btn/go-back-btn.component';
+import { NavigationBtnComponent } from './components/navigation-btn/navigation-btn.component';
 import { SelectContactComponent } from './components/select-contact/select-contact.component';
 import { CoreModule } from '../../../core/core.module';
 import { SelectProductComponent } from './components/select-product/select-product.component';
@@ -23,7 +23,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   declarations: [
     CreateInvoiceComponent,
-    GoBackBtnComponent,
+    NavigationBtnComponent,
     SelectContactComponent,
     SelectProductComponent,
     CreateTransactionsComponent,
@@ -41,10 +41,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     SharedComponentModule,
     CoreModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
   ],
-  providers: [
-    GeneralItemStoreService
-  ]
+  providers: [GeneralItemStoreService],
 })
 export class CreateInvoiceModule {}

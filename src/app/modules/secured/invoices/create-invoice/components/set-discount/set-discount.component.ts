@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,7 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './set-discount.component.html',
   styleUrl: './set-discount.component.scss',
 })
-export class SetDiscountComponent {
+export class SetDiscountComponent implements AfterViewInit {
+  @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
+
   discountAmountFC = new FormControl<number>(0, [
     Validators.required,
     Validators.min(0),
@@ -16,6 +18,12 @@ export class SetDiscountComponent {
   discountFG = new FormGroup({
     discount: this.discountAmountFC,
   });
+
+  ngAfterViewInit(): void {
+    if (this.input !== null) {
+      this.input.nativeElement.focus();
+    }
+  }
 
   onSetDiscount() {
     const discount = this.discountAmountFC.value;

@@ -12,14 +12,14 @@
     </mat-form-field>
     <div class="row g-2">
       <div class="col">
-        <button type="submit" mat-raised-button color="primary" class="w-100">
+        <button type="submit" mat-stroked-button color="primary" class="w-100">
           Add
           <mat-icon>add</mat-icon>
         </button>
       </div>
       <div class="col" *ngIf="hasTransactions | async">
-        <button type="button" *ngIf="hasTransactions | async" (click)="navigateToPaymentOption()"
-        mat-stroked-button color="primary" class="w-100">
+        <button type="button" *ngIf="hasTransactions | async" (click)="navigateToPaymentOption()" mat-raised-button
+          color="primary" class="w-100">
           Submit Invoice
           <mat-icon>done</mat-icon>
         </button>

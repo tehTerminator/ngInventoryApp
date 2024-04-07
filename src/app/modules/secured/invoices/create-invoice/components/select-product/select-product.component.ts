@@ -117,6 +117,10 @@ export class SelectProductComponent
 
   private _filterProducts(value: string): GeneralItem[] | Product[] {
     const filterValue = value.toLowerCase();
+    if (value.length === 0) {
+      return [];
+    }
+
     if (this.store.kind === 'SALES') {
       return this.generalItemStore
         .getAsList()

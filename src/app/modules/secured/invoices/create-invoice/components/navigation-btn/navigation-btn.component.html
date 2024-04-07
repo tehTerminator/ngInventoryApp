@@ -1,0 +1,14 @@
+<div class="row gt-2 p-3 mb-3" *ngIf="showBtn()">
+    <div class="col-6">
+        <button (click)="goBack()" mat-raised-button color="secondary" class="w-100 d-flex justify-content-between">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            <span>Prev</span>
+        </button>
+    </div>
+    <div class="col-6">
+        <button (click)="goForward()" mat-raised-button color="secondary d-flex justify-content-between" class="w-100">
+            <span>Next</span>
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+</div>

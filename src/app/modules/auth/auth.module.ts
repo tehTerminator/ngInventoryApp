@@ -8,12 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { CoreModule } from '../core/core.module';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [
-    AuthComponent
-  ],
+  declarations: [AuthComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
@@ -21,7 +19,8 @@ import { MatCardModule } from '@angular/material/card';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    CoreModule
-  ]
+    MatIconModule,
+    CoreModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

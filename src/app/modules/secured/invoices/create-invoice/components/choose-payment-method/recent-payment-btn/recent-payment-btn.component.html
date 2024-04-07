@@ -1,0 +1,5 @@
+<button *ngIf="recentPaymentMethod" mat-raised-button color="accent" class="w-100 p-4 heart-beat"
+  (click)="selectPaymentMethod(recentPaymentMethod)">
+  {{ recentPaymentMethod.title }}
+</button>
+<h1 *ngIf="!recentPaymentMethod">No Recent Payment Saved</h1>

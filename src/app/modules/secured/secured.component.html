@@ -3,8 +3,8 @@
         <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="sidebar_one.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-        <span class="me-5">Inventory App</span>
-        <app-left-menu class="d-md-block d-sm-none me-5"></app-left-menu>
+        <span routerLink="/auth" class="me-3" style="cursor: pointer">Inventory App</span>
+        <app-left-menu></app-left-menu>
         <app-right-menu (newClickEvent)="onOpenCalc()" class="ms-auto me-0"></app-right-menu>
     </mat-toolbar>
     <mat-sidenav-container>
