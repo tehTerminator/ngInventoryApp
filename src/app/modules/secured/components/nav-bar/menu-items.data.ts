@@ -6,7 +6,7 @@ export const navItems = [
       { text: 'Vouchers', routerLink: ['accounting', 'voucher'] },
       { text: 'Statement', routerLink: ['accounting', 'statement'] },
       { text: 'Day Book', routerLink: ['accounting', 'daybook'] },
-      { text: 'Balance', routerLink: ['accounting', 'ledger-balance'] }
+      { text: 'Balance', routerLink: ['accounting', 'ledger-balance'] },
     ],
   },
   {
@@ -28,13 +28,13 @@ export const navItems = [
       { text: 'Transfer Product', routerLink: ['products', 'transfer'] },
     ],
   },
-  {
-    title: 'Bundles',
-    links: [
-      { text: 'Create', routerLink: ['bundles', 'create'] },
-      { text: 'View', routerLink: ['bundles', 'view'] },
-    ],
-  },
+  // {
+  //   title: 'Bundles',
+  //   links: [
+  //     { text: 'Create', routerLink: ['bundles', 'create'] },
+  //     { text: 'View', routerLink: ['bundles', 'view'] },
+  //   ],
+  // },
   {
     title: 'Locations',
     links: [
@@ -51,6 +51,6 @@ export const navItems = [
     links: [
       { text: 'Create New', routerLink: ['master', 'users', 'create-user'] },
     ],
-    role: 'admin'
+    role: 'admin',
   },
 ];

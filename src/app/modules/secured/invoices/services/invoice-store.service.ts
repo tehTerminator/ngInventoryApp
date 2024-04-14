@@ -26,7 +26,6 @@ import {
 })
 export class InvoiceStoreService {
   private _invoice = new BehaviorSubject<Invoice>(BASE_INVOICE);
-  selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
   paymentInfo$ = new BehaviorSubject<Voucher[]>([]);
 
   constructor(
@@ -36,27 +35,10 @@ export class InvoiceStoreService {
     private contactService: ContactsService
   ) {}
 
-  createTransaction(quantity: number, rate: number): void {
+  createTransaction(product: Product, quantity: number, rate: number): void {
     let transaction = { ...BASE_TRANSACTION };
-    if (this.bundleService.isInstanceOfBundle(this.selectedItem)) {
-      transaction = this.createTransactionFromBundle(
-        this.selectedItem,
-        +quantity
-      );
-    } else {
-      const kind = this.ledgerService.isInstanceOfLedger(this.selectedItem)
-        ? 'LEDGER'
-        : 'PRODUCT';
-
-      transaction = this.makeTransation(
-        this.selectedItem,
-        kind,
-        +quantity,
-        +rate
-      );
-    }
+    transaction = this.makeTransation(product, +quantity, +rate);
     this.appendTransaction(transaction);
-    this.selectedItem = EMPTY_PRODUCT;
   }
 
   /**
@@ -67,18 +49,12 @@ export class InvoiceStoreService {
    * @param rate is a number
    * @returns a Transaction
    */
-  private makeTransation(
-    item: Product | Ledger | Bundle,
-    kind: 'PRODUCT' | 'LEDGER' | 'BUNDLE',
-    quantity: number,
-    rate: number
-  ) {
+  private makeTransation(item: Product, quantity: number, rate: number) {
     let transaction = {
       ...BASE_TRANSACTION,
       rate: +rate,
       quantity: +quantity,
-      item_id: +item.id,
-      item_type: kind,
+      product_id: +item.id,
     };
     return transaction;
   }
@@ -122,36 +98,8 @@ export class InvoiceStoreService {
     const data = this.snapshot.transactions;
     return data.findIndex(
       (x) =>
-        x.rate === transaction.rate &&
-        x.item_type === transaction.item_type &&
-        x.item_id === transaction.item_id
+        x.rate === transaction.rate && x.product_id === transaction.product_id
     );
-  }
-
-  private createTransactionFromBundle(
-    bundle: Bundle,
-    quantity: number
-  ): Transaction {
-    const rate = this.bundleService.getElementById(bundle.id).rate;
-    const transaction = this.makeTransation(bundle, 'BUNDLE', quantity, rate);
-    transaction.transactions = [];
-    for (const template of bundle.templates) {
-      try {
-        let item =
-          template.kind === 'PRODUCT'
-            ? this.productService.getElementById(template.item_id)
-            : this.ledgerService.getElementById(template.item_id);
-        const newQuantity = template.quantity * quantity;
-        transaction.transactions.push(
-          this.makeTransation(item, template.kind, newQuantity, template.rate)
-        );
-      } catch (e) {
-        throw new Error(
-          'Unable to Create Transaction for ' + JSON.stringify(template)
-        );
-      }
-    }
-    return transaction;
   }
 
   addPaymentMethod(dr: number, amount: number) {
@@ -300,23 +248,9 @@ export class InvoiceStoreService {
     invoiceData.transactions = [];
     this._invoice.next(invoiceData);
     data.invoice.transactions.forEach((item) => {
-      let service: ProductService | LedgerService | BundleService =
-        this.productService;
-      switch (item.item_type) {
-        case 'BUNDLE':
-          service = this.bundleService;
-          break;
-        case 'LEDGER':
-          service = this.ledgerService;
-          break;
-        case 'PRODUCT':
-          service = this.productService;
-          break;
-      }
-      this.selectedItem = service.getElementById(item.item_id);
-      this.createTransaction(item.quantity, item.rate);
+      const selectedItem = this.productService.getElementById(item.product_id);
+      this.createTransaction(selectedItem, item.quantity, item.rate);
     });
-
     this.paymentInfo$.next(data.vouchers);
   }
 

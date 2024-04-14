@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
 import {
   Observable,
   Subscription,
@@ -18,13 +17,11 @@ import {
   EMPTY,
   take,
 } from 'rxjs';
-import { GeneralItem } from '../../../../../../interface/general-item.interface';
-import { GeneralItemStoreService } from '../../services/general-item-store.service';
 import { Product } from '../../../../../../interface/product.interface';
 import { ProductService } from '../../../../../../services/product/product.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
-import { LedgerService } from '../../../../../../services/ledger/ledger.service';
+import { TransactionForm } from './TransactionForm';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-select-product',
@@ -36,30 +33,21 @@ export class SelectProductComponent
 {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
 
-  productControl = new FormControl<GeneralItem | Product | ''>('', {
-    nonNullable: true,
-  });
-  productForm = new FormGroup({ product: this.productControl });
-  filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
+  transactionForm = new TransactionForm();
+  filteredProducts$: Observable<Product[]> = EMPTY;
   private _sub = new Subscription();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: InvoiceStoreService,
-    private generalItemStore: GeneralItemStoreService,
     private productService: ProductService,
-    private ledgerService: LedgerService,
     private notification: NotificationsService
   ) {}
 
   ngOnInit(): void {
-    this.generalItemStore.init();
-    this.productService.init();
-    this.ledgerService.init();
-
     // Combine observable streams for product options
-    this.filteredProducts$ = this.productControl.valueChanges.pipe(
+    this.filteredProducts$ = this.transactionForm.productFC.valueChanges.pipe(
       startWith(''),
       debounceTime(300), // Adjust debounce time as needed (optional)
       map((value) => {
@@ -81,22 +69,38 @@ export class SelectProductComponent
     this._sub.unsubscribe();
   }
 
-  onSelectProduct(event: MatAutocompleteSelectedEvent) {
-    const selectedProduct: GeneralItem | Product | null = event.option.value;
-    if (selectedProduct === null) {
-      this.notification.show('Invalid Product Selected');
-    } else if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
-      this.store.selectedItem =
-        this.generalItemStore.selectActualItem(selectedProduct);
-    } else {
-      this.store.selectedItem = selectedProduct;
-    }
+  onProductSelected(event: MatAutocompleteSelectedEvent) {
+    const product = event.option.value;
+    this.transactionForm.patchValue({
+      rate: product.rate,
+    });
   }
 
-  navigateToCreateTransactions() {
-    this.router.navigate(['../create-transactions'], {
-      relativeTo: this.route,
-    });
+  onSubmit() {
+    if (this.transactionForm.invalid) {
+      console.error(
+        'Transaction Form Invalid data',
+        this.transactionForm.value
+      );
+      return;
+    }
+
+    if (
+      typeof this.transactionForm.product === 'string' ||
+      this.transactionForm.product === null
+    ) {
+      console.error('Product is null or string');
+      return;
+    }
+
+    console.log('Storing Values', this.transactionForm.value);
+
+    this.store.createTransaction(
+      this.transactionForm.product,
+      this.transactionForm.quantity,
+      this.transactionForm.rate
+    );
+    this.transactionForm.reset();
   }
 
   navigateToPaymentOption() {
@@ -115,23 +119,18 @@ export class SelectProductComponent
     });
   }
 
-  private _filterProducts(value: string): GeneralItem[] | Product[] {
+  private _filterProducts(value: string): Product[] {
     const filterValue = value.toLowerCase();
     if (value.length === 0) {
       return [];
     }
 
-    if (this.store.kind === 'SALES') {
-      return this.generalItemStore
-        .getAsList()
-        .filter((item) => item.title.toLowerCase().includes(filterValue));
-    }
     return this.productService
       .getAsList()
       .filter((product) => product.title.toLowerCase().includes(filterValue));
   }
 
-  displayFn(product: GeneralItem | Product | string | undefined): string {
+  displayFn(product: Product | string | undefined): string {
     if (product === undefined || typeof product === 'string') {
       return '';
     }

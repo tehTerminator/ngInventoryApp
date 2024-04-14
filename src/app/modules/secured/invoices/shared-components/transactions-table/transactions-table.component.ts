@@ -10,35 +10,21 @@ import { BundleService } from '../../../../../services/bundle/bundle.service';
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
 })
-export class TransactionsTableComponent {
+export class TransactionsTableComponent implements OnInit {
   constructor(
     public store: InvoiceStoreService,
-    private ledgerService: LedgerService,
-    private productService: ProductService,
-    private bundleService: BundleService
-  ) {
-    this.ledgerService.init();
+    private productService: ProductService
+  ) {}
+
+  ngOnInit(): void {
     this.productService.init();
-    this.bundleService.init();
   }
 
   deleteTransaction = (transaction: Transaction) =>
     this.store.deleteTransaction(transaction);
 
-  getDescription(transaction: Transaction) {
-    if (transaction.item_type === 'LEDGER') {
-      const title = this.ledgerService.getElementById(
-        transaction.item_id
-      ).title;
-      return `${title} Payment`;
-    }
-
-    let service =
-      transaction.item_type === 'BUNDLE'
-        ? this.bundleService
-        : this.productService;
-    const title = service.getElementById(transaction.item_id).title;
-    return title;
+  getDescription(id: number) {
+    return this.productService.getElementById(id).title;
   }
 
   showButtons(): boolean {

@@ -1,13 +1,12 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Product } from '../../../../../../interface/product.interface';
 
 export class TransactionForm extends FormGroup {
   constructor() {
     super({
+      product: new FormControl<Product | null>(null, [Validators.required]),
       quantity: new FormControl(0, Validators.required),
       rate: new FormControl(0, Validators.required),
-      gst: new FormControl(0, Validators.required),
-      amount: new FormControl(0, Validators.required),
-      product_id: new FormControl(0, Validators.required)
     });
   }
 
@@ -17,19 +16,13 @@ export class TransactionForm extends FormGroup {
   get rateFormControl(): FormControl<number> {
     return this.get('rate') as FormControl<number>;
   }
-  get gstFormControl(): FormControl<number> {
-    return this.get('gst') as FormControl<number>;
-  }
-  get amountFormControl(): FormControl<number> {
-    return this.get('amount') as FormControl<number>;
+
+  get productFC(): FormControl<Product> {
+    return this.get('product') as FormControl<Product>;
   }
 
-  get productIdFormControl(): FormControl<number> {
-    return this.get('product_id') as FormControl<number>;
-  }
-
-  get productId(): number {
-    return this.productIdFormControl.value;
+  get product(): Product {
+    return this.productFC.value;
   }
 
   get quantity(): number {
@@ -38,10 +31,8 @@ export class TransactionForm extends FormGroup {
   get rate(): number {
     return this.rateFormControl.value;
   }
-  get gst(): number {
-    return this.gstFormControl.value;
-  }
+
   get amount(): number {
-    return this.amountFormControl.value;
+    return this.quantity * this.rate;
   }
 }
