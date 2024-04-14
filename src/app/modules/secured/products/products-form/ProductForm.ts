@@ -4,10 +4,18 @@ export class ProductForm extends FormGroup {
   constructor() {
     super({
       id: new FormControl<number>(0),
-      title: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3)] }),
+      title: new FormControl<string>('', {
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
       quantity: new FormControl<number>(0),
-      rate: new FormControl<number>(0, [Validators.required, Validators.min(0.1)]),
-      location_id: new FormControl<number>(0, { validators: [Validators.min(0)] })
+      rate: new FormControl<number>(0, [
+        Validators.required,
+        Validators.min(0.1),
+      ]),
+      expiry_date: new FormControl<string>('', [Validators.required]),
+      location_id: new FormControl<number>(0, {
+        validators: [Validators.min(0)],
+      }),
     });
   }
 
@@ -51,4 +59,11 @@ export class ProductForm extends FormGroup {
     return this.locationControl.value;
   }
 
+  get expiryFormControl(): FormControl<string> {
+    return this.get('expiry_date') as FormControl<string>;
+  }
+
+  get expiryDate(): string {
+    return this.expiryFormControl.value;
+  }
 }
