@@ -41,8 +41,6 @@ export class SelectProductComponent
   private _sub = new Subscription();
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
     private store: InvoiceStoreService,
     private generalItemStore: GeneralItemStoreService,
     private productService: ProductService,
