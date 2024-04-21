@@ -1,10 +1,10 @@
 <div id="container" class="d-flex flex-column">
     <mat-toolbar color="primary" class="d-print-none">
         <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="sidebar_one.toggle()">
-          <mat-icon>menu</mat-icon>
+            <mat-icon>menu</mat-icon>
         </button>
         <span routerLink="/auth" class="me-3" style="cursor: pointer">Inventory App</span>
-        <app-left-menu></app-left-menu>
+        <app-left-menu class="d-none d-md-block"></app-left-menu>
         <app-right-menu (newClickEvent)="onOpenCalc()" class="ms-auto me-0"></app-right-menu>
     </mat-toolbar>
     <mat-sidenav-container>
