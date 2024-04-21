@@ -17,10 +17,8 @@ import {
   takeUntil,
 } from 'rxjs';
 import { Ledger } from './../../../../../../interface/ledger.interface';
-import { ActivatedRoute, Router } from '@angular/router';
 import { StatementFormGroup } from './StatementFormGroup';
 import { StatementService } from '../../statement-service/statement.service';
-import { getCurrentDateString } from '../../../../../../shared/functions';
 
 @Component({
   selector: 'app-form',
@@ -40,10 +38,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.ledgerService.init();
-    const currentDate = getCurrentDateString();
-    this.form.fromDateFormControl.setValue(currentDate);
-    this.form.toDateFormControl.setValue(currentDate);
-
     this.filteredLedgers = this.form.ledgerFormControl.valueChanges.pipe(
       takeUntil(this._notifier$),
       startWith(''),
@@ -87,7 +81,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
-    // console.log(this.form.value);
 
     this.statementService.fetchData(
       this.form.ledger,
