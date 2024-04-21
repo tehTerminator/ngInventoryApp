@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="row d-flex justify-content-center mt-5">
-        <div class="col-md-6 col-xl-3 col-lg-4 mt-5" [loading]="isLoading">
+        <div class="col-md-6 col-xl-3 col-lg-4 mt-5">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <mat-card>
+                <mat-card [loading]="isLoading">
                     <mat-card-header>
                         <h2 class="fs-2"><mat-icon class="me-3">person</mat-icon>User Login</h2>
                     </mat-card-header>
@@ -22,7 +22,8 @@
                             </mat-form-field>
                             <mat-form-field class="w-100" appearance="outline">
                                 <mat-label>Password</mat-label>
-                                <input type="password" autocomplete="current-password" matInput formControlName="password">
+                                <input type="password" autocomplete="current-password" matInput
+                                    formControlName="password">
                                 <mat-error *ngIf="passwordField.dirty">
                                     <span *ngIf="passwordField.hasError('required')">
                                         Please Enter a Password.
@@ -37,7 +38,8 @@
                     </mat-card-content>
 
                     <mat-card-actions class="card-footer d-flex justify-content-between border-top pt-3">
-                        <button type="submit" mat-flat-button color="primary" class="w-100" [disabled]="loginForm.invalid">
+                        <button type="submit" mat-flat-button color="primary" class="w-100"
+                            [disabled]="loginForm.invalid">
                             Submit
                         </button>
                     </mat-card-actions>
