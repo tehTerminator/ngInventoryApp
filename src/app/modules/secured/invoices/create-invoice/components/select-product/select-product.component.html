@@ -9,6 +9,11 @@
           {{ product.title }}
         </mat-option>
       </mat-autocomplete>
+      <mat-error>
+        <small *ngIf="productForm.itemFormControl.hasError('required')">
+          Please Select Item
+        </small>
+      </mat-error>
     </mat-form-field>
 
     <div class="row">
@@ -28,8 +33,7 @@
         <mat-form-field class="d-block" appearance="outline">
           <mat-label>Rate</mat-label>
           <input type="number" name="rate" matInput formControlName="rate" required class="text-center" />
-          <mat-error
-            *ngIf="productForm.rateFormControl.invalid && (productForm.rateFormControl.touched || productForm.rateFormControl.dirty)">
+          <mat-error *ngIf="productForm.rateFormControl.dirty">
             <span *ngIf="productForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
             <span *ngIf="productForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
           </mat-error>
@@ -40,7 +44,7 @@
     <div class="col-md-12 text-center border border-1 p-2">
       <strong class="fs-3">{{ productForm.amount | currency: 'INR'}}</strong>
     </div>
-    <button type="submit" mat-stroked-button color="primary" class="w-100">
+    <button type="submit" mat-stroked-button color="primary" class="w-100 mt-2">
       Add
       <mat-icon>add</mat-icon>
     </button>
