@@ -11,7 +11,6 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
   private paths = [
     'select-contact',
     'select-product',
-    'create-transactions',
     'set-discount',
     'choose-payment-method',
   ];

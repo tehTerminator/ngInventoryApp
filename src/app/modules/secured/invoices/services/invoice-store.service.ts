@@ -36,27 +36,22 @@ export class InvoiceStoreService {
     private contactService: ContactsService
   ) {}
 
-  createTransaction(quantity: number, rate: number): void {
+  createTransaction(
+    item: Product | Bundle | Ledger,
+    quantity: number,
+    rate: number
+  ): void {
     let transaction = { ...BASE_TRANSACTION };
-    if (this.bundleService.isInstanceOfBundle(this.selectedItem)) {
-      transaction = this.createTransactionFromBundle(
-        this.selectedItem,
-        +quantity
-      );
+    if (this.bundleService.isInstanceOfBundle(item)) {
+      transaction = this.createTransactionFromBundle(item, +quantity);
     } else {
-      const kind = this.ledgerService.isInstanceOfLedger(this.selectedItem)
+      const kind = this.ledgerService.isInstanceOfLedger(item)
         ? 'LEDGER'
         : 'PRODUCT';
 
-      transaction = this.makeTransation(
-        this.selectedItem,
-        kind,
-        +quantity,
-        +rate
-      );
+      transaction = this.makeTransation(item, kind, +quantity, +rate);
     }
     this.appendTransaction(transaction);
-    this.selectedItem = EMPTY_PRODUCT;
   }
 
   /**
@@ -313,8 +308,10 @@ export class InvoiceStoreService {
           service = this.productService;
           break;
       }
-      this.selectedItem = service.getElementById(item.item_id);
-      this.createTransaction(item.quantity, item.rate);
+      const selectedItem: Product | Ledger | Bundle = service.getElementById(
+        item.item_id
+      );
+      this.createTransaction(selectedItem, item.quantity, item.rate);
     });
 
     this.paymentInfo$.next(data.vouchers);

@@ -25,6 +25,7 @@ import { ProductService } from '../../../../../../services/product/product.servi
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
+import { TransactionForm } from './TransactionForm';
 
 @Component({
   selector: 'app-select-product',
@@ -35,11 +36,7 @@ export class SelectProductComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
-
-  productControl = new FormControl<GeneralItem | Product | ''>('', {
-    nonNullable: true,
-  });
-  productForm = new FormGroup({ product: this.productControl });
+  productForm = new TransactionForm();
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
   private _sub = new Subscription();
 
@@ -59,7 +56,7 @@ export class SelectProductComponent
     this.ledgerService.init();
 
     // Combine observable streams for product options
-    this.filteredProducts$ = this.productControl.valueChanges.pipe(
+    this.filteredProducts$ = this.productForm.itemFormControl.valueChanges.pipe(
       startWith(''),
       debounceTime(300), // Adjust debounce time as needed (optional)
       map((value) => {
@@ -85,34 +82,31 @@ export class SelectProductComponent
     const selectedProduct: GeneralItem | Product | null = event.option.value;
     if (selectedProduct === null) {
       this.notification.show('Invalid Product Selected');
-    } else if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
-      this.store.selectedItem =
-        this.generalItemStore.selectActualItem(selectedProduct);
     } else {
-      this.store.selectedItem = selectedProduct;
+      this.productForm.patchValue({ rate: selectedProduct.rate });
     }
   }
 
-  navigateToCreateTransactions() {
-    this.router.navigate(['../create-transactions'], {
-      relativeTo: this.route,
-    });
-  }
+  onSubmit() {
+    const item = this.productForm.item;
 
-  navigateToPaymentOption() {
-    this.store.invoice.pipe(take(1)).subscribe({
-      next: (value) => {
-        if (value.kind === 'PURCHASE') {
-          this.router.navigate(['../choose-payment-method'], {
-            relativeTo: this.route,
-          });
-        } else {
-          this.router.navigate(['../set-discount'], {
-            relativeTo: this.route,
-          });
-        }
-      },
-    });
+    if (item === null || this.productForm.quantity === 0) {
+      return;
+    }
+
+    try {
+      const actualItem = this.generalItemStore.selectActualItem(item);
+      this.store.createTransaction(
+        actualItem,
+        this.productForm.quantity,
+        this.productForm.rate
+      );
+      this.productForm.reset();
+    } catch (e) {
+      this.notification.show('Error While Storing Transactions');
+    } finally {
+      this.input.nativeElement.focus();
+    }
   }
 
   private _filterProducts(value: string): GeneralItem[] | Product[] {

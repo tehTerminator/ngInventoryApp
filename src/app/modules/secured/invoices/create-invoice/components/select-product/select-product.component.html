@@ -1,8 +1,8 @@
-<form class="card" [formGroup]="productForm" (ngSubmit)="navigateToCreateTransactions()">
+<form class="card" [formGroup]="productForm" (ngSubmit)="onSubmit()">
   <div class="card-body">
     <mat-form-field class="w-100">
       <mat-label>Select Product</mat-label>
-      <input type="text" #firstInputField matInput [formControl]="productControl" [matAutocomplete]="auto">
+      <input type="text" #firstInputField matInput formControlName="item" [matAutocomplete]="auto">
       <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn"
         autoActiveFirstOption="true" autoSelectActiveOption="true">
         <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
@@ -10,20 +10,39 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <div class="row g-2">
-      <div class="col">
-        <button type="submit" mat-stroked-button color="primary" class="w-100">
-          Add
-          <mat-icon>add</mat-icon>
-        </button>
+
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Quantity</mat-label>
+          <input #quantityField type="number" name="quantity" matInput formControlName="quantity" required
+            class="text-center" />
+          <mat-error
+            *ngIf="productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)">
+            <span *ngIf="productForm.quantityFormControl.hasError('required')">Please Provide Quantity.</span>
+            <span *ngIf="productForm.quantityFormControl.hasError('min')">Quantity Must Not Be Zero.</span>
+          </mat-error>
+        </mat-form-field>
       </div>
-      <div class="col" *ngIf="hasTransactions | async">
-        <button type="button" *ngIf="hasTransactions | async" (click)="navigateToPaymentOption()" mat-raised-button
-          color="primary" class="w-100">
-          Submit Invoice
-          <mat-icon>done</mat-icon>
-        </button>
+      <div class="col-md-6">
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Rate</mat-label>
+          <input type="number" name="rate" matInput formControlName="rate" required class="text-center" />
+          <mat-error
+            *ngIf="productForm.rateFormControl.invalid && (productForm.rateFormControl.touched || productForm.rateFormControl.dirty)">
+            <span *ngIf="productForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
+            <span *ngIf="productForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
+          </mat-error>
+        </mat-form-field>
       </div>
     </div>
+
+    <div class="col-md-12 text-center border border-1 p-2">
+      <strong class="fs-3">{{ productForm.amount | currency: 'INR'}}</strong>
+    </div>
+    <button type="submit" mat-stroked-button color="primary" class="w-100">
+      Add
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </form>

@@ -8,7 +8,6 @@ import { NavigationBtnComponent } from './components/navigation-btn/navigation-b
 import { SelectContactComponent } from './components/select-contact/select-contact.component';
 import { CoreModule } from '../../../core/core.module';
 import { SelectProductComponent } from './components/select-product/select-product.component';
-import { CreateTransactionsComponent } from './components/create-transactions/create-transactions.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { CreateContactFormComponent } from './components/create-contact-form/create-contact-form.component';
 import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
@@ -26,7 +25,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     NavigationBtnComponent,
     SelectContactComponent,
     SelectProductComponent,
-    CreateTransactionsComponent,
     ContactComponent,
     CreateContactFormComponent,
     ChoosePaymentMethodComponent,
