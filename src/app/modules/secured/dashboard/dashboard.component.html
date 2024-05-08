@@ -1,11 +1,16 @@
 <mat-tab-group>
     <mat-tab label="Overview">
         <div class="row mx-4 mt-4 g-4">
-            <app-card-with-text class="col-md-4 col-lg-3" title="Current Location"
-                [text]="myLocation.title"></app-card-with-text>
-            <app-card-with-text class="col-md-4 col-lg-3" title="Income" dataUrl="todaysIncome"></app-card-with-text>
-            <app-card-with-text class="col-md-4 col-lg-3" title="Expense" dataUrl="todaysExpense"></app-card-with-text>
+            <div class="col-md-3 col-lg-2">
+                <app-card-with-text title="Current Location" [text]="myLocation.title"></app-card-with-text>
+                <app-card-with-text class="p-1" title="Income" dataUrl="todaysIncome"></app-card-with-text>
+                <app-card-with-text title="Sales" dataUrl="todaysExpense"></app-card-with-text>
+            </div>
             <app-product-list class="col-md-6 col-lg-4" [location]="myLocation.id"></app-product-list>
+            <div class="col-md-3 col-lg-2">
+                <app-card-with-text title="My Sales" dataUrl="mySales"></app-card-with-text>
+                <app-card-with-text class="p-1" title="Commissions" dataUrl="myCommission"></app-card-with-text>
+            </div>
         </div>
     </mat-tab>
     <mat-tab label="Accounts">
