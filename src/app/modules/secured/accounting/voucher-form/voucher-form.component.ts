@@ -12,7 +12,7 @@ import { ApiService } from '../../../../services/api/api.service';
 import { LedgerService } from '../../../../services/ledger/ledger.service';
 import { NotificationsService } from '../../../../services/notification/notification.service';
 import { Voucher } from '../../../../interface/voucher.interface';
-import { evaluateString } from '../../../../shared/functions';
+import { evaluateString, mathPattern } from '../../../../shared/functions';
 import { VoucherFormGroup } from './VoucherFormGroup';
 
 @Component({
@@ -122,10 +122,16 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
   onAmountFieldFocus(): void {
     // alert('Focused');
     try {
-      const value = evaluateString(this.voucherForm.narrationFormControl.value);
-      this.voucherForm.amount = value;
+      const match = this.voucherForm.narration.match(mathPattern);
+      if (match) {
+        const value = evaluateString(match[0]);
+        this.voucherForm.amount = value;
+      } else {
+        console.log('No Match Pattern');
+        return;
+      }
     } catch (e) {
-      this.voucherForm.amount = 0;
+      console.log('No Math Pattern Found');
     }
   }
 

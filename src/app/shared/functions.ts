@@ -1,4 +1,4 @@
-export const mathPattern = '^([1-9][0-9]*[\\.+\\-*\\/])*[1-9][0-9]*$';
+export const mathPattern = /(([1-9][0-9]*[\\.+\-*\\/]){1,2})*[1-9][0-9]*(=)/gm;
 
 export function getCurrentDateString(): string {
   return new Date().toISOString().substring(0, 10);
@@ -9,7 +9,7 @@ export function evaluateString(text: string): number {
   const lastChar = text[text.length - 1];
   if (lastChar === '=') {
     const command = text.substring(0, text.length - 1);
-    if (regex.test(command)) {
+    if (regex.test(text)) {
       // tslint:disable-next-line: no-eval
       return +eval(command).toFixed(2);
     } else {
