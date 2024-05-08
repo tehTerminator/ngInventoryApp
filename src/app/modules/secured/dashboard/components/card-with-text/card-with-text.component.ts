@@ -20,7 +20,7 @@ export class CardWithTextComponent implements AfterViewInit {
     if (this.dataUrl.length > 0) {
       this.loading = true;
       this.api
-        .retrieve<{ data: string | number }>(this.dataUrl)
+        .retrieve<{ data: string | number }>(['report', this.dataUrl])
         .pipe(finalize(() => (this.loading = false)))
         .subscribe({ next: (value) => (this.text = value.data.toString()) });
     }
