@@ -32,10 +32,11 @@
       <div class="col-md-6">
         <mat-form-field class="d-block" appearance="outline">
           <mat-label>Rate</mat-label>
-          <input type="number" name="rate" matInput formControlName="rate" required class="text-center" />
+          <input type="text" name="rate" matInput formControlName="rate" required class="text-center" />
           <mat-error *ngIf="productForm.rateFormControl.dirty">
             <span *ngIf="productForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
             <span *ngIf="productForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
+            <span *ngIf="productForm.rateFormControl.hasError('pattern')">Invalid Data</span>
           </mat-error>
         </mat-form-field>
       </div>

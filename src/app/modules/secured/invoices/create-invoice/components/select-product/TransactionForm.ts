@@ -1,12 +1,31 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralItem } from '../../../../../../interface/general-item.interface';
+import { evaluateString } from '../../../../../../shared/functions';
 
 export class TransactionForm extends FormGroup {
   constructor() {
     super({
       item: new FormControl<GeneralItem | null>(null, [Validators.required]),
       quantity: new FormControl(0, Validators.required),
-      rate: new FormControl(0, Validators.required),
+      rate: new FormControl(0, [
+        Validators.required,
+        Validators.min(0.01),
+        Validators.pattern('^\\d+(\\.\\d{1,2})?$'),
+      ]),
+    });
+
+    this.rateFormControl.valueChanges.subscribe({
+      next: (value) => {
+        const lastChar = value[value.length - 1];
+        if (lastChar === '=') {
+          try {
+            const result = evaluateString(value);
+            this.rateFormControl.setValue(result.toString());
+          } catch (e) {
+            this.rateFormControl.setValue('0');
+          }
+        }
+      },
     });
   }
 
@@ -21,15 +40,15 @@ export class TransactionForm extends FormGroup {
   get quantityFormControl(): FormControl<number> {
     return this.get('quantity') as FormControl<number>;
   }
-  get rateFormControl(): FormControl<number> {
-    return this.get('rate') as FormControl<number>;
+  get rateFormControl(): FormControl<string> {
+    return this.get('rate') as FormControl<string>;
   }
 
   get quantity(): number {
     return this.quantityFormControl.value;
   }
   get rate(): number {
-    return this.rateFormControl.value;
+    return +this.rateFormControl.value;
   }
 
   get amount(): number {

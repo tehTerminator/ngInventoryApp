@@ -88,7 +88,7 @@ export class SelectProductComponent
   onSubmit() {
     const item = this.productForm.item;
 
-    if (item === null || this.productForm.quantity === 0) {
+    if (item === null || this.productForm.quantity <= 0) {
       return;
     }
 
