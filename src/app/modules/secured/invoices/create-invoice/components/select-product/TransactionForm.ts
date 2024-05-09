@@ -1,12 +1,15 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralItem } from '../../../../../../interface/general-item.interface';
 import { evaluateString } from '../../../../../../shared/functions';
+import { Product } from '../../../../../../interface/product.interface';
 
 export class TransactionForm extends FormGroup {
   constructor() {
     super({
-      item: new FormControl<GeneralItem | null>(null, [Validators.required]),
-      quantity: new FormControl(0, Validators.required),
+      item: new FormControl<GeneralItem | Product | null>(null, [
+        Validators.required,
+      ]),
+      quantity: new FormControl(0, [Validators.required, Validators.min(0.01)]),
       rate: new FormControl(0, [
         Validators.required,
         Validators.min(0.01),
@@ -29,11 +32,11 @@ export class TransactionForm extends FormGroup {
     });
   }
 
-  get itemFormControl(): FormControl<GeneralItem | null> {
+  get itemFormControl(): FormControl<GeneralItem | Product | null> {
     return this.get('item') as FormControl<GeneralItem | null>;
   }
 
-  get item(): GeneralItem | null {
+  get item(): GeneralItem | Product | null {
     return this.itemFormControl.value;
   }
 

@@ -26,6 +26,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NotificationsService } from '../../../../../../services/notification/notification.service';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
 import { TransactionForm } from './TransactionForm';
+import { BundleService } from '../../../../../../services/bundle/bundle.service';
+import { Bundle } from '../../../../../../interface/bundle.interface';
+import { Ledger } from '../../../../../../interface/ledger.interface';
 
 @Component({
   selector: 'app-select-product',
@@ -38,6 +41,7 @@ export class SelectProductComponent
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
   productForm = new TransactionForm();
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
+  isBundle = false;
   private _sub = new Subscription();
 
   constructor(
@@ -45,7 +49,8 @@ export class SelectProductComponent
     private generalItemStore: GeneralItemStoreService,
     private productService: ProductService,
     private ledgerService: LedgerService,
-    private notification: NotificationsService
+    private notification: NotificationsService,
+    private bundleService: BundleService
   ) {}
 
   ngOnInit(): void {
@@ -78,22 +83,35 @@ export class SelectProductComponent
 
   onSelectProduct(event: MatAutocompleteSelectedEvent) {
     const selectedProduct: GeneralItem | Product | null = event.option.value;
+    this.isBundle = false;
     if (selectedProduct === null) {
       this.notification.show('Invalid Product Selected');
     } else {
-      this.productForm.patchValue({ rate: selectedProduct.rate });
+      if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
+        const item = this.generalItemStore.selectActualItem(selectedProduct);
+        if (this.bundleService.isInstanceOfBundle(item)) {
+          this.isBundle = true;
+        }
+      }
+      this.productForm.patchValue({ rate: selectedProduct.rate, quantity: 1 });
     }
   }
 
   onSubmit() {
-    const item = this.productForm.item;
-
-    if (item === null || this.productForm.quantity <= 0) {
+    if (
+      this.productForm.item === null ||
+      this.productForm.quantity <= 0 ||
+      this.productForm.amount <= 0
+    ) {
       return;
     }
 
+    const actualItem: Product | Ledger | Bundle =
+      this.generalItemStore.isInstanceOfGeneralItem(this.productForm.item)
+        ? this.generalItemStore.selectActualItem(this.productForm.item)
+        : this.productForm.item;
+
     try {
-      const actualItem = this.generalItemStore.selectActualItem(item);
       this.store.createTransaction(
         actualItem,
         this.productForm.quantity,
