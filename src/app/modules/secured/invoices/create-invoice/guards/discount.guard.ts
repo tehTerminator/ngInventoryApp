@@ -12,7 +12,13 @@ export const discountGuard: CanActivateFn = () => {
   }
 
   const type = store.kind.toLowerCase() === 'sales' ? 'sales' : 'purchase';
-  const url = getCreateInvoiceRoutes('select-customer', type);
+  let url: string[] = [];
+
+  if (store.snapshot.gross_amount > 0) {
+    url = getCreateInvoiceRoutes('choose-payment-method', type);
+  } else {
+    url = getCreateInvoiceRoutes('select-customer', type);
+  }
 
   return router.createUrlTree(url);
 };
