@@ -46,6 +46,6 @@ export class ApiService {
   }
 
   private randomTime(): number {
-    return 100 + Math.floor(Math.random() * 1000);
+    return 100 + Math.floor(Math.random() * 100);
   }
 }
