@@ -9,6 +9,7 @@ import { TransactionsTableComponent } from './transactions-table/transactions-ta
 import { PaymentInfoComponent } from './payment-info/payment-info.component';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { CashierNameComponent } from './cashier-name/cashier-name.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RouterModule } from '@angular/router';
     PreviewInvoiceComponent,
     TransactionsTableComponent,
     PaymentInfoComponent,
+    CashierNameComponent,
   ],
   imports: [
     CommonModule,

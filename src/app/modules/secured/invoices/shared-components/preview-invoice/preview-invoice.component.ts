@@ -16,7 +16,7 @@ export class PreviewInvoiceComponent implements OnInit {
     public store: InvoiceStoreService,
     private api: ApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
