@@ -1,41 +1,46 @@
-
-    <div style="overflow-y: scroll; max-height: 80vh;" *ngIf="rowCount > 0;else noDataMessage">
-        <table class="table table-raised table-bordered table-hover table-sm">
-            <thead class="text-center table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Transfer</th>
-                    <th>Description</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
-                    <th>Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let v of rows| async;let i = index">
-                    <td>
-                        <a [routerLink]="['/auth', 'accounting', 'voucher', v.id]">
-                            {{ v.id }}
-                        </a>
-                    </td>
-                    <td>{{ v.date | date: 'd/M/yy' }}</td>
-                    <td>{{ v.transfer }}</td>
-                    <td>
+<div style="overflow-y: scroll; max-height: 80vh;" *ngIf="rowCount > 0;else noDataMessage">
+    <table class="table table-raised table-bordered table-hover table-sm">
+        <thead class="text-center table-dark">
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Transfer</th>
+                <th>Description</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let v of rows| async;let i = index">
+                <td>
+                    <a [routerLink]="['/auth', 'accounting', 'voucher', v.id]">
+                        {{ v.id }}
+                    </a>
+                </td>
+                <td>{{ v.date | date: 'd/M/yy' }}</td>
+                <td>{{ v.transfer }}</td>
+                <td>
+                    <span *ngIf="hasUri(v.narration); else noUri">
                         <span>
-                           {{ splitText(v.narration)[0] }}
-                       </span>
-                        <a [routerLink]="['/auth', 'invoices', 'view',  splitText(v.narration)[1]]">
+                            {{ splitText(v.narration)[0] }}
+                        </span>
+                        <a [routerLink]="['/auth', 'invoices', 'view', splitText(v.narration)[1]]">
                             {{ splitText(v.narration)[1] }}
-                       </a>
-                    </td>
-                    <td class="text-end pe-3" [ngClass]="v.dr > 0 ? 'table-success' : ''">{{ v.dr | currency:'INR' }}</td>
-                    <td class="text-end pe-3" [ngClass]="v.cr > 0 ? 'table-danger' : ''">{{ v.cr | currency:'INR' }}</td>
-                    <td class="text-end pe-3">{{ v.balance | currency:'INR' }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                        </a>
+                    </span>
+
+                    <ng-template #noUri>
+                        {{ v.narration }}
+                    </ng-template>
+                </td>
+                <td class="text-end pe-3" [ngClass]="v.dr > 0 ? 'table-success' : ''">{{ v.dr | currency:'INR' }}</td>
+                <td class="text-end pe-3" [ngClass]="v.cr > 0 ? 'table-danger' : ''">{{ v.cr | currency:'INR' }}</td>
+                <td class="text-end pe-3">{{ v.balance | currency:'INR' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <ng-template #noDataMessage>
     <div class="card bg-light text-center">
