@@ -9,12 +9,18 @@ export class TransactionForm extends FormGroup {
       item: new FormControl<GeneralItem | Product | null>(null, [
         Validators.required,
       ]),
-      quantity: new FormControl(0, [Validators.required, Validators.min(0.01)]),
-      rate: new FormControl(0, [
-        Validators.required,
-        Validators.min(0.01),
-        Validators.pattern('^\\d+(\\.\\d{1,2})?$'),
-      ]),
+      quantity: new FormControl(1, {
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(0.01)],
+      }),
+      rate: new FormControl(0, {
+        nonNullable: true,
+        validators: [
+          Validators.required,
+          Validators.min(0.01),
+          Validators.pattern('^\\d+(\\.\\d{1,2})?$'),
+        ],
+      }),
     });
 
     this.rateFormControl.valueChanges.subscribe({
@@ -50,8 +56,13 @@ export class TransactionForm extends FormGroup {
   get quantity(): number {
     return this.quantityFormControl.value;
   }
+
   get rate(): number {
     return +this.rateFormControl.value;
+  }
+
+  set rate(value: number) {
+    this.rateFormControl.setValue(value.toString());
   }
 
   get amount(): number {
