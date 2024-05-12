@@ -28,6 +28,9 @@ export class CashierNameComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe({
         next: (user_id) => {
+          if (user_id <= 0) {
+            return;
+          }
           this.cashier = this.userStore.getElementById(user_id).name;
         },
         error: () => {
