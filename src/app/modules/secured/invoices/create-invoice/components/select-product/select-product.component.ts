@@ -7,8 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
 import {
   Observable,
   Subscription,
@@ -16,7 +14,6 @@ import {
   startWith,
   debounceTime,
   EMPTY,
-  take,
 } from 'rxjs';
 import { GeneralItem } from '../../../../../../interface/general-item.interface';
 import { GeneralItemStoreService } from '../../services/general-item-store.service';
@@ -93,7 +90,7 @@ export class SelectProductComponent
           this.isBundle = true;
         }
       }
-      this.productForm.patchValue({ rate: selectedProduct.rate, quantity: 1 });
+      this.productForm.rate = selectedProduct.rate;
     }
   }
 
@@ -148,11 +145,11 @@ export class SelectProductComponent
     return product && product.title ? product.title : '';
   }
 
-  get hasTransactions(): Observable<boolean> {
-    return this.store.invoice.pipe(
-      map((value) => {
-        return value.transactions.length >= 1;
-      })
-    );
-  }
+  // get hasTransactions(): Observable<boolean> {
+  //   return this.store.invoice.pipe(
+  //     map((value) => {
+  //       return value.transactions.length >= 1;
+  //     })
+  //   );
+  // }
 }
