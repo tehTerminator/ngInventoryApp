@@ -1,0 +1,20 @@
+tfoot {
+  tr {
+    td:not(:last-child) {
+      border: none !important;
+    }
+    td:last-child {
+      border: 1px solid #000 !important; /* Dark black border */
+    }
+  }
+}
+
+tbody,
+thead {
+  tr {
+    td,
+    th {
+      border: 1px solid black;
+    }
+  }
+}

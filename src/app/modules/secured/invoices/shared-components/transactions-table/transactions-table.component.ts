@@ -9,6 +9,7 @@ import { BundleService } from '../../../../../services/bundle/bundle.service';
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
+  styleUrl: './transactions-table.component.scss',
 })
 export class TransactionsTableComponent {
   constructor(
@@ -47,9 +48,9 @@ export class TransactionsTableComponent {
 
   get colspan(): number {
     if (this.showButtons()) {
-      return 4;
+      return 2;
     }
-    return 3;
+    return 1;
   }
 
   get transactions$() {
