@@ -18,6 +18,7 @@ import { GeneralItemStoreService } from './services/general-item-store.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SetDiscountComponent } from './components/set-discount/set-discount.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { PrepaidVouchersComponent } from './components/choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     SelectLedgerFormComponent,
     UdhaarPaymentBtnComponent,
     SetDiscountComponent,
+    PrepaidVouchersComponent,
   ],
   imports: [
     CommonModule,
