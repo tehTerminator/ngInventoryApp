@@ -21,14 +21,10 @@
                 <td>{{ v.date | date: 'd/M/yy' }}</td>
                 <td>{{ v.transfer }}</td>
                 <td>
-                    <span *ngIf="hasUri(v.narration); else noUri">
-                        <span>
-                            {{ splitText(v.narration)[0] }}
-                        </span>
-                        <a [routerLink]="['/auth', 'invoices', 'view', splitText(v.narration)[1]]">
-                            {{ splitText(v.narration)[1] }}
-                        </a>
-                    </span>
+                    <a [routerLink]="['/auth', 'invoices', 'view', splitText(v.narration)[1]]"
+                        *ngIf="hasUri(v.narration); else noUri">
+                        {{ v.narration }}
+                    </a>
 
                     <ng-template #noUri>
                         {{ v.narration }}
