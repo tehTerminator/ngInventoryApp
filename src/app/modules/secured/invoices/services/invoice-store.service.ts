@@ -149,12 +149,15 @@ export class InvoiceStoreService {
     return transaction;
   }
 
-  addPaymentMethod(dr: number, amount: number) {
-    const voucher: Voucher = { ...EMPTY_VOUCHER };
+  addPaymentMethod(dr: number, amount: number, voucher = { ...EMPTY_VOUCHER }) {
     try {
       const contact = this.contactService.getElementById(
         this.snapshot.contact_id
       );
+      if (voucher.id >= 0) {
+        voucher.amount = amount;
+        return;
+      }
       if (this.snapshot.kind === 'SALES') {
         voucher.cr = contact.ledger_id;
         voucher.dr = dr;
@@ -162,8 +165,8 @@ export class InvoiceStoreService {
         voucher.dr = contact.ledger_id;
         voucher.cr = dr;
       }
-    } finally {
       voucher.amount = amount;
+    } finally {
       this.paymentInfo$.next([...this.paymentInfo$.value, voucher]);
     }
   }

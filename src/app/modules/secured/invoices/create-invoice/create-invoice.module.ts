@@ -19,6 +19,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SetDiscountComponent } from './components/set-discount/set-discount.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PrepaidVouchersComponent } from './components/choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { PrepaidVouchersComponent } from './components/choose-payment-method/pre
     CoreModule,
     MatExpansionModule,
     MatTabsModule,
+    MatChipsModule,
   ],
   providers: [GeneralItemStoreService],
 })

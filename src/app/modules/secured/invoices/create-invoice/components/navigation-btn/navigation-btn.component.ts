@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-navigation-btn',
@@ -15,11 +15,33 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
     'choose-payment-method',
   ];
 
+  private _notifier$ = new Subject();
+
   constructor(private router: Router) {}
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.router.events.pipe(takeUntil(this._notifier$)).subscribe((val) => {
+      if (this.isPurchase()) {
+        this.paths = [
+          'select-contact',
+          'select-product',
+          'choose-payment-method',
+        ];
+      } else {
+        this.paths = [
+          'select-contact',
+          'select-product',
+          'set-discount',
+          'choose-payment-method',
+        ];
+      }
+    });
+  }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this._notifier$.next(0);
+    this._notifier$.complete();
+  }
 
   goBack(): void {
     const path = this.currentPath;
@@ -58,5 +80,9 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
       return false;
     }
     return true;
+  }
+
+  isPurchase(): boolean {
+    return this.currentPath[3] === 'purchase';
   }
 }
