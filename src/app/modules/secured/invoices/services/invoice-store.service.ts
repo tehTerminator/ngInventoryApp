@@ -154,7 +154,7 @@ export class InvoiceStoreService {
       const contact = this.contactService.getElementById(
         this.snapshot.contact_id
       );
-      if (voucher.id >= 0) {
+      if (voucher.id > 0) {
         voucher.amount = amount;
         return;
       }
