@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CashbookRow } from './Cashbook';
 import { Observable, Subscription, map } from 'rxjs';
 import { StatementService } from '../../statement-service/statement.service';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-table',
@@ -12,7 +14,11 @@ export class TableComponent implements OnInit {
   rowCount = 0;
   sub: Subscription = new Subscription();
 
-  constructor(private statementService: StatementService) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private statementService: StatementService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.sub = this.statementService.cashbook.subscribe((data) => {
@@ -24,7 +30,12 @@ export class TableComponent implements OnInit {
     });
   }
 
+  splitWithDots(text: string) {
+    return text.split('.');
+  }
+
   splitText(narration: string): string[] {
+    console.log('splitText', narration);
     if (narration.indexOf('#') >= 0) {
       const sp = narration.split('#');
       if (sp.length === 2 && !isNaN(+sp[1])) {
@@ -35,7 +46,11 @@ export class TableComponent implements OnInit {
   }
 
   hasUri(narration: string) {
-    return narration.indexOf('#') > 0;
+    return narration.includes('#');
+  }
+
+  hasDot(narration: string) {
+    return narration.includes('.');
   }
 
   ngOnDestroy(): void {
