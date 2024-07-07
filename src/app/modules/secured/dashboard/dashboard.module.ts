@@ -9,12 +9,14 @@ import { CardWithTextComponent } from './components/card-with-text/card-with-tex
 import { UnderConstructionComponent } from './components/under-construction/under-construction.component';
 import { CardWithTableComponent } from './components/card-with-table/card-with-table.component';
 import { ProductListComponent } from './../standalone/product-list/product-list.component';
+import { ProductsUsedComponent } from './components/products-used/products-used.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     CardWithTextComponent,
     CardWithTableComponent,
+    ProductsUsedComponent,
     UnderConstructionComponent,
   ],
   imports: [

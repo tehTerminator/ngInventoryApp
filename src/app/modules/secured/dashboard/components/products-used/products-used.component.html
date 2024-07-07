@@ -1,0 +1,14 @@
+<table class="table shadow text-center">
+    <thead>
+        <th>Title</th>
+        <th>Quantity</th>
+        <th>Amount</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of list | async">
+            <td>{{ item.title }}</td>
+            <td>{{ item.total_quantity }}</td>
+            <td class="text-end">{{ item.total_quantity * item.rate | currency: 'INR'}}</td>
+        </tr>
+    </tbody>
+</table>
