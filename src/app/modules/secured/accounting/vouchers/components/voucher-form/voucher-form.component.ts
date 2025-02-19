@@ -2,30 +2,41 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, EMPTY, startWith, map, distinctUntilChanged } from 'rxjs';
-import { Ledger } from './../../../../interface/ledger.interface';
-import { ApiService } from '../../../../services/api/api.service';
-import { LedgerService } from '../../../../services/ledger/ledger.service';
-import { NotificationsService } from '../../../../services/notification/notification.service';
-import { Voucher } from '../../../../interface/voucher.interface';
-import { evaluateString, mathPattern } from '../../../../shared/functions';
+import { Ledger } from '../../../../../../interface/ledger.interface';
+import { ApiService } from '../../../../../../services/api/api.service';
+import { LedgerService } from '../../../../../../services/ledger/ledger.service';
+import { NotificationsService } from '../../../../../../services/notification/notification.service';
+import { Voucher } from '../../../../../../interface/voucher.interface';
+import { evaluateString, mathPattern } from '../../../../../../shared/functions';
 import { VoucherFormGroup } from './VoucherFormGroup';
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-voucher-form',
   templateUrl: './voucher-form.component.html',
   styleUrls: ['./voucher-form.component.scss'],
 })
 export class VoucherFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
+
   voucherForm = new VoucherFormGroup();
   isLoading = false;
   filteredCreditor: Observable<Ledger[]> = EMPTY;
   filteredDebtor: Observable<Ledger[]> = EMPTY;
+
+  @Input('voucherId') set voucherId(value: string) {
+    const id = parseInt(value);
+    if (id > 0) {
+      this.voucherForm.id =id;
+    }
+  }
 
   constructor(
     private api: ApiService,
@@ -66,6 +77,7 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
       this.input.nativeElement.focus();
     }
   }
+
 
   private loadIdFromRoute(): void {
     try {

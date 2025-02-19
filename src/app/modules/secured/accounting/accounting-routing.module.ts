@@ -12,15 +12,15 @@ const routes: Routes = [
   {
     path: 'voucher',
     loadChildren: () =>
-      import('./voucher-form/voucher-form.module').then(
-        (m) => m.VoucherFormModule
+      import('./vouchers/vouchers.module').then(
+        (m) => m.VouchersModule
       ),
   },
   {
     path: 'voucher/:id',
     loadChildren: () =>
-      import('./voucher-form/voucher-form.module').then(
-        (m) => m.VoucherFormModule
+      import('./vouchers/vouchers.module').then(
+        (m) => m.VouchersModule
       ),
   },
   {

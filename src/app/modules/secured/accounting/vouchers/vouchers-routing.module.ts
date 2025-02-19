@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { VoucherFormComponent } from './voucher-form.component';
+import { VouchersComponent } from './vouchers.component';
 
-const routes: Routes = [{ path: '', component: VoucherFormComponent }];
+const routes: Routes = [{ path: '', component: VouchersComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

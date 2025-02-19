@@ -1,11 +1,10 @@
-<div class="row justify-content-center">
-    <div class="col-md-8">
+
         <form class="card shadow" [formGroup]="voucherForm" (ngSubmit)="onSubmit()" [loading]="isLoading">
             <h1 class="card-header d-flex justify-content-between">
                 <strong>
-                    {{ this.voucherForm.editMode ? 'Update' : 'Create New' }}
+                    {{ this.voucherForm.editMode ? 'Update' : 'New' }}
                     Voucher</strong>
-                <div class="form-group">
+                <div class="form-group w-25">
                     <input type="number" class="form-control" formControlName="id" (blur)="onIdFieldChange()">
                 </div>
             </h1>
@@ -49,36 +48,40 @@
                     <textarea matInput formControlName="narration" rows="5"></textarea>
                 </mat-form-field>
 
-                <div class="row g-3">
-                    <div class="col-sm-4">
-                        <mat-form-field appearance="outline" class="w-100">
-                            <mat-label>Amount</mat-label>
-                            <input type="number" matInput formControlName="amount" min="0"
-                                (focus)="onAmountFieldFocus()" />
-                            <mat-error
-                                *ngIf="voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)">
-                                <span *ngIf="voucherForm.amountFormControl.hasError('required')">
-                                    Amount is Required for Voucher Entry
-                                </span>
-                                <span *ngIf="voucherForm.hasError('min')">
-                                    Amount Must Be A Greater than 0
-                                </span>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-sm-4">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Amount</mat-label>
+                    <input type="number" matInput formControlName="amount" min="0"
+                        (focus)="onAmountFieldFocus()" />
+                    <mat-error
+                        *ngIf="voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)">
+                        <span *ngIf="voucherForm.amountFormControl.hasError('required')">
+                            Amount is Required for Voucher Entry.
+                        </span>
+                        <span *ngIf="voucherForm.amountFormControl.hasError('min')">
+                            Amount is Too Low.
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+                <div class="row">
+                    <div class="col">
                         <button type="submit" class="w-100 mt-2 py-3" mat-raised-button color="primary"
                             [disabled]="voucherForm.invalid">
                             Submit
                         </button>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col">
                         <button type="reset" class="w-100 mt-2 py-3" mat-raised-button color="warn">
                             Reset Form
                         </button>
                     </div>
                 </div>
+                <!-- <div class="row g-3">
+                    <div class="col-md-12">
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                    </div>
+                </div> -->
             </div>
         </form>
-    </div>
-</div>
