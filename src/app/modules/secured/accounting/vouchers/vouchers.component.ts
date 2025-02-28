@@ -4,7 +4,8 @@ import { ActivatedRoute, Route } from "@angular/router";
 @Component({
     selector: 'app-vouchers',
     templateUrl: './vouchers.component.html',
-    styles: []
+    styles: [],
+    standalone: false
 }) export class VouchersComponent {
     voucherId = '';
     constructor(private route: ActivatedRoute) {

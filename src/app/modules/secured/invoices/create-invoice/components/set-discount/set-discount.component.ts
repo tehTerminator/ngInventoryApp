@@ -4,9 +4,10 @@ import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-set-discount',
-  templateUrl: './set-discount.component.html',
-  styleUrl: './set-discount.component.scss',
+    selector: 'app-set-discount',
+    templateUrl: './set-discount.component.html',
+    styleUrl: './set-discount.component.scss',
+    standalone: false
 })
 export class SetDiscountComponent implements AfterViewInit {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;

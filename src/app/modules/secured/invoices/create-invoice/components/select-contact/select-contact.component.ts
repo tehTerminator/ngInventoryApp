@@ -21,9 +21,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
-  selector: 'app-select-contact',
-  templateUrl: './select-contact.component.html',
-  styleUrls: ['./select-contact.component.scss'],
+    selector: 'app-select-contact',
+    templateUrl: './select-contact.component.html',
+    styleUrls: ['./select-contact.component.scss'],
+    standalone: false
 })
 export class SelectContactComponent
   implements OnInit, AfterViewInit, OnDestroy

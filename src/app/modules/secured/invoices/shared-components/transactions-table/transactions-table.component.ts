@@ -7,9 +7,10 @@ import { ProductService } from '../../../../../services/product/product.service'
 import { BundleService } from '../../../../../services/bundle/bundle.service';
 
 @Component({
-  selector: 'app-transactions-table',
-  templateUrl: './transactions-table.component.html',
-  styleUrl: './transactions-table.component.scss',
+    selector: 'app-transactions-table',
+    templateUrl: './transactions-table.component.html',
+    styleUrl: './transactions-table.component.scss',
+    standalone: false
 })
 export class TransactionsTableComponent {
   constructor(

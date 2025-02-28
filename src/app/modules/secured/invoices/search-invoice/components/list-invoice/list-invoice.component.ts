@@ -9,9 +9,10 @@ import { Voucher } from '../../../../../../interface/voucher.interface';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-list-invoice',
-  templateUrl: './list-invoice.component.html',
-  styleUrl: './list-invoice.component.scss',
+    selector: 'app-list-invoice',
+    templateUrl: './list-invoice.component.html',
+    styleUrl: './list-invoice.component.scss',
+    standalone: false
 })
 export class ListInvoiceComponent implements AfterViewInit, OnDestroy {
   loading = false;

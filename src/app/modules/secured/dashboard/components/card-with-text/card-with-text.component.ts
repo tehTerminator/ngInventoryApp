@@ -3,9 +3,10 @@ import { ApiService } from './../../../../../services/api/api.service';
 import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-card-with-text',
-  templateUrl: './card-with-text.component.html',
-  styleUrl: './card-with-text.component.scss',
+    selector: 'app-card-with-text',
+    templateUrl: './card-with-text.component.html',
+    styleUrl: './card-with-text.component.scss',
+    standalone: false
 })
 export class CardWithTextComponent implements AfterViewInit {
   @Input() title = '';

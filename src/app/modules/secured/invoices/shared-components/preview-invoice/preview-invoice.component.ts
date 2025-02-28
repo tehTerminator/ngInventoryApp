@@ -7,9 +7,10 @@ import { Invoice } from '../../../../../interface/invoice.interface';
 import { Voucher } from '../../../../../interface/voucher.interface';
 
 @Component({
-  selector: 'app-preview-invoice',
-  templateUrl: './preview-invoice.component.html',
-  styleUrls: ['preview-invoice.component.css'],
+    selector: 'app-preview-invoice',
+    templateUrl: './preview-invoice.component.html',
+    styleUrls: ['preview-invoice.component.css'],
+    standalone: false
 })
 export class PreviewInvoiceComponent implements OnInit {
   constructor(

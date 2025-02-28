@@ -10,9 +10,10 @@ import { ApiService } from '../../../../services/api/api.service';
 
 
 @Component({
-  selector: 'app-assign-location',
-  templateUrl: './assign-location.component.html',
-  styleUrls: ['./assign-location.component.scss']
+    selector: 'app-assign-location',
+    templateUrl: './assign-location.component.html',
+    styleUrls: ['./assign-location.component.scss'],
+    standalone: false
 })
 export class AssignLocationComponent implements OnInit {
   private _id = 0;

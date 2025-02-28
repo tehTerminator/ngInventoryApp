@@ -5,9 +5,10 @@ import { LedgerBalanceService, LedgerBalance } from '../ledger-balance.service';
 import { getCurrentDateString } from '../../../../../shared/functions';
 
 @Component({
-  selector: 'app-ledger-balance-list',
-  templateUrl: './ledger-balance-list.component.html',
-  styleUrl: './ledger-balance-list.component.scss',
+    selector: 'app-ledger-balance-list',
+    templateUrl: './ledger-balance-list.component.html',
+    styleUrl: './ledger-balance-list.component.scss',
+    standalone: false
 })
 export class LedgerBalanceListComponent {
   dateField = new FormControl<string>('', {

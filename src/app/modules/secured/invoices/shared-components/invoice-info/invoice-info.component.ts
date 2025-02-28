@@ -5,7 +5,8 @@ import { InvoiceStoreService } from '../../services/invoice-store.service';
 @Component({
     selector: 'app-invoice-info',
     templateUrl: './invoice-info.component.html',
-    styles: ['']
+    styles: [''],
+    standalone: false
 })
 export class InvoiceInfoComponent implements OnInit, OnDestroy {
     invoiceId = 0;

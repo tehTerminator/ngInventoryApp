@@ -9,9 +9,10 @@ import { StockInfo } from '../../../../interface/stock-info.interface';
 import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
 
 @Component({
-  selector: 'app-transfer-product',
-  templateUrl: './transfer-product.component.html',
-  styleUrls: ['./transfer-product.component.scss'],
+    selector: 'app-transfer-product',
+    templateUrl: './transfer-product.component.html',
+    styleUrls: ['./transfer-product.component.scss'],
+    standalone: false
 })
 export class TransferProductComponent implements OnInit, OnDestroy {
   private _loading = false;

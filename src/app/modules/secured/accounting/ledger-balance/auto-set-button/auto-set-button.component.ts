@@ -4,9 +4,10 @@ import { SECOND } from '../../../../../shared/constants';
 
 
 @Component({
-  selector: 'app-auto-set-button',
-  templateUrl: './auto-set-button.component.html',
-  styleUrl: './auto-set-button.component.scss',
+    selector: 'app-auto-set-button',
+    templateUrl: './auto-set-button.component.html',
+    styleUrl: './auto-set-button.component.scss',
+    standalone: false
 })
 export class AutoSetButtonComponent {
   timer = 0;

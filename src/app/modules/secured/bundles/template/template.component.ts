@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { BundleStoreService } from './services/bundle-store.service';
 
 @Component({
-  selector: 'app-template',
-  templateUrl: './template.component.html',
-  styleUrl: './template.component.scss'
+    selector: 'app-template',
+    templateUrl: './template.component.html',
+    styleUrl: './template.component.scss',
+    standalone: false
 })
 export class TemplateComponent implements OnInit {
   constructor(

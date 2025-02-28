@@ -4,8 +4,9 @@ import { UserStoreService } from './../../../../../services/user/user.service';
 import { Subject, map, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-cashier-name',
-  template: ` {{ cashier }} `,
+    selector: 'app-cashier-name',
+    template: ` {{ cashier }} `,
+    standalone: false
 })
 export class CashierNameComponent implements OnInit, AfterViewInit, OnDestroy {
   cashier = '';

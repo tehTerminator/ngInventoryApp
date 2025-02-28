@@ -4,9 +4,10 @@ import { EMPTY, Observable, Subscription } from 'rxjs';
 import { Bundle } from '../../../../../../interface/bundle.interface';
 
 @Component({
-  selector: 'app-bundle-title',
-  templateUrl: './bundle-title.component.html',
-  styleUrl: './bundle-title.component.scss'
+    selector: 'app-bundle-title',
+    templateUrl: './bundle-title.component.html',
+    styleUrl: './bundle-title.component.scss',
+    standalone: false
 })
 export class BundleTitleComponent implements OnInit, OnDestroy {
   title = '';

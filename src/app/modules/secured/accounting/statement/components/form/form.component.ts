@@ -21,9 +21,10 @@ import { StatementFormGroup } from './StatementFormGroup';
 import { StatementService } from '../../statement-service/statement.service';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
+    standalone: false
 })
 export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;

@@ -11,9 +11,10 @@ import { finalize } from 'rxjs';
 import { getCurrentDateString } from '../../../../../../shared/functions';
 
 @Component({
-  selector: 'app-search-by-date',
-  templateUrl: './search-by-date.component.html',
-  styleUrls: ['./search-by-date.component.scss'],
+    selector: 'app-search-by-date',
+    templateUrl: './search-by-date.component.html',
+    styleUrls: ['./search-by-date.component.scss'],
+    standalone: false
 })
 export class SearchByDateComponent {
   searchFormGroup = new SearchFormGroup();

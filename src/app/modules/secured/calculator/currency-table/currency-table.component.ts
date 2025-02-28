@@ -6,7 +6,8 @@ import { Currency } from '../currency.model';
 @Component({
     selector: 'app-currency-table',
     templateUrl: './currency-table.component.html',
-    styles: ['']
+    styles: [''],
+    standalone: false
 })
 export class CurrencyTableComponent {
 

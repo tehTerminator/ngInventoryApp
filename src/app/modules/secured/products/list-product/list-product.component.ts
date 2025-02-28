@@ -5,9 +5,10 @@ import { ApiService } from '../../../../services/api/api.service';
 import { ProductService } from '../../../../services/product/product.service';
 
 @Component({
-  selector: 'app-list-product',
-  templateUrl: './list-product.component.html',
-  styleUrls: ['./list-product.component.scss'],
+    selector: 'app-list-product',
+    templateUrl: './list-product.component.html',
+    styleUrls: ['./list-product.component.scss'],
+    standalone: false
 })
 export class ListProductComponent {
 

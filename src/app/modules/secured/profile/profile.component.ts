@@ -4,9 +4,10 @@ import { AuthStoreService } from './../../../services/auth-store/auth-store.serv
 import { UserForm } from './user.form';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
+    standalone: false
 })
 export class ProfileComponent {
 

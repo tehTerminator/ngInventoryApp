@@ -10,8 +10,9 @@ import { BundleService } from './../../../../../services/bundle/bundle.service';
 import { ProductService } from './../../../../../services/product/product.service';
 
 @Component({
-  selector: 'app-products-used',
-  templateUrl: './products-used.component.html',
+    selector: 'app-products-used',
+    templateUrl: './products-used.component.html',
+    standalone: false
 })
 export class ProductsUsedComponent implements AfterViewInit, OnInit {
   list = new BehaviorSubject<ProductsUsed[]>([]);

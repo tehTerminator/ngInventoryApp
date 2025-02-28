@@ -19,9 +19,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { CalculatorComponent } from './calculator/calculator.component';
 
 @Component({
-  selector: 'app-secured',
-  templateUrl: './secured.component.html',
-  styleUrls: ['./secured.component.scss'],
+    selector: 'app-secured',
+    templateUrl: './secured.component.html',
+    styleUrls: ['./secured.component.scss'],
+    standalone: false
 })
 export class SecuredComponent implements OnInit {
   constructor(

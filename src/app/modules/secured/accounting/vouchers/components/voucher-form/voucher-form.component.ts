@@ -19,9 +19,10 @@ import { evaluateString, mathPattern } from '../../../../../../shared/functions'
 import { VoucherFormGroup } from './VoucherFormGroup';
 
 @Component({
-  selector: 'app-voucher-form',
-  templateUrl: './voucher-form.component.html',
-  styleUrls: ['./voucher-form.component.scss'],
+    selector: 'app-voucher-form',
+    templateUrl: './voucher-form.component.html',
+    styleUrls: ['./voucher-form.component.scss'],
+    standalone: false
 })
 export class VoucherFormComponent implements OnInit, AfterViewInit {
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;

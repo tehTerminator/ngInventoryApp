@@ -1,8 +1,9 @@
 import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-choose-payment-method',
-  templateUrl: './choose-payment-method.component.html',
+    selector: 'app-choose-payment-method',
+    templateUrl: './choose-payment-method.component.html',
+    standalone: false
 })
 export class ChoosePaymentMethodComponent implements AfterViewInit  {
   hasRecent = false;

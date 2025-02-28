@@ -3,8 +3,9 @@ import { finalize } from 'rxjs';
 import { ApiService } from '../../../../../services/api/api.service';
 
 @Component({
-  selector: 'app-card-with-table',
-  templateUrl: './card-with-table.component.html',
+    selector: 'app-card-with-table',
+    templateUrl: './card-with-table.component.html',
+    standalone: false
 })
 export class CardWithTableComponent {
   @Input() title = '';

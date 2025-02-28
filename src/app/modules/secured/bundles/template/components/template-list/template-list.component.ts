@@ -4,9 +4,10 @@ import { Observable, map } from 'rxjs';
 import { BundleTemplate } from '../../../../../../interface/bundle.interface';
 
 @Component({
-  selector: 'app-template-list',
-  templateUrl: './template-list.component.html',
-  styleUrl: './template-list.component.scss'
+    selector: 'app-template-list',
+    templateUrl: './template-list.component.html',
+    styleUrl: './template-list.component.scss',
+    standalone: false
 })
 export class TemplateListComponent {
   constructor(private store: BundleStoreService) {}

@@ -5,7 +5,8 @@ import { DayBookService } from '../../services/day-book.service';
 
 @Component({
     selector: 'app-day-book-form',
-    templateUrl: './day-book-form.component.html'
+    templateUrl: './day-book-form.component.html',
+    standalone: false
 })
 export class DayBookFormComponent implements OnInit {
     dateField: UntypedFormControl = new UntypedFormControl();

@@ -9,9 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 import { LocationService } from '../../../../services/locations/locations.service';
 
 @Component({
-  selector: 'app-locations-form',
-  templateUrl: './locations-form.component.html',
-  styleUrls: ['./locations-form.component.scss'],
+    selector: 'app-locations-form',
+    templateUrl: './locations-form.component.html',
+    styleUrls: ['./locations-form.component.scss'],
+    standalone: false
 })
 export class LocationsFormComponent implements OnInit, OnDestroy {
   form = new LocationForm();

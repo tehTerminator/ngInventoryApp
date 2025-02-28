@@ -3,9 +3,10 @@ import { navItems } from './menu-items.data';
 import { AuthStoreService } from './../../../../services/auth-store/auth-store.service';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss'],
+    standalone: false
 })
 export class NavBarComponent implements OnInit {
   items = navItems;

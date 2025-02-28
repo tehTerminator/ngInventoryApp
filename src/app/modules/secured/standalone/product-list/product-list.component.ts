@@ -5,11 +5,10 @@ import { StockInfo } from '../../../../interface/stock-info.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss'],
-  standalone: true,
-  imports: [CommonModule],
+    selector: 'app-product-list',
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.scss'],
+    imports: [CommonModule]
 })
 export class ProductListComponent implements OnChanges {
   @Input('location') location = 0;

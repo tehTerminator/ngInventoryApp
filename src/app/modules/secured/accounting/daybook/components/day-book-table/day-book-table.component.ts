@@ -4,8 +4,9 @@ import { DayBookService } from '../../services/day-book.service';
 import { Voucher } from './../../../../../../interface/voucher.interface';
 
 @Component({
-  selector: 'app-day-book-table',
-  templateUrl: './day-book-table.component.html',
+    selector: 'app-day-book-table',
+    templateUrl: './day-book-table.component.html',
+    standalone: false
 })
 export class DayBookTableComponent {
   @Input('creditor') creditor = '';

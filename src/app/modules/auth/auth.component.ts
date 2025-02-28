@@ -8,9 +8,10 @@ import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { AuthState } from '../../interface/auth-state';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss'],
+    selector: 'app-auth',
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.scss'],
+    standalone: false
 })
 export class AuthComponent implements OnInit, OnDestroy {
   isLoading = false;

@@ -9,9 +9,10 @@ import { ProductService } from '../../../../services/product/product.service';
 import { LocationService } from './../../../../services/locations/locations.service';
 
 @Component({
-  selector: 'app-products-form',
-  templateUrl: './products-form.component.html',
-  styleUrls: ['./products-form.component.scss'],
+    selector: 'app-products-form',
+    templateUrl: './products-form.component.html',
+    styleUrls: ['./products-form.component.scss'],
+    standalone: false
 })
 export class ProductsFormComponent implements OnInit {
   private _sub = new Subscription();

@@ -8,9 +8,10 @@ import { ContactsService } from './../../../../../services/contacts/contacts.ser
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 
 @Component({
-  selector: 'app-contact-table',
-  templateUrl: './contact-table.component.html',
-  styles: [''],
+    selector: 'app-contact-table',
+    templateUrl: './contact-table.component.html',
+    styles: [''],
+    standalone: false
 })
 export class ContactTableComponent implements OnInit, OnDestroy {
   contact: Contact = EMPTY_CONTACT;

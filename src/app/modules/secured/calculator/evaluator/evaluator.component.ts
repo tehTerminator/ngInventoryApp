@@ -6,7 +6,8 @@ import { evaluateString, mathPattern } from './../../../../shared/functions';
 @Component({
     selector: 'app-evaluator',
     templateUrl: './evaluator.component.html',
-    styles: ['']
+    styles: [''],
+    standalone: false
 })
 export class EvaluatorComponent implements OnInit, OnDestroy {
     command = new UntypedFormControl('', Validators.pattern(mathPattern));

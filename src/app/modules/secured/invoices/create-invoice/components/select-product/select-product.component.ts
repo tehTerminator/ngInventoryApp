@@ -28,9 +28,10 @@ import { Bundle } from '../../../../../../interface/bundle.interface';
 import { Ledger } from '../../../../../../interface/ledger.interface';
 
 @Component({
-  selector: 'app-select-product',
-  templateUrl: './select-product.component.html',
-  styleUrls: ['./select-product.component.scss'],
+    selector: 'app-select-product',
+    templateUrl: './select-product.component.html',
+    styleUrls: ['./select-product.component.scss'],
+    standalone: false
 })
 export class SelectProductComponent
   implements OnInit, AfterViewInit, OnDestroy

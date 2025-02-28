@@ -5,9 +5,10 @@ import { EMPTYLOCATION, StoreLocation } from '../../../../interface/location.int
 import { FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'app-select-location',
-  templateUrl: './select-location.component.html',
-  styleUrls: ['./select-location.component.scss']
+    selector: 'app-select-location',
+    templateUrl: './select-location.component.html',
+    styleUrls: ['./select-location.component.scss'],
+    standalone: false
 })
 export class SelectLocationComponent implements OnInit, OnDestroy {
   private _selectedLocation = EMPTYLOCATION;

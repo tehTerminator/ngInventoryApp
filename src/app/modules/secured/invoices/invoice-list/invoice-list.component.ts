@@ -6,9 +6,10 @@ import { ContactsService } from '../../../../services/contacts/contacts.service'
 import { EMPTY_CONTACT } from '../../../../interface/contact.interface';
 
 @Component({
-  selector: 'app-invoice-list',
-  templateUrl: './invoice-list.component.html',
-  styleUrls: ['./invoice-list.component.scss']
+    selector: 'app-invoice-list',
+    templateUrl: './invoice-list.component.html',
+    styleUrls: ['./invoice-list.component.scss'],
+    standalone: false
 })
 export class InvoiceListComponent {
   constructor(

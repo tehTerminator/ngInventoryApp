@@ -5,9 +5,10 @@ import { ApiService } from '../../../../services/api/api.service';
 import { LocationService } from '../../../../services/locations/locations.service';
 
 @Component({
-  selector: 'app-locations-table',
-  templateUrl: './locations-table.component.html',
-  styleUrls: ['./locations-table.component.scss']
+    selector: 'app-locations-table',
+    templateUrl: './locations-table.component.html',
+    styleUrls: ['./locations-table.component.scss'],
+    standalone: false
 })
 export class LocationsTableComponent implements OnInit {
   private _loading = false;

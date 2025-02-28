@@ -9,6 +9,7 @@ import { SECOND } from '../../../../../../shared/constants';
     selector: 'app-recent-vouchers-list',
     templateUrl: './recent-vouchers-list.component.html',
     styleUrl: './recent-vouchers-list.component.css',
+    standalone: false
 })
 export class RecentVouchersListComponent implements AfterViewInit, OnDestroy {
     public loading = false;

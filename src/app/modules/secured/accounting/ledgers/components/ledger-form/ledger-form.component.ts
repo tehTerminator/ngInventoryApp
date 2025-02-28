@@ -6,9 +6,10 @@ import { NotificationsService } from './../../../../../../services/notification/
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
 
 @Component({
-  selector: 'app-ledger-form',
-  templateUrl: './ledger-form.component.html',
-  styleUrls: ['./ledger-form.component.scss'],
+    selector: 'app-ledger-form',
+    templateUrl: './ledger-form.component.html',
+    styleUrls: ['./ledger-form.component.scss'],
+    standalone: false
 })
 export class LedgerFormComponent {
   readonly kinds = [

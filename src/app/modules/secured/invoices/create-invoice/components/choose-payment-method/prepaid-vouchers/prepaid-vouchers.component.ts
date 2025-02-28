@@ -9,8 +9,9 @@ import { ContactsService } from '../../../../../../../services/contacts/contacts
 import { NotificationsService } from '../../../../../../../services/notification/notification.service';
 
 @Component({
-  selector: 'app-prepaid-vouchers',
-  templateUrl: './prepaid-vouchers.component.html',
+    selector: 'app-prepaid-vouchers',
+    templateUrl: './prepaid-vouchers.component.html',
+    standalone: false
 })
 export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
   private _notifier$ = new Subject();

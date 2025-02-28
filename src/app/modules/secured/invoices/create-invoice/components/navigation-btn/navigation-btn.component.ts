@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-navigation-btn',
-  templateUrl: './navigation-btn.component.html',
-  styleUrls: ['./navigation-btn.component.scss'],
+    selector: 'app-navigation-btn',
+    templateUrl: './navigation-btn.component.html',
+    styleUrls: ['./navigation-btn.component.scss'],
+    standalone: false
 })
 export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
   private paths = [

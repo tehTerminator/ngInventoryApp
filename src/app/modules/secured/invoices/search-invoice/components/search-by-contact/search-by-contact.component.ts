@@ -14,9 +14,10 @@ import { SearchInvoiceStoreService } from '../../search-store/search-store.servi
 import { SearchCustomerForm } from './SearchCustomerForm';
 
 @Component({
-  selector: 'app-search-by-contact',
-  templateUrl: './search-by-contact.component.html',
-  styleUrls: ['./search-by-contact.component.scss'],
+    selector: 'app-search-by-contact',
+    templateUrl: './search-by-contact.component.html',
+    styleUrls: ['./search-by-contact.component.scss'],
+    standalone: false
 })
 export class SearchByContactComponent {
   form = new SearchCustomerForm();

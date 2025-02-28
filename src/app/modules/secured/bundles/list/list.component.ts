@@ -5,9 +5,10 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Bundle } from './../../../../interface/bundle.interface';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrl: './list.component.scss'
+    selector: 'app-list',
+    templateUrl: './list.component.html',
+    styleUrl: './list.component.scss',
+    standalone: false
 })
 export class ListComponent implements OnInit {
   constructor(private bundleService: BundleService, private notification: NotificationsService) {}

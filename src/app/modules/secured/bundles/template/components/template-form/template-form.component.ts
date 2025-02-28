@@ -9,9 +9,10 @@ import { BundleTemplate } from './../../../../../../interface/bundle.interface';
 import { BundleStoreService } from '../../services/bundle-store.service';
 
 @Component({
-  selector: 'app-template-form',
-  templateUrl: './template-form.component.html',
-  styleUrl: './template-form.component.scss',
+    selector: 'app-template-form',
+    templateUrl: './template-form.component.html',
+    styleUrl: './template-form.component.scss',
+    standalone: false
 })
 export class TemplateFormComponent implements OnInit, OnDestroy {
   loading = false;

@@ -6,7 +6,8 @@ import { ValidateDenomiation } from './deno-validator';
 @Component({
     selector: 'app-currency-form',
     templateUrl: './currency-form.component.html',
-    styles: ['']
+    styles: [''],
+    standalone: false
 })
 export class CurrencyFormComponent {
     calcForm: UntypedFormGroup = this.fb.group({

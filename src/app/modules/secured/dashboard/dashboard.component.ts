@@ -4,9 +4,10 @@ import { EMPTYLOCATION, StoreLocation } from '../../../interface/location.interf
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: false
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private _myLocation = EMPTYLOCATION;

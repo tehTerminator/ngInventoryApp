@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { DayBookService } from './services/day-book.service';
 
 @Component({
-  selector: 'app-daybook',
-  templateUrl: './daybook.component.html',
-  styleUrls: ['./daybook.component.scss'],
+    selector: 'app-daybook',
+    templateUrl: './daybook.component.html',
+    styleUrls: ['./daybook.component.scss'],
+    standalone: false
 })
 export class DaybookComponent {
   dataToDisplay: Rows[] = [

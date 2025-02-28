@@ -9,9 +9,10 @@ import { NotificationsService } from '../../../../../../services/notification/no
 import { Contact } from '../../../../../../interface/contact.interface';
 
 @Component({
-  selector: 'app-create-contact-form',
-  templateUrl: './create-contact-form.component.html',
-  styleUrls: ['./create-contact-form.component.scss'],
+    selector: 'app-create-contact-form',
+    templateUrl: './create-contact-form.component.html',
+    styleUrls: ['./create-contact-form.component.scss'],
+    standalone: false
 })
 export class CreateContactFormComponent implements OnInit, OnDestroy {
   private _loading = false;

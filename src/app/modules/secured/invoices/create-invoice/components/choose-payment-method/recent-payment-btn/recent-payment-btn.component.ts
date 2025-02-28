@@ -5,9 +5,10 @@ import { InvoiceStoreService } from './../../../../services/invoice-store.servic
 import { take } from 'rxjs';
 
 @Component({
-  selector: 'app-recent-payment-btn',
-  templateUrl: './recent-payment-btn.component.html',
-  styleUrl: './recent-payment-btn.component.scss',
+    selector: 'app-recent-payment-btn',
+    templateUrl: './recent-payment-btn.component.html',
+    styleUrl: './recent-payment-btn.component.scss',
+    standalone: false
 })
 export class RecentPaymentBtnComponent implements AfterViewInit {
   @ViewChild('recentPaymentBtn') btn!: ElementRef<HTMLInputElement>;

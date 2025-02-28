@@ -4,9 +4,10 @@ import { User } from '../../../../../../interface/user.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+    selector: 'app-user-list',
+    templateUrl: './user-list.component.html',
+    styleUrls: ['./user-list.component.scss'],
+    standalone: false
 })
 export class UserListComponent implements OnChanges {
   @Input('location') location = 0;

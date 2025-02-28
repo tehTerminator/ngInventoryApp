@@ -6,9 +6,10 @@ import { Invoice } from '../../../../interface/invoice.interface';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-please-wait-page',
-  templateUrl: './please-wait-page.component.html',
-  styleUrls: ['./please-wait-page.component.scss'],
+    selector: 'app-please-wait-page',
+    templateUrl: './please-wait-page.component.html',
+    styleUrls: ['./please-wait-page.component.scss'],
+    standalone: false
 })
 export class PleaseWaitPageComponent implements OnInit {
   message = 'Please Wait, Invoice is Being Saved';

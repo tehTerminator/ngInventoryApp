@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-bundles',
-  templateUrl: './bundles.component.html',
-  styleUrl: './bundles.component.scss'
+    selector: 'app-bundles',
+    templateUrl: './bundles.component.html',
+    styleUrl: './bundles.component.scss',
+    standalone: false
 })
 export class BundlesComponent {
 

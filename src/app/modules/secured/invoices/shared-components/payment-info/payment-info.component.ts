@@ -5,9 +5,10 @@ import { Subject, debounce, debounceTime, map, takeUntil } from 'rxjs';
 import { Voucher } from '../../../../../interface/voucher.interface';
 
 @Component({
-  selector: 'app-payment-info',
-  templateUrl: './payment-info.component.html',
-  styleUrls: ['./payment-info.component.scss'],
+    selector: 'app-payment-info',
+    templateUrl: './payment-info.component.html',
+    styleUrls: ['./payment-info.component.scss'],
+    standalone: false
 })
 export class PaymentInfoComponent implements OnDestroy, OnInit {
   // Declare dependencies

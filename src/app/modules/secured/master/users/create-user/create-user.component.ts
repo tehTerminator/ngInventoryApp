@@ -7,9 +7,10 @@ import { NotificationsService } from '../../../../../services/notification/notif
 import { UserFormGroup } from './UserFormGroup';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+    selector: 'app-create-user',
+    templateUrl: './create-user.component.html',
+    styleUrls: ['./create-user.component.scss'],
+    standalone: false
 })
 export class CreateUserComponent {
   form = new UserFormGroup();

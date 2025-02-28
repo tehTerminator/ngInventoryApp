@@ -9,9 +9,10 @@ import { SECOND } from '../../../../../../../shared/constants';
 import { SelectLedgerFG } from './SelectLedgerFG';
 
 @Component({
-  selector: 'app-select-ledger-form',
-  templateUrl: './select-ledger-form.component.html',
-  styles: [],
+    selector: 'app-select-ledger-form',
+    templateUrl: './select-ledger-form.component.html',
+    styles: [],
+    standalone: false
 })
 export class SelectLedgerFormComponent implements OnInit, OnDestroy {
   form = new SelectLedgerFG();

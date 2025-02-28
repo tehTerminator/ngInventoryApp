@@ -4,9 +4,10 @@ import { Observable, Subject, map, takeUntil } from 'rxjs';
 import { Ledger } from '../../../../../../interface/ledger.interface';
 
 @Component({
-  selector: 'app-ledger-list',
-  templateUrl: './ledger-list.component.html',
-  styleUrls: ['./ledger-list.component.scss'],
+    selector: 'app-ledger-list',
+    templateUrl: './ledger-list.component.html',
+    styleUrls: ['./ledger-list.component.scss'],
+    standalone: false
 })
 export class LedgerListComponent implements OnInit, OnDestroy {
   currentPage = 1;

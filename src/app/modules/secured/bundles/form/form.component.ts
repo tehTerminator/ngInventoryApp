@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
 import { BundleService } from '../../../../services/bundle/bundle.service';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrl: './form.component.scss',
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrl: './form.component.scss',
+    standalone: false
 })
 export class FormComponent {
   private _loading = false;

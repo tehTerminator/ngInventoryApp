@@ -12,9 +12,10 @@ import { LedgerBalanceService } from '../ledger-balance.service';
 import { NotificationsService } from '../../../../../services/notification/notification.service';
 
 @Component({
-  selector: 'app-ledger-balance-form',
-  templateUrl: './ledger-balance-form.component.html',
-  styleUrl: './ledger-balance-form.component.scss',
+    selector: 'app-ledger-balance-form',
+    templateUrl: './ledger-balance-form.component.html',
+    styleUrl: './ledger-balance-form.component.scss',
+    standalone: false
 })
 export class LedgerBalanceFormComponent {
   myForm: UntypedFormGroup = new UntypedFormGroup({});

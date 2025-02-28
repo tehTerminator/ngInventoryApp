@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-ledger-balance',
-  template: `
+    selector: 'app-ledger-balance',
+    template: `
     <div class="row">
         <div class="col-md-4">
             <app-ledger-balance-form></app-ledger-balance-form>
@@ -14,7 +14,8 @@ import { Title } from '@angular/platform-browser';
         </div>
     </div>
   `,
-  styles: ['']
+    styles: [''],
+    standalone: false
 })
 export class LedgerBalanceComponent {
   constructor() {}

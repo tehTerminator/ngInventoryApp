@@ -8,9 +8,10 @@ import { User } from '../../../../../../interface/user.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+    selector: 'app-form',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
+    standalone: false
 })
 export class FormComponent {
   @Input('location') location = 0;
