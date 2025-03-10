@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateInvoiceComponent } from './create-invoice.component';
 import { SelectProductComponent } from './components/select-product/select-product.component';
-import { ContactComponent } from './components/contact/contact.component';
 import { contactGuard } from './guards/contacts.guard';
 import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
 import { paymentGuard } from './guards/payment.guard';
 import { SetDiscountComponent } from './components/set-discount/set-discount.component';
 import { discountGuard } from './guards/discount.guard';
+import { SelectContactComponent } from './components/select-contact/select-contact.component';
+import { CreateContactFormComponent } from './components/create-contact-form/create-contact-form.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,11 @@ const routes: Routes = [
     children: [
       {
         path: 'select-contact',
-        component: ContactComponent,
+        component: SelectContactComponent,
+      },
+      {
+        path: 'create-contact',
+        component: CreateContactFormComponent
       },
       {
         path: 'select-product',
