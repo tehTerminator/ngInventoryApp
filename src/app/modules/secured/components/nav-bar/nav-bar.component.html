@@ -16,6 +16,7 @@
               mat-flat-button
               *ngFor="let link of item.links"
               [routerLink]="link.routerLink"
+              (click)="onLinkClick()"
               >{{ link.text }}</a
             >
           </p>

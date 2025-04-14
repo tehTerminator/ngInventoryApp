@@ -9,12 +9,17 @@ import { AuthStoreService } from './../../../../services/auth-store/auth-store.s
     standalone: false
 })
 export class NavBarComponent implements OnInit {
+  @Output() closeSidebar = new EventEmitter<void>();
   items = navItems;
   private _role = 'admin';
   constructor(private userStore: AuthStoreService) {}
 
   ngOnInit(): void {
     this._role = this.userStore.userData.role;
+  }
+
+  onLinkClick() {
+    this.closeSidebar.emit();
   }
 
   hasRole(role: string | undefined): boolean {

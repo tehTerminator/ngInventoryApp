@@ -9,7 +9,7 @@
     </mat-toolbar>
     <mat-sidenav-container>
         <mat-sidenav #sidebar_one mode="over" class="d-print-none">
-            <app-nav-bar></app-nav-bar>
+            <app-nav-bar (closeSidebar)="sidebar_one.close()"></app-nav-bar>
         </mat-sidenav>
         <mat-sidenav-content>
             <div class="container-fluid mt-3">
