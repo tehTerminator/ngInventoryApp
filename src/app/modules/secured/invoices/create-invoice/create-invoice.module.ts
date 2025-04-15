@@ -20,6 +20,7 @@ import { SetDiscountComponent } from './components/set-discount/set-discount.com
 import { MatTabsModule } from '@angular/material/tabs';
 import { PrepaidVouchersComponent } from './components/choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { SearchCustomerComponent } from './components/search-customer/search-customer.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NavigationBtnComponent,
     SelectContactComponent,
     SelectProductComponent,
+    SearchCustomerComponent,
     ContactComponent,
     CreateContactFormComponent,
     ChoosePaymentMethodComponent,

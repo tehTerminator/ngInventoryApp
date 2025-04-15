@@ -11,34 +11,15 @@ import { InvoiceStoreService } from '../../../services/invoice-store.service';
 export class ContactComponent implements OnInit, OnDestroy {
   private _sub = new Subscription();
   constructor(private store: InvoiceStoreService) {}
-  contactType = 'PARTY';
+  isSales = true;
 
   ngOnInit(): void {
     this._sub = this.store.invoice.subscribe({
-      next: (invoice) => {
-        const type = invoice.kind;
-        switch (type) {
-          case 'SALES':
-            this.contactType = 'Party'
-            break;
-          default:
-            this.contactType = 'Supplier'
-            break;
-        }
-      }
+      next: (invoice) => this.isSales = invoice.kind === 'SALES',
     });
   }
 
   ngOnDestroy(): void {
     this._sub.unsubscribe();
   }
-
-  get titleOne(): string {
-    return `Select ${this.contactType}`;
-  }
-
-  get titleTwo(): string {
-    return `Create New ${this.contactType}`;
-  }
-
 }

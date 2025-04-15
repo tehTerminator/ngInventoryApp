@@ -7,8 +7,8 @@ import { ChoosePaymentMethodComponent } from './components/choose-payment-method
 import { paymentGuard } from './guards/payment.guard';
 import { SetDiscountComponent } from './components/set-discount/set-discount.component';
 import { discountGuard } from './guards/discount.guard';
-import { SelectContactComponent } from './components/select-contact/select-contact.component';
 import { CreateContactFormComponent } from './components/create-contact-form/create-contact-form.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -17,7 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: 'select-contact',
-        component: SelectContactComponent,
+        component: ContactComponent,
       },
       {
         path: 'create-contact',
