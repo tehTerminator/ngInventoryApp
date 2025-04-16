@@ -146,11 +146,4 @@ export class SelectProductComponent
     return product && product.title ? product.title : '';
   }
 
-  // get hasTransactions(): Observable<boolean> {
-  //   return this.store.invoice.pipe(
-  //     map((value) => {
-  //       return value.transactions.length >= 1;
-  //     })
-  //   );
-  // }
 }
