@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Ledger } from '../../../../../../../interface/ledger.interface';
 import { InvoiceStoreService } from './../../../../services/invoice-store.service';
 import { take } from 'rxjs';
+import { RecentPaymentMethods } from '../recentPaymentMethods.class';
 
 @Component({
     selector: 'app-recent-payment-btn',
@@ -12,6 +13,7 @@ import { take } from 'rxjs';
 })
 export class RecentPaymentBtnComponent implements AfterViewInit {
   @ViewChild('recentPaymentBtn') btn!: ElementRef<HTMLInputElement>;
+  recent = new RecentPaymentMethods();
   constructor(private store: InvoiceStoreService, private router: Router) {}
 
   ngAfterViewInit(): void {
@@ -30,11 +32,7 @@ export class RecentPaymentBtnComponent implements AfterViewInit {
     });
   }
 
-  get recentPaymentMethod(): Ledger | null {
-    const recent = localStorage.getItem('recentPaymentMethod');
-    if (recent !== null) {
-      return JSON.parse(recent);
-    }
-    return null;
+  get recentPaymentMethods(): Ledger[] {
+    return this.recent.getPaymentMethods();
   }
 }

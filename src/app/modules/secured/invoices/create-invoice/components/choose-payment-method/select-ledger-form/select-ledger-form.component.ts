@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { Ledger } from '../../../../../../../interface/ledger.interface';
 import { LedgerService } from '../../../../../../../services/ledger/ledger.service';
 import { InvoiceStoreService } from '../../../../services/invoice-store.service';
-import { SECOND } from '../../../../../../../shared/constants';
 import { SelectLedgerFG } from './SelectLedgerFG';
 
 @Component({
