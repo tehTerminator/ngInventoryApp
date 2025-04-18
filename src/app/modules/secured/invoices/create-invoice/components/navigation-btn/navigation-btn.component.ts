@@ -75,8 +75,7 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
   showBtn(): boolean {
     if (
       this.currentPath.length < 3 ||
-      this.currentPath[2] !== 'create' ||
-      this.currentPath[4] === 'select-contact'
+      this.currentPath[2] !== 'create'
     ) {
       return false;
     }

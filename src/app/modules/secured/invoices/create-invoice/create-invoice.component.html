@@ -1,7 +1,11 @@
 <div class="row g-3 vh-100" [ngClass]="color">
-    <div class="col-md-4 col-sm-6 d-print-none">
-        <router-outlet></router-outlet>
-        <app-navigation-btn></app-navigation-btn>
+    <div class="col-md-4 col-sm-6 d-print-none d-flex flex-column flex-column-reverse">
+        <div class="col-12 mt-0 mb-auto">
+            <router-outlet ></router-outlet>
+        </div>
+        <div class="col-12 mt-0">
+            <app-navigation-btn ></app-navigation-btn>
+        </div>
     </div>
     <div class="col-md-8 col-sm-6">
         <app-preview-invoice></app-preview-invoice>
