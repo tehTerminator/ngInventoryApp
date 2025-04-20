@@ -21,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { PrepaidVouchersComponent } from './components/choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { SearchCustomerComponent } from './components/search-customer/search-customer.component';
+import { RecentPaymentMethodService } from './services/recentPaymentMethods.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,6 @@ import { SearchCustomerComponent } from './components/search-customer/search-cus
     MatTabsModule,
     MatChipsModule,
   ],
-  providers: [GeneralItemStoreService],
+  providers: [GeneralItemStoreService, RecentPaymentMethodService],
 })
 export class CreateInvoiceModule {}

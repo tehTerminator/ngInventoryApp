@@ -6,6 +6,7 @@ import { Ledger } from '../../../../../../../interface/ledger.interface';
 import { LedgerService } from '../../../../../../../services/ledger/ledger.service';
 import { InvoiceStoreService } from '../../../../services/invoice-store.service';
 import { SelectLedgerFG } from './SelectLedgerFG';
+import { RecentPaymentMethodService } from './../../../services/recentPaymentMethods.service';
 
 @Component({
     selector: 'app-select-ledger-form',
@@ -25,6 +26,7 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
     private ledgerService: LedgerService,
     private store: InvoiceStoreService,
     private router: Router,
+    private recentPaymentService: RecentPaymentMethodService
   ) {}
 
   ngOnInit(): void {
@@ -91,13 +93,7 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
 
   private storeLastPaymentMethod() {
     const ledger = this.ledgerService.getElementById(this.form.ledger);
-    this.recentPaymentMethod = ledger;
-  }
-
-  set recentPaymentMethod(ledger: Ledger | null) {
-    if (ledger !== null) {
-      localStorage.setItem('recentPaymentMethod', JSON.stringify(ledger));
-    }
+    this.recentPaymentService.savePaymentMethod(ledger);
   }
 
   get allowFinalSubmit(): boolean {
