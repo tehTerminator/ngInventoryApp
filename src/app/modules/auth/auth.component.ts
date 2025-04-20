@@ -33,7 +33,6 @@ export class AuthComponent implements OnInit {
     private notification: NotificationsService,
     private authService: AuthenticationService,
     private authStore: AuthStoreService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +51,7 @@ export class AuthComponent implements OnInit {
     this.authService
       .authenticate(username, password)
       .subscribe({
-        next: () => {this.notification.show("Welcome")},
+        next: (userData) => {this.notification.show("Welcome " + userData.name)},
         error: (error: string) => this.notification.show(error),
       });
   }
