@@ -28,7 +28,7 @@ export class AuthenticationService implements OnDestroy {
     }
   }
 
-  authenticate(username: string, password: string): Observable<any> {
+  authenticate(username: string, password: string): Observable<UserData> {
     this.authStore.authStarted();
 
     return this.api
