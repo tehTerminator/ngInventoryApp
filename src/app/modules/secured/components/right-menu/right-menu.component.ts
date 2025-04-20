@@ -23,6 +23,6 @@ export class RightMenuComponent {
   logout = () => this.authService.signOut();
 
   get title() {
-    return this.authStore.user.pipe(map((value) => value.name));
+    return this.authStore.user().name;
   }
 }

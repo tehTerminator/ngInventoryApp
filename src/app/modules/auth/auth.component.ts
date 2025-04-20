@@ -3,9 +3,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from './../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
 import { NotificationsService } from '../../services/notification/notification.service';
-import { EMPTY, Observable, Subscription, finalize } from 'rxjs';
 import { AuthStoreService } from '../../services/auth-store/auth-store.service';
 import { AuthState } from '../../interface/auth-state';
+
+interface LoginCredentials {
+  username: FormControl<string>;
+  password: FormControl<string>;
+}
 
 @Component({
     selector: 'app-auth',
@@ -13,9 +17,7 @@ import { AuthState } from '../../interface/auth-state';
     styleUrls: ['./auth.component.scss'],
     standalone: false
 })
-export class AuthComponent implements OnInit, OnDestroy {
-  isLoading = false;
-  private authSubscription: Subscription = new Subscription()
+export class AuthComponent implements OnInit {
   loginForm: FormGroup<LoginCredentials> = new FormGroup({
     username: new FormControl<string>('', {
       validators: [Validators.required, Validators.minLength(3)],
@@ -36,25 +38,6 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authService.init();
-    this.authSubscription = this.authStore.state.subscribe({
-      next: (value: AuthState) => {
-        switch (value) {
-          case AuthState.STARTED:
-            this.isLoading = true;
-            break;
-          case AuthState.LOGGED_IN:
-            this.navigateToAuthenticatedPage();
-            break;
-          default:
-            this.isLoading = false;
-            break;
-        }
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
   }
 
   onSubmit(): void {
@@ -66,17 +49,13 @@ export class AuthComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
-
     this.authService
       .authenticate(username, password)
       .subscribe({
-        next: () => this.navigateToAuthenticatedPage(),
+        next: () => {this.notification.show("Welcome")},
         error: (error: string) => this.notification.show(error),
       });
   }
-
-  private navigateToAuthenticatedPage = () => this.router.navigate(['auth']);
 
   get usernameField(): FormControl {
     return this.loginForm.get('username') as FormControl;
@@ -85,9 +64,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   get passwordField(): FormControl {
     return this.loginForm.get('password') as FormControl;
   }
+
+  get loading(): boolean {
+    return this.authStore.state() === AuthState.STARTED;
+  }
 }
 
-interface LoginCredentials {
-  username: FormControl<string>;
-  password: FormControl<string>;
-}

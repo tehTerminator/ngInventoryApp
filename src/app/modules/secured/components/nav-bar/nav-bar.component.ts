@@ -15,7 +15,7 @@ export class NavBarComponent implements OnInit {
   constructor(private userStore: AuthStoreService) {}
 
   ngOnInit(): void {
-    this._role = this.userStore.userData.role;
+    this._role = this.userStore.user().role;
   }
 
   onLinkClick() {

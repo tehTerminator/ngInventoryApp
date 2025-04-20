@@ -46,8 +46,6 @@ export class AuthenticationService implements OnDestroy {
 
   signOut(): void {
     this.authStore.signOut();
-    localStorage.removeItem('userData');
-    localStorage.removeItem('expirationTime');
     this.router.navigate(['']);
   }
 
@@ -55,15 +53,6 @@ export class AuthenticationService implements OnDestroy {
     const expirationTime = new Date(userData.updated_at || '').getTime() + HOUR;
     this.setAutoSignOut(expirationTime);
     this.authStore.signIn(userData, expirationTime);
-    this.storeInLocalStorage(userData, expirationTime);
-  }
-
-  private storeInLocalStorage(
-    userData: UserData,
-    expirationTime: number
-  ): void {
-    localStorage.setItem('userData', JSON.stringify(userData));
-    localStorage.setItem('expirationTime', expirationTime.toString());
   }
 
   private getStoredUserData(): UserData {

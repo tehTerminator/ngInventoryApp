@@ -2,7 +2,7 @@
     <div class="row d-flex justify-content-center mt-5">
         <div class="col-md-6 col-xl-3 col-lg-4 mt-5">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <mat-card [loading]="isLoading">
+                <mat-card [loading]="loading">
                     <mat-card-header>
                         <h2 class="fs-2"><mat-icon class="me-3">person</mat-icon>User Login</h2>
                     </mat-card-header>

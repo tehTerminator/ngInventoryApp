@@ -1,20 +1,32 @@
-import { Injectable } from '@angular/core';
+import { computed, effect, Injectable, runInInjectionContext, Signal, signal } from '@angular/core';
 import { AuthState } from './../../interface/auth-state';
 import { AnonymousUser, User, UserData } from './../authentication/user.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthStoreService {
-  private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_OUT);
+  private _state = signal(AuthState.LOGGED_OUT);
   // private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_IN); // Only For Testing Purpose
   /**
    * Holds Current User Data
    */
-  private _user = new BehaviorSubject<User>(new User({ ...AnonymousUser }));
+  private _user = signal(new User({...AnonymousUser}));
 
-  constructor() {}
+  constructor(private router: Router) {
+    effect(()=>{
+      if (this.state() === AuthState.LOGGED_IN) {
+        this.router.navigate(['auth']);
+        return;
+      } 
+
+      if(this.state() === AuthState.LOGGED_OUT) {
+        this.router.navigate(['']);
+        return;
+      }
+    })
+  }
 
   /**
    * Store New User
@@ -25,18 +37,20 @@ export class AuthStoreService {
   signIn(userData: UserData, expirationTime: number): void {
     const currentTime = new Date().getTime();
     if (expirationTime < currentTime) {
-      this._state.next(AuthState.LOGGED_OUT);
+      this._state.set(AuthState.LOGGED_OUT);
       return;
     }
 
     if (userData.id <= 0) {
-      this._state.next(AuthState.LOGGED_OUT);
+      this._state.set(AuthState.LOGGED_OUT);
       return;
     }
 
     const newUser = new User(userData);
-    this._user.next(newUser);
-    this._state.next(AuthState.LOGGED_IN)
+    this._user.set(newUser);
+    this._state.set(AuthState.LOGGED_IN)
+    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('expirationTime', expirationTime.toString());
     return;
   }
 
@@ -44,28 +58,22 @@ export class AuthStoreService {
    * Remove Stored User
    */
   signOut(): void {
-    this._user.next(new User({ ...AnonymousUser }));
-    this._state.next(AuthState.LOGGED_OUT);
+    this._user.set(new User({ ...AnonymousUser }));
+    this._state.set(AuthState.LOGGED_OUT);
+    localStorage.removeItem('userData');
+    localStorage.removeItem('expirationTime');
   }
 
   authStarted(): void {
     this.signOut();
-    this._state.next(AuthState.STARTED);
+    this._state.set(AuthState.STARTED);
   }
 
-  get user(): Observable<User> {
-    return this._user;
+  get user(): Signal<User> {
+    return computed(() => this._user());
   }
 
-  get userData(): User {
-    return this._user.value;
-  }
-
-  get state(): Observable<AuthState> {
-    return this._state;
-  }
-
-  get state_value(): AuthState {
-    return this._state.value;
+  get state(): Signal<AuthState> {
+    return computed(() => this._state());
   }
 }
