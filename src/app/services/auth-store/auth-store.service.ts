@@ -1,4 +1,4 @@
-import { computed, effect, Injectable, runInInjectionContext, Signal, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { AuthState } from './../../interface/auth-state';
 import { AnonymousUser, User, UserData } from './../authentication/user.model';
 import { Router } from '@angular/router';
@@ -7,12 +7,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthStoreService {
-  private _state = signal(AuthState.LOGGED_OUT);
-  // private _state = new BehaviorSubject<AuthState>(AuthState.LOGGED_IN); // Only For Testing Purpose
-  /**
-   * Holds Current User Data
-   */
-  private _user = signal(new User({...AnonymousUser}));
+  #state = signal(AuthState.LOGGED_OUT);
+  #user = signal(new User({...AnonymousUser}));
+  state = computed(this.#state);
+  user = computed(this.#user);
 
   constructor(private router: Router) {
     effect(()=>{
@@ -37,18 +35,18 @@ export class AuthStoreService {
   signIn(userData: UserData, expirationTime: number): void {
     const currentTime = new Date().getTime();
     if (expirationTime < currentTime) {
-      this._state.set(AuthState.LOGGED_OUT);
+      this.#state.set(AuthState.LOGGED_OUT);
       return;
     }
 
     if (userData.id <= 0) {
-      this._state.set(AuthState.LOGGED_OUT);
+      this.#state.set(AuthState.LOGGED_OUT);
       return;
     }
 
     const newUser = new User(userData);
-    this._user.set(newUser);
-    this._state.set(AuthState.LOGGED_IN)
+    this.#user.set(newUser);
+    this.#state.set(AuthState.LOGGED_IN)
     localStorage.setItem('userData', JSON.stringify(userData));
     localStorage.setItem('expirationTime', expirationTime.toString());
     return;
@@ -58,22 +56,14 @@ export class AuthStoreService {
    * Remove Stored User
    */
   signOut(): void {
-    this._user.set(new User({ ...AnonymousUser }));
-    this._state.set(AuthState.LOGGED_OUT);
+    this.#user.set(new User({ ...AnonymousUser }));
+    this.#state.set(AuthState.LOGGED_OUT);
     localStorage.removeItem('userData');
     localStorage.removeItem('expirationTime');
   }
 
   authStarted(): void {
     this.signOut();
-    this._state.set(AuthState.STARTED);
-  }
-
-  get user(): Signal<User> {
-    return computed(() => this._user());
-  }
-
-  get state(): Signal<AuthState> {
-    return computed(() => this._state());
+    this.#state.set(AuthState.STARTED);
   }
 }
