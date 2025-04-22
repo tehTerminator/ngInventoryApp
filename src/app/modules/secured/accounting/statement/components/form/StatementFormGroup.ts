@@ -1,5 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Ledger } from '../../../../../../interface/ledger.interface';
+import { parseDate } from '../../../../../../shared/functions';
 
 export class StatementFormGroup extends FormGroup {
   constructor() {
@@ -23,7 +24,7 @@ export class StatementFormGroup extends FormGroup {
   }
 
   get fromDate(): string {
-    return this.parseDate(this.fromDateFormControl.value);
+    return parseDate(this.fromDateFormControl.value);
   }
 
   get toDateFormControl(): FormControl<Date> {
@@ -31,13 +32,8 @@ export class StatementFormGroup extends FormGroup {
   }
 
   get toDate(): string {
-    return this.parseDate(this.toDateFormControl.value);
+    return parseDate(this.toDateFormControl.value);
   }
 
-  private parseDate(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month starts from 0
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
+
 }
