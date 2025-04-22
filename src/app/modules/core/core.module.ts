@@ -10,31 +10,44 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
+/**
+ * CoreModule is a shared module that imports and exports common Angular Material components
+ * and directives used throughout the application.
+ *
+ * @module CoreModule
+ * @description
+ * This module contains commonly used Angular Material components and custom directives.
+ * It is designed to be imported into other feature modules to avoid code duplication.
+ *
+ * @example
+ * import { CoreModule } from './core/core.module';
+ *
+ * @NgModule({
+ *   imports: [CoreModule],
+ * })
+ * export class SomeFeatureModule {}
+ */
 @NgModule({
-  declarations: [
-    LoadingDirective
-  ],
+  declarations: [LoadingDirective],
   imports: [
     CommonModule,
     MatAutocompleteModule,
     MatButtonModule,
-    MatIconModule,  
+    MatIconModule,
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   exports: [
     LoadingDirective,
     MatAutocompleteModule,
     MatButtonModule,
-    MatIconModule,  
+    MatIconModule,
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatTabsModule
-  ]
+    MatTabsModule,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}
