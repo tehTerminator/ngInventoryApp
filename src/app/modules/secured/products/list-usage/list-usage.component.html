@@ -1,0 +1,146 @@
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <form class="row" [formGroup]="productUsageForm" (ngSubmit)="onSubmit()">
+      <div class="col-lg-4 col-md-12">
+        <mat-form-field class="w-100">
+          <mat-label>Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="createdAt"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="productUsageForm.get('date')?.hasError('required')">
+            Date is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <mat-form-field class="w-100">
+          <mat-label>Location</mat-label>
+          <mat-select formControlName="location">
+            <mat-option
+              *ngFor="let location of locations | async"
+              [value]="location"
+            >
+              {{ location.title }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="productUsageForm.get('location')?.hasError('required')"
+          >
+            Location is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <mat-form-field class="w-100">
+          <mat-label>Product</mat-label>
+          <mat-select formControlName="product">
+            <mat-option
+              *ngFor="let product of products | async"
+              [value]="product"
+            >
+              {{ product.title }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="productUsageForm.get('product')?.hasError('required')"
+          >
+            Product is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 text-center mt-3">
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="productUsageForm.invalid"
+        >
+          <mat-icon>check_circle</mat-icon> Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row d-flex justify-content-center g-2 mt-2">
+  <div class="col-md-6 col-lg-4">
+    <div class="table-responsive">
+      <h5>Consumption</h5>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Details</th>
+            <th>Quantity</th>
+            <!-- Quantity column with conditional color -->
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of productUsageData" [hidden]="item.to_location" [title]="item.user.name">
+            <td>
+              <!-- Conditional logic for displaying details -->
+              <ng-container *ngIf="!item.to_location; else locationDetails">
+                {{ item.narration }}
+              </ng-container>
+              <ng-template #locationDetails>
+                To: {{ item.to_location?.title || "N/A" }}
+              </ng-template>
+            </td>
+            <td>
+              <!-- Quantity with conditional color -->
+              <span [ngStyle]="{ color: 'red' }">
+                {{ item.quantity }}
+              </span>
+            </td>
+            <td>{{ item.created_at | date : "hh:mm a" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="table-responsive">
+      <h5>Refill</h5>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr >
+            <th>Details</th>
+            <th>Quantity</th>
+            <!-- Quantity column with conditional color -->
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of productUsageData"
+            [hidden]="item.from_location"
+            [title]="item.user.name"
+          >
+            <td>
+              <!-- Conditional logic for displaying details -->
+              <ng-container *ngIf="!item.from_location; else locationDetails">
+                {{ item.narration }}
+              </ng-container>
+              <ng-template #locationDetails>
+                From: {{ item.from_location?.title || "N/A" }}
+              </ng-template>
+            </td>
+            <td>
+              <!-- Quantity with conditional color -->
+              <span [ngStyle]="{ color: 'green' }">
+                {{ item.quantity }}
+              </span>
+            </td>
+            <td>{{ item.created_at | date : "hh:mm a" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './products.component';
+import { ListUsageComponent } from './list-usage/list-usage.component';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -26,19 +27,16 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'view',
-    loadChildren: () =>
-      import('./list-product/list-product.module').then(
-        (m) => m.ListProductModule
-      ),
-  },
-  {
     path: 'transfer',
     loadChildren: () =>
       import('./transfer-product/transfer-product.module').then(
         (m) => m.TransferProductModule
       ),
   },
+  {
+    path: 'usageReport',
+    component: ListUsageComponent
+  }
 ];
 
 @NgModule({

@@ -26,6 +26,7 @@ export const navItems = [
       { text: 'New Product', routerLink: ['products', 'add'] },
       { text: 'View Product', routerLink: ['products', 'view'] },
       { text: 'Transfer Product', routerLink: ['products', 'transfer'] },
+      { text: 'View Usage', routerLink: ['products', 'usageReport']}
     ],
   },
   {
