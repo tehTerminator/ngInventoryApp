@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { InvoiceStoreService } from './../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, distinctUntilChanged } from 'rxjs';
 import { ApiService } from './../../../../../services/api/api.service';
 import { Invoice } from '../../../../../interface/invoice.interface';
 import { Voucher } from '../../../../../interface/voucher.interface';
@@ -50,7 +49,14 @@ export class PreviewInvoiceComponent implements OnInit {
     return this.store.snapshot.id;
   }
 
-  onDeleteBtn() {
+  /**
+   * Delete Invoice
+   * @returns void
+   * @description
+   * 1. Check if the user is allowed to delete the invoice
+   * 2. If not, show a notification
+   */
+  onDeleteBtn(): void {
     if (this.store.snapshot.user_id !== this.authStore.user().id) {
       this.notificationService.show("You are not allowed to delete this invoice");
       return;
