@@ -5,6 +5,8 @@ import { Subscription, distinctUntilChanged } from 'rxjs';
 import { ApiService } from './../../../../../services/api/api.service';
 import { Invoice } from '../../../../../interface/invoice.interface';
 import { Voucher } from '../../../../../interface/voucher.interface';
+import { AuthStoreService } from '../../../../../services/auth-store/auth-store.service';
+import { NotificationsService } from '../../../../../services/notification/notification.service';
 
 @Component({
     selector: 'app-preview-invoice',
@@ -15,6 +17,8 @@ import { Voucher } from '../../../../../interface/voucher.interface';
 export class PreviewInvoiceComponent implements OnInit {
   constructor(
     public store: InvoiceStoreService,
+    private authStore: AuthStoreService,
+    private notificationService: NotificationsService,
     private api: ApiService,
     private route: ActivatedRoute,
     private router: Router,
@@ -47,6 +51,11 @@ export class PreviewInvoiceComponent implements OnInit {
   }
 
   onDeleteBtn() {
+    if (this.store.snapshot.user_id !== this.authStore.user().id) {
+      this.notificationService.show("You are not allowed to delete this invoice");
+      return;
+    }
+
     if (this.invoiceId <= 0) {
       return;
     }
