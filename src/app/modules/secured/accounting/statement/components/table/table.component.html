@@ -1,4 +1,4 @@
-<div style="overflow-y: scroll; max-height: 80vh;" *ngIf="rowCount > 0;else noDataMessage">
+<div style="overflow-y: scroll; max-height: 80vh;">
     <table class="table table-raised table-bordered table-hover table-sm">
         <thead class="text-center table-dark">
             <tr>
@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let v of rows| async;let i = index">
+            <tr *ngFor="let v of rows; let i = index">
                 <td>
                     <a [routerLink]="['/auth', 'accounting', 'voucher', v.id]">
                         {{ v.id }}
@@ -41,11 +41,3 @@
         </tbody>
     </table>
 </div>
-
-<ng-template #noDataMessage>
-    <div class="card bg-light text-center">
-        <div class="card-body">
-            There is No Data to Display for Selected Date or Account
-        </div>
-    </div>
-</ng-template>

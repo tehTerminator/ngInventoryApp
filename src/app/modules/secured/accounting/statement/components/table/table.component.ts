@@ -11,25 +11,10 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./table.component.scss'],
     standalone: false
 })
-export class TableComponent implements OnInit {
-  rowCount = 0;
-  sub: Subscription = new Subscription();
-
+export class TableComponent {
   constructor(
-    private sanitizer: DomSanitizer,
     private statementService: StatementService,
-    private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.sub = this.statementService.cashbook.subscribe((data) => {
-      if (!!data) {
-        this.rowCount = data.rows.length;
-      } else {
-        this.rowCount = 0;
-      }
-    });
-  }
 
   splitWithDots(text: string) {
     return text.split('.');
@@ -54,15 +39,7 @@ export class TableComponent implements OnInit {
     return narration.includes('.');
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
-
-  get rows(): Observable<CashbookRow[]> {
-    return this.statementService.cashbook.pipe(
-      map((cashbook) => {
-        return cashbook.rows;
-      })
-    );
+  get rows(): CashbookRow[] {
+    return this.statementService.statement().rows;
   }
 }

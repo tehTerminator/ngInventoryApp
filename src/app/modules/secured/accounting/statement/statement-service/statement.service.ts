@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from '../../../../../services/api/api.service';
 import { Cashbook, Statement } from '../components/table/Cashbook';
@@ -8,9 +8,11 @@ import { EMPTY_LEDGER, Ledger } from './../../../../../interface/ledger.interfac
     providedIn: 'root'
 })
 export class StatementService {
-  cashbook: BehaviorSubject<Cashbook> = new BehaviorSubject(
+  #statement = signal(
     new Cashbook(EMPTY_LEDGER, [])
   );
+
+  statement = computed(() => this.#statement());
 
   constructor(private api: ApiService) {}
 
@@ -29,12 +31,12 @@ export class StatementService {
             data.vouchers,
             data.openingBalance
           );
-          this.cashbook.next(newCashbook);
+          this.#statement.set(newCashbook);
         },
         error: (error) => {
           console.error(error);
           const newCashbook = new Cashbook(ledger, []);
-          this.cashbook.next(newCashbook);
+          this.#statement.set(newCashbook);
         },
       });
   }
