@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
 import { Bundle } from '../../../../interface/bundle.interface';
 import { BundleService } from '../../../../services/bundle/bundle.service';
 import { Ledger } from '../../../../interface/ledger.interface';
@@ -25,9 +24,9 @@ import {
   providedIn: 'root',
 })
 export class InvoiceStoreService {
-  private _invoice = new BehaviorSubject<Invoice>(BASE_INVOICE);
+  #invoice = signal(BASE_INVOICE);
   selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
-  paymentInfo$ = new BehaviorSubject<Voucher[]>([]);
+  #paymentInfo = signal([] as Voucher[]);
 
   constructor(
     private ledgerService: LedgerService,
@@ -79,7 +78,7 @@ export class InvoiceStoreService {
   }
 
   private appendTransaction(newTransaction: Transaction) {
-    const existingTransactions = this.snapshot.transactions;
+    const existingTransactions = this.#invoice().transactions;
     const indexOfSimilarTransaction =
       this.findSimilarTransaction(newTransaction);
     if (indexOfSimilarTransaction >= 0) {
@@ -94,27 +93,31 @@ export class InvoiceStoreService {
       (item) => (grossAmount += item.quantity * item.rate)
     );
 
-    this._invoice.next({
-      ...this.snapshot,
-      gross_amount: grossAmount,
-      transactions: existingTransactions,
+    this.#invoice.update((value) => {
+      return {
+        ...value,
+        gross_amount: grossAmount,
+        transactions: existingTransactions,
+      };
     });
   }
 
   deleteTransaction(transaction: Transaction) {
-    const existingTransactions = this.snapshot.transactions;
+    const existingTransactions = this.#invoice().transactions;
     const indexOfTransaction = existingTransactions.findIndex(
       (x) => x === transaction
     );
     existingTransactions.splice(indexOfTransaction, 1);
-    this._invoice.next({
-      ...this.snapshot,
-      transactions: existingTransactions,
+    this.#invoice.update((invoice) => {
+      return {
+        ...invoice,
+        transactions: existingTransactions,
+      };
     });
   }
 
   private findSimilarTransaction(transaction: Transaction): number {
-    const data = this.snapshot.transactions;
+    const data = this.#invoice().transactions;
     return data.findIndex(
       (x) =>
         x.rate === transaction.rate &&
@@ -167,24 +170,27 @@ export class InvoiceStoreService {
       }
       voucher.amount = amount;
     } finally {
-      this.paymentInfo$.next([...this.paymentInfo$.value, voucher]);
+      this.#paymentInfo.update((paymentInfo) => [
+        ...this.#paymentInfo(),
+        voucher,
+      ]);
     }
   }
 
   removePaymentMethod(voucher: Voucher) {
-    let oldPaymentInfo = this.paymentInfo$.value;
+    let oldPaymentInfo = this.#paymentInfo();
     const index = oldPaymentInfo.findIndex((item) => item === voucher);
 
     if (index >= 0) {
       oldPaymentInfo.splice(index, 1);
-      this.paymentInfo$.next(oldPaymentInfo);
+      this.#paymentInfo.set(oldPaymentInfo);
     } else {
       console.warn('Voucher not found in paymentInfo$', voucher);
     }
   }
 
   reset(): void {
-    this._invoice.next({ ...BASE_INVOICE, transactions: [] });
+    this.#invoice.set({ ...BASE_INVOICE, transactions: [] });
     this.resetPayment();
     this.ledgerService.init();
     this.productService.init();
@@ -193,14 +199,15 @@ export class InvoiceStoreService {
   }
 
   resetPayment(): void {
-    this.paymentInfo$.next([]);
+    this.#paymentInfo.set([]);
   }
 
   set contact(id: number) {
-    const oldInvoiceValue = this.snapshot;
-    this._invoice.next({
-      ...oldInvoiceValue,
-      contact_id: id,
+    this.#invoice.update((value) => {
+      return {
+        ...value,
+        contact_id: id,
+      };
     });
   }
 
@@ -208,95 +215,60 @@ export class InvoiceStoreService {
     const kind = data.toUpperCase() === 'SALES' ? 'SALES' : 'PURCHASE';
     const currentInvoice = this.snapshot;
     if (!!currentInvoice) {
-      this._invoice.next({ ...currentInvoice, kind: kind });
+      this.#invoice.update(value => ({ ...value, kind }));
     }
   }
 
   get kind(): 'SALES' | 'PURCHASE' {
-    if (!!this._invoice.value) {
-      return this._invoice.value.kind;
+    if (!!this.#invoice()) {
+      return this.#invoice().kind;
     }
     return 'SALES';
   }
 
-  get snapshot(): Invoice {
-    return this._invoice.value;
+  set amount(gross_amount: number) {
+    this.#invoice.update(value => ({ ...value, gross_amount }));
   }
 
-  get vouchers(): Voucher[] {
-    return this.paymentInfo$.value;
+  set location(location_id: number) {
+    this.#invoice.update(value => ({ ...value, location_id }));
   }
 
-  set amount(value: number) {
-    this._invoice.next({ ...this.snapshot, gross_amount: value });
-  }
-
-  set location(value: number) {
-    this._invoice.next({ ...this.snapshot, location_id: value });
-  }
-
-  set discount(value: number) {
-    const oldData = this.snapshot;
-    const grossAmount = oldData.gross_amount;
-    if (value / grossAmount >= 0.5) {
-      this._invoice.next({ ...oldData, discount_amount: grossAmount * 0.49 });
+  set discount(discount: number) {
+    const grossAmount = this.#invoice().gross_amount;
+    if (discount / grossAmount >= 0.5) {
+      this.#invoice.update(value => ({ ...value, discount_amount: grossAmount * 0.49 }));
     } else {
-      this._invoice.next({ ...oldData, discount_amount: value });
+      this.#invoice.update(value => ({ ...value, discount_amount: discount }));
     }
   }
 
   get discount(): number {
-    return this.snapshot.discount_amount;
+    return this.#invoice().discount_amount;
   }
 
   get grossAmount() {
-    return this._invoice.pipe(
-      map((invoice) => {
-        let grossAmount = 0;
-        invoice.transactions.forEach((t) => {
-          grossAmount += t.quantity * t.rate;
-        });
-        return grossAmount;
-      })
-    );
+    let grossAmount = 0;
+    this.#invoice().transactions.forEach((t) => {
+      grossAmount += t.quantity * t.rate;
+    });
+    return grossAmount;
   }
 
   get netAmount() {
-    return this._invoice.pipe(
-      map((invoice) => {
-        const netAmount = invoice.gross_amount - invoice.discount_amount;
-        return netAmount;
-      })
-    );
+    return this.#invoice().gross_amount - this.#invoice().discount_amount;
   }
 
   get paidAmount() {
-    return this.paymentInfo$.pipe(
-      map((vouchers) => {
-        let amount = 0;
-        vouchers.forEach((v) => (amount += v.amount));
-        return amount;
-      })
-    );
+      let amount = 0;
+      this.#paymentInfo().forEach((v) => (amount += v.amount));
+      return amount;
   }
 
-  get netDiscount() {
-    return this._invoice.pipe(
-      map((invoice) => {
-        const dis = invoice.discount_amount;
-        return dis;
-      })
-    );
-  }
-
-  get invoice(): Observable<Invoice> {
-    return this._invoice;
-  }
-
-  set invoice(data: { invoice: Invoice; vouchers: Voucher[] }) {
+  setInvoice(data: { invoice: Invoice; vouchers: Voucher[] }) {
     const invoiceData = { ...data.invoice };
     invoiceData.transactions = [];
-    this._invoice.next(invoiceData);
+    this.#invoice.set(invoiceData);
     data.invoice.transactions.forEach((item) => {
       let service: ProductService | LedgerService | BundleService =
         this.productService;
@@ -317,16 +289,14 @@ export class InvoiceStoreService {
       this.createTransaction(selectedItem, item.quantity, item.rate);
     });
 
-    this.paymentInfo$.next(data.vouchers);
+    this.#paymentInfo.set(data.vouchers);
   }
 
   set id(id: number) {
-    const oldData = this.snapshot;
-    oldData.id = id;
-    this._invoice.next(oldData);
+    this.#invoice.update(value => ({...value, id}));
   }
 
   get id(): number {
-    return this.snapshot.id;
+    return this.#invoice().id;
   }
 }
