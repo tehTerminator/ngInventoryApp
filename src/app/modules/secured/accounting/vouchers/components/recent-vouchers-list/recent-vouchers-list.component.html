@@ -1,4 +1,4 @@
-<table class="table shadow" [loading]="loading">
+<table class="table shadow" *ngIf="vouchers.length > 0;else noData">
   <thead>
     <tr>
       <th>#</th>
@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let voucher of vouchers | async">
+    <tr *ngFor="let voucher of vouchers">
       <td>
         {{ voucher.id }}
       </td>
@@ -26,3 +26,14 @@
     </tr>
   </tbody>
 </table>
+
+<ng-template #noData>
+  <div class="w-100 card">
+    <div class="card-body">
+      <div class="text-center fs-3">
+        Nothing to Show Here
+      </div>
+    </div>
+  </div>
+</ng-template>
+

@@ -6,6 +6,7 @@ import { VoucherFormComponent } from './components/voucher-form/voucher-form.com
 import { CoreModule } from '../../../core/core.module';
 import { RecentVouchersListComponent } from './components/recent-vouchers-list/recent-vouchers-list.component';
 import { VouchersComponent } from './vouchers.component';
+import { RecentVouchersService } from './recent-vouchers.service';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { VouchersComponent } from './vouchers.component';
     CommonModule,
     FormRoutingModule,
     CoreModule
-  ]
+  ],
+  providers: [RecentVouchersService]
 })
 export class VouchersModule { }

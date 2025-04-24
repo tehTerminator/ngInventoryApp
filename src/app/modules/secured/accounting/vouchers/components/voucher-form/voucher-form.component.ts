@@ -17,6 +17,7 @@ import { NotificationsService } from '../../../../../../services/notification/no
 import { Voucher } from '../../../../../../interface/voucher.interface';
 import { evaluateString, mathPattern } from '../../../../../../shared/functions';
 import { VoucherFormGroup } from './VoucherFormGroup';
+import { RecentVouchersService } from '../../recent-vouchers.service';
 
 @Component({
     selector: 'app-voucher-form',
@@ -43,7 +44,9 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
     private api: ApiService,
     private ns: NotificationsService,
     private ledgerService: LedgerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private recentVoucherService: RecentVouchersService,
+    
   ) {}
 
   ngOnInit(): void {
@@ -182,11 +185,12 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
     const successMessage = `Voucher ${word} successfully`;
 
     response.subscribe({
-      next: () => {
+      next: (value: Voucher) => {
         this.ns.show(successMessage);
         this.voucherForm.reset();
         this.isLoading = false;
         this.input.nativeElement.focus();
+        this.recentVoucherService.insert(value);
       },
       error: (error) => {
         this.ns.show(error);
