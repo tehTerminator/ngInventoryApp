@@ -17,35 +17,37 @@ export class UserForm extends FormGroup {
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(10),
-          Validators.pattern(''),
+          Validators.pattern('^[6-9][0-9]{9}$'),
         ],
       }),
-      oldPassword: new FormControl('', { validators: [Validators.required] }),
-      newPassword: new FormControl('', { validators: [Validators.required] }),
-      confirmPassword: new FormControl('', {
-        validators: [Validators.required],
-      }),
+      oldPassword: new FormControl('', { validators: [Validators.required, Validators.minLength(8)] }),
+      newPassword: new FormControl('', [Validators.minLength(8)]),
+      confirmPassword: new FormControl('', [Validators.minLength(8)]),
     });
   }
 
   // Getters and setters for individual form controls
-  getName() {
-    return this.get('name') as FormControl;
+  get nameFC() {
+    return this.get('name') as FormControl<string>;
   }
 
-  getMobile() {
-    return this.get('mobile') as FormControl;
+  get mobileFC() {
+    return this.get('mobile') as FormControl<string>;
   }
 
-  getOldPassword() {
-    return this.get('oldPassword') as FormControl;
+  get oldPasswordFC() {
+    return this.get('oldPassword') as FormControl<string>;
   }
 
-  getNewPassword() {
-    return this.get('newPassword') as FormControl;
+  get newPasswordFC() {
+    return this.get('newPassword') as FormControl<string>;
   }
 
-  getConfirmPassword() {
-    return this.get('confirmPassword') as FormControl;
+  get confirmPasswordFC() {
+    return this.get('confirmPassword') as FormControl<string>;
+  }
+
+  validatePassword() {
+    return this.newPasswordFC.value === this.confirmPasswordFC.value;
   }
 }

@@ -24,7 +24,7 @@ export class AuthComponent implements OnInit {
       nonNullable: true,
     }),
     password: new FormControl<string>('', {
-      validators: [Validators.required, Validators.minLength(8)],
+      validators: [Validators.required, Validators.minLength(6)],
       nonNullable: true,
     }),
   });

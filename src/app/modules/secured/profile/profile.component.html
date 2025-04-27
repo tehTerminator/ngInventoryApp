@@ -3,7 +3,7 @@
         <div class="card shadow">
             <h3 class="card-header fs-3">User Profile</h3>
             <div class="card-body">
-                <form [formGroup]="userForm">
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Name</mat-label>
                         <input type="text" matInput formControlName="name">
@@ -18,11 +18,11 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>New Password</mat-label>
-                        <input type="text" matInput formControlName="newPassword">
+                        <input type="password" matInput formControlName="newPassword">
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Confirm Password</mat-label>
-                        <input type="text" matInput formControlName="confirmPassword">
+                        <input type="password" matInput formControlName="confirmPassword">
                     </mat-form-field>
 
                     <button mat-raised-button type="submit" color="primary" class="float-end">Submit</button>
