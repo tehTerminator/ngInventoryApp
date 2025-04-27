@@ -1,32 +1,51 @@
 <div class="row g-3">
-    <div class="col-md-4">
-        <app-day-book-form></app-day-book-form>
+  <div class="col-md-4">
+    <app-day-book-form></app-day-book-form>
+  </div>
+  <div class="col-md-8" [ngClass]="loading ? 'loading' : ''">
+    <div class="row g-3" *ngIf="dataSource.data.length > 0; else noData">
+      <div class="table-responsive vh-100">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+          <!-- Creditor Column -->
+          <ng-container matColumnDef="creditor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Creditor </th>
+            <td mat-cell *matCellDef="let element">
+              <strong>{{ element.creditor }}</strong>
+              <br />
+              <small>{{ element.creditor_kind }}</small>
+            </td>
+          </ng-container>id
+
+          <!-- Debtor Column -->
+          <ng-container matColumnDef="debtor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Debtor </th>
+            <td mat-cell *matCellDef="let element">
+              <strong>{{ element.debtor }}</strong>
+              <br />
+              <small>{{ element.debtor_kind }}</small>
+            </td>
+          </ng-container>
+
+          <!-- Amount Column -->
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-end"> Amount </th>
+            <td mat-cell *matCellDef="let element" class="text-end">
+              {{ element.amount | currency: 'INR' }}
+            </td>
+          </ng-container>
+
+          <!-- Table Header and Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
     </div>
-    <div class="col-md-8" [ngClass]="loading ? 'loading' : ''">
-        <div class="row g-3" *ngIf="length > 0; else noData">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        Total Number of Rows to Display = {{ length }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6" *ngFor="let row of dataToDisplay">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">
-                            {{ row.title }}
-                        </div>
-                        <app-day-book-table [creditor]="row.creditor" [debtor]="row.debtor"></app-day-book-table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 
 <ng-template #noData>
-    <div class="card card-body">
-        <h3 class="fs-3 text-center">Noting To Display</h3>
-    </div>
+  <div class="card card-body">
+    <h3 class="fs-3 text-center">Nothing To Display</h3>
+  </div>
 </ng-template>

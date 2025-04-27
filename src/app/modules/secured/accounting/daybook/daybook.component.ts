@@ -1,69 +1,36 @@
-import { Component } from '@angular/core';
-import { DayBookService } from './services/day-book.service';
+import { Component, effect, ViewChild, AfterViewInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort'; // Import MatSort
+import { DaybookRow, DayBookService } from './services/day-book.service';
+import { Voucher } from '../../../../interface/voucher.interface';
 
 @Component({
-    selector: 'app-daybook',
-    templateUrl: './daybook.component.html',
-    styleUrls: ['./daybook.component.scss'],
-    standalone: false
+  selector: 'app-daybook',
+  templateUrl: './daybook.component.html',
+  styleUrls: ['./daybook.component.scss'],
+  standalone: false
 })
-export class DaybookComponent {
-  dataToDisplay: Rows[] = [
-    {
-      creditor: 'BANK,WALLET,CASH',
-      debtor: 'RECEIVABLE',
-      title: 'Online Payments',
-    },
-    {
-      creditor: 'RECEIVABLE',
-      debtor: 'BANK,WALLET,CASH',
-      title: 'Receipts',
-    },
-    {
-      creditor: 'BANK,WALLET,CASH',
-      debtor: 'BANK,WALLET',
-      title: 'Contra',
-    },
-    {
-      creditor: 'CASH',
-      debtor: 'CASH',
-      title: 'Cash to Cash',
-    },
-    {
-      creditor: 'BANK,WALLET,CASH',
-      debtor: 'EXPENSE,PURCHASE AC',
-      title: 'EXPENSES',
-    },
-    {
-      creditor: 'INCOME,SALES AC',
-      debtor: 'BANK,WALLET,CASH,RECEIVABLE,PAYABLE',
-      title: 'INCOME',
-    },
-    {
-      creditor: 'BANK,WALLET,CASH',
-      debtor: 'PAYABLE',
-      title: 'To Payable',
-    },
-    {
-      creditor: 'PAYABLE',
-      debtor: 'BANK,WALLET,CASH',
-      title: 'From Payable',
-    },
-  ];
+export class DaybookComponent implements AfterViewInit {
+  dataSource = new MatTableDataSource<DaybookRow>(); // Initialize MatTableDataSource
+  displayedColumns: string[] = ['creditor', 'debtor', 'amount']; // Define columns for the table
+
+  @ViewChild(MatSort) sort!: MatSort; // Reference to MatSort
 
   get loading(): boolean {
     return this.dayBookService.loading;
   }
 
   get length(): number {
-    return this.dayBookService.dayBook.value.length;
+    return this.dayBookService.vouchers().length;
   }
 
-  constructor(private dayBookService: DayBookService) {}
-}
+  constructor(private dayBookService: DayBookService) {
+    effect(() => {
+      this.dataSource.data = this.dayBookService.vouchers();
+    });
+  }
 
-interface Rows {
-  creditor: string;
-  debtor: string;
-  title: string;
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
 }
