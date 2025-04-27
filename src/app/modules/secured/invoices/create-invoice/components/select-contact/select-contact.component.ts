@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
   OnDestroy,
   OnInit,
@@ -30,7 +31,7 @@ export class SelectContactComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
-  label = 'Party';
+  label: 'Supplier' | 'Customer' = 'Customer';
   contactField = new FormControl<Contact | string>('', {
     nonNullable: true,
     validators: [Validators.required],
@@ -44,10 +45,13 @@ export class SelectContactComponent
     private router: Router,
     private store: InvoiceStoreService,
     private contactsService: ContactsService
-  ) {}
+  ) {
+    effect(() => {
+      this.label = this.store.kind() === 'SALES' ? 'Customer' : 'Supplier'
+    });
+  }
 
   ngOnInit(): void {
-    this.createSubscription();
     this.contactsService.init();
 
     this.filteredContacts$ = this.contactField.valueChanges.pipe(
@@ -62,7 +66,7 @@ export class SelectContactComponent
   }
 
   private _filterContacts(title: string) {
-    const kind = this.store.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
+    const kind = this.store.kind() === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
     return this.contactsService
       .getAsList()
       .filter(
@@ -97,7 +101,7 @@ export class SelectContactComponent
   }
 
   get contacts(): Observable<Contact[]> {
-    const contactKind = this.label === 'Party' ? 'CUSTOMER' : 'SUPPLIER';
+    const contactKind = this.label.toUpperCase();
     return this.contactsService
       .getAsObservable()
       .pipe(map((contacts) => contacts.filter((x) => x.kind === contactKind)));
@@ -110,18 +114,4 @@ export class SelectContactComponent
     return contact && contact.title ? contact.title : '';
   }
 
-  private createSubscription() {
-    this._sub = this.store.invoice.subscribe({
-      next: (invoice) => {
-        switch (invoice.kind) {
-          case 'SALES':
-            this.label = 'Party';
-            break;
-          default:
-            this.label = 'Supplier';
-            break;
-        }
-      },
-    });
-  }
 }

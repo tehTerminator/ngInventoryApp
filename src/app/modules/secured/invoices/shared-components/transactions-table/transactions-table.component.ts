@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, map, takeUntil } from 'rxjs';
+import { Component } from '@angular/core';
 import { Transaction } from './../../../../../interface/invoice.interface';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { LedgerService } from '../../../../../services/ledger/ledger.service';
@@ -44,7 +43,7 @@ export class TransactionsTableComponent {
   }
 
   showButtons(): boolean {
-    return this.store.snapshot.id === 0;
+    return this.store.invoice().id === 0;
   }
 
   get colspan(): number {
@@ -54,7 +53,7 @@ export class TransactionsTableComponent {
     return 1;
   }
 
-  get transactions$() {
-    return this.store.invoice.pipe(map((value) => value.transactions));
+  get transactions() {
+    return this.store.invoice().transactions;
   }
 }

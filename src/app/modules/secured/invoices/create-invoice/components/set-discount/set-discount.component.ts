@@ -28,7 +28,7 @@ export class SetDiscountComponent implements AfterViewInit {
 
   onSetDiscount() {
     const discount = this.discountAmountFC.value;
-    this.store.discount = discount || 0;
+    this.store.setDiscount(discount || 0);
 
     this.navigateToChoosePayment();
   }

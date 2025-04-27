@@ -99,7 +99,8 @@ export class SelectProductComponent
     if (
       this.productForm.item === null ||
       this.productForm.quantity <= 0 ||
-      this.productForm.amount <= 0
+      this.productForm.amount <= 0 ||
+      this.productForm.amount === null
     ) {
       return;
     }
@@ -129,7 +130,7 @@ export class SelectProductComponent
       return [];
     }
 
-    if (this.store.kind === 'SALES') {
+    if (this.store.kind() === 'SALES') {
       return this.generalItemStore
         .getAsList()
         .filter((item) => item.title.toLowerCase().includes(filterValue));

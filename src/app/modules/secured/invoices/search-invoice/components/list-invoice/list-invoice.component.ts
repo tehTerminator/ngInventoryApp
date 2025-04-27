@@ -72,7 +72,7 @@ export class ListInvoiceComponent implements AfterViewInit, OnDestroy {
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (value) => {
-          this.invoiceStore.invoice = value;
+          this.invoiceStore.setInvoice(value);
           this.navigateToPreviewInvoice(id);
         },
       });

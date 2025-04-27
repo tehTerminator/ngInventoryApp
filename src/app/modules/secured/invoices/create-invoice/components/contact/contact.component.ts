@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
 
 @Component({
@@ -8,18 +7,10 @@ import { InvoiceStoreService } from '../../../services/invoice-store.service';
     styleUrls: ['./contact.component.scss'],
     standalone: false
 })
-export class ContactComponent implements OnInit, OnDestroy {
-  private _sub = new Subscription();
+export class ContactComponent {
   constructor(private store: InvoiceStoreService) {}
-  isSales = true;
 
-  ngOnInit(): void {
-    this._sub = this.store.invoice.subscribe({
-      next: (invoice) => this.isSales = invoice.kind === 'SALES',
-    });
-  }
-
-  ngOnDestroy(): void {
-    this._sub.unsubscribe();
+  get isSales() {
+    return this.store.kind() === 'SALES';
   }
 }

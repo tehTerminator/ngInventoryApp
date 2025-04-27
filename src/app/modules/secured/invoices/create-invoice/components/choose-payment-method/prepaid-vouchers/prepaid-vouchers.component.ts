@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, effect, OnDestroy } from '@angular/core';
 import { SelectVoucherFormGroup } from './SelectVoucherFormGroup';
 import { ApiService } from './../../../../../../../services/api/api.service';
 import { Subject, debounceTime, take, takeUntil } from 'rxjs';
@@ -15,8 +15,6 @@ import { NotificationsService } from '../../../../../../../services/notification
 })
 export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
   private _notifier$ = new Subject();
-  private existingAmount = 0;
-  private invoiceAmount = 0;
 
   voucher: Voucher | null = null;
   formGroup = new SelectVoucherFormGroup();
@@ -46,7 +44,7 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    if (this.store.kind === 'SALES') {
+    if (this.store.kind() === 'SALES') {
       this.store.addPaymentMethod(
         this.voucher.dr,
         this.formGroup.amount,
@@ -60,13 +58,14 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
       );
     }
 
-    this.store.paidAmount.pipe(take(1), debounceTime(200)).subscribe({
-      next: (value) => {
-        if (value === this.invoiceAmount) {
-          this.router.navigate(['/auth', 'invoices', 'please-wait']);
-        }
-      },
-    });
+    // effect(() => {
+    //   if(this.store.netAmount() > 0 && this.store.netAmount() === this.store.paidAmount()) {
+    //     this.router.navigate(['/auth', 'invoices', 'please-wait']);
+    //   }
+    //   this.formGroup.amount = this.availableAmount;
+
+    // })
+
   }
 
   ngAfterViewInit(): void {
@@ -81,10 +80,6 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
           this.fetchVoucher(value);
         },
       });
-
-    this.store.netAmount
-      .pipe(takeUntil(this._notifier$), debounceTime(2000))
-      .subscribe({ next: (value) => (this.invoiceAmount = value) });
   }
 
   ngOnDestroy(): void {
@@ -97,20 +92,18 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
       next: (data) => {
         try {
           const ledger_id = this.contactService.getElementById(
-            this.store.snapshot.contact_id
+            this.store.invoice().contact_id
           ).ledger_id;
-          if (this.store.kind === 'SALES' && data.cr !== ledger_id) {
+          if (this.store.kind() === 'SALES' && data.cr !== ledger_id) {
             throw new Error(
               'Invalid Voucher, Voucher Cr not Equal to Customer Ledger'
             );
-          } else if (this.store.kind === 'PURCHASE' && data.dr !== ledger_id) {
+          } else if (this.store.kind() === 'PURCHASE' && data.dr !== ledger_id) {
             throw new Error(
               'Invalid Voucher, Voucher Dr not Equal to Supplier Ledger'
             );
           }
-
           this.voucher = data;
-          this.fetchAvailableAmount(this.voucher.id);
         } catch (e) {
           if (e instanceof Error) {
             this.notifications.show(e.message);
@@ -124,42 +117,16 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private fetchAvailableAmount(voucher_id: number) {
-    this.api
-      .retrieve<PaymentInfo[]>(['invoice_payment_infos'], {
-        voucher_id: voucher_id.toString(),
-      })
-      .subscribe({
-        next: (data) => {
-          let amount = 0;
-          data.forEach((item) => {
-            amount += item.amount;
-          });
-          this.existingAmount = amount;
-        },
-        complete: () => {
-          this.formGroup.amount = this.availableAmount;
-        },
-      });
-  }
-
   get availableAmount(): number {
     if (this.voucher === null) {
       return 0;
     }
 
-    const voucherBalance = this.voucher.amount - this.existingAmount;
-    if (voucherBalance <= this.invoiceAmount) {
+    const voucherBalance = this.voucher.amount - this.store.paidAmount();
+    if (voucherBalance <= this.store.netAmount()) {
       return voucherBalance;
     }
 
-    return this.invoiceAmount;
+    return this.store.netAmount();
   }
-}
-
-interface PaymentInfo {
-  invoice_id: number;
-  contact_id: number;
-  voucher_id: number;
-  amount: number;
 }

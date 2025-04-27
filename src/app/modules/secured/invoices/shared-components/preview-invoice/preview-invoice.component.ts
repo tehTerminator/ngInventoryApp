@@ -37,7 +37,7 @@ export class PreviewInvoiceComponent implements OnInit {
       .retrieve<{ invoice: Invoice; vouchers: Voucher[] }>(['invoice', id])
       .subscribe({
         next: (value) => {
-          this.store.invoice = value;
+          this.store.setInvoice(value);
         },
         error: (err) => {
           this;
@@ -46,7 +46,7 @@ export class PreviewInvoiceComponent implements OnInit {
   }
 
   get invoiceId(): number {
-    return this.store.snapshot.id;
+    return this.store.invoice().id;
   }
 
   /**
@@ -57,7 +57,7 @@ export class PreviewInvoiceComponent implements OnInit {
    * 2. If not, show a notification
    */
   onDeleteBtn(): void {
-    if (this.store.snapshot.user_id !== this.authStore.user().id) {
+    if (this.store.invoice().user_id !== this.authStore.user().id) {
       this.notificationService.show("You are not allowed to delete this invoice");
       return;
     }

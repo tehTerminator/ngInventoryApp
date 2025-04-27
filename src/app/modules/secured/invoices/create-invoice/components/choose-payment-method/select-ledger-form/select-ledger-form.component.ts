@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
@@ -14,12 +14,9 @@ import { RecentPaymentMethodService } from './../../../services/recentPaymentMet
     styles: [],
     standalone: false
 })
-export class SelectLedgerFormComponent implements OnInit, OnDestroy {
+export class SelectLedgerFormComponent implements OnInit {
   form = new SelectLedgerFG();
   selectedLedgerIds: Array<number> = [];
-  unpaidAmount = 0;
-  private netAmount = 0;
-  private notifier$ = new Subject<void>();
   loading = false;
 
   constructor(
@@ -27,43 +24,24 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
     private store: InvoiceStoreService,
     private router: Router,
     private recentPaymentService: RecentPaymentMethodService
-  ) {}
-
-  ngOnInit(): void {
-
-    this.ledgerService.init()
-
-    this.store.paidAmount
-      .pipe(takeUntil(this.notifier$), debounceTime(200))
-      .subscribe({
-        next: (paidAmount) => {
-          this.unpaidAmount = this.netAmount - paidAmount;
-          this.form.amountFC.setValue(this.unpaidAmount);
-        },
-      });
-
-    this.store.netAmount.pipe(takeUntil(this.notifier$)).subscribe({
-      next: (value) => {
-        this.netAmount = value;
-      },
-    });
-
-    this.store.paymentInfo$.pipe(takeUntil(this.notifier$)).subscribe({
-      next: (value) => [
-        (this.selectedLedgerIds = value.map((items) => items.dr)),
-      ],
-    });
+  ) {
+    effect(() => {
+      this.form.patchValue({amount: this.store.unpaidAmount()})
+    })
   }
 
-  ngOnDestroy(): void {
-    this.notifier$.next();
-    this.notifier$.complete();
+  ngOnInit(): void {
+    this.ledgerService.init()
   }
 
   get ledgers(): Observable<Ledger[]> {
     return (this.ledgerService.getAsObservable() as Observable<Ledger[]>).pipe(
-      map((ledgers) =>
-        ledgers.filter((x) => ['BANK', 'CASH', 'WALLET'].includes(x.kind))
+      map((ledgers) =>{
+        if (this.store.kind() === 'SALES') {
+          return ledgers.filter((x) => x.can_receive_payment === true)
+        }
+        return ledgers.filter((x) => x.can_pay === true)
+      }
       )
     );
   }
@@ -75,11 +53,12 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const ledger = this.ledgerService.getElementById(this.form.ledger);
     this.store.addPaymentMethod(this.form.ledger, this.form.amount);
+    this.recentPaymentService.savePaymentMethod(ledger);
     
     setTimeout(() => {
-      if (this.unpaidAmount === 0) {
-        this.storeLastPaymentMethod();
+      if (this.store.netAmount() > 0 && this.store.unpaidAmount() === 0) {
         this.router.navigate(['/auth', 'invoices', 'please-wait']);
       }
       this.form.patchValue({ ledger: 0 });
@@ -91,12 +70,10 @@ export class SelectLedgerFormComponent implements OnInit, OnDestroy {
     return this.selectedLedgerIds.includes(id);
   }
 
-  private storeLastPaymentMethod() {
-    const ledger = this.ledgerService.getElementById(this.form.ledger);
-    this.recentPaymentService.savePaymentMethod(ledger);
-  }
-
-  get allowFinalSubmit(): boolean {
-    return this.unpaidAmount === this.form.amount;
+  get buttonText() {
+    if (this.form.amount === this.store.unpaidAmount()) {
+      return 'Final Submit';
+    } 
+    return 'Add Voucher'
   }
 }

@@ -1,16 +1,13 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 import { UserStoreService } from './../../../../../services/user/user.service';
-import { Subject, map, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-cashier-name',
     template: ` {{ cashier }} `,
     standalone: false
 })
-export class CashierNameComponent implements OnInit, AfterViewInit, OnDestroy {
-  cashier = '';
-  private $notifier = new Subject();
+export class CashierNameComponent implements OnInit  {
 
   constructor(
     private userStore: UserStoreService,
@@ -21,27 +18,13 @@ export class CashierNameComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userStore.init();
   }
 
-  ngAfterViewInit(): void {
-    this.invoiceStore.invoice
-      .pipe(
-        takeUntil(this.$notifier),
-        map((value) => value.user_id)
-      )
-      .subscribe({
-        next: (user_id) => {
-          if (user_id <= 0) {
-            return;
-          }
-          this.cashier = this.userStore.getElementById(user_id).name;
-        },
-        error: () => {
-          this.cashier = 'Maharaja Computers';
-        },
-      });
+  get cashier() {
+    try{
+      const theName = this.userStore.getElementById(this.invoiceStore.invoice().user_id).name;
+      return theName;
+    } catch {
+      return 'Anonymous';
+    }
   }
 
-  ngOnDestroy(): void {
-    this.$notifier.next(0);
-    this.$notifier.complete();
-  }
 }

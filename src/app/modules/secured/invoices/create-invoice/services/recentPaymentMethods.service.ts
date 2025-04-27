@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { effect, Injectable } from "@angular/core";
 import { Ledger } from "../../../../../interface/ledger.interface";
 import { LedgerService } from "../../../../../services/ledger/ledger.service";
 
@@ -8,25 +8,27 @@ export class RecentPaymentMethodService {
     private maxItems = 3;
 
     constructor(private ledgerService: LedgerService) {
-        if (localStorage.getItem('recentPaymentMethods')) {
-            this.recentLedgers = JSON.parse(localStorage.getItem('recentPaymentMethods') || '[]');
+        const savedMethods = localStorage.getItem('recentPaymentMethods');
+        if (savedMethods) {
+            this.recentLedgers = JSON.parse(savedMethods);
         }
+
+        effect(() => {
+            localStorage.setItem('recentPaymentMethods', JSON.stringify(this.recentLedgers));
+        });
+
         this.ledgerService.init();
     }
 
     savePaymentMethod(ledger: Ledger): void {
         if (this.isInList(ledger)) {
-            console.error('Invalid ledger or ledger already exists:', ledger);
+            console.error('Ledger already exists:', ledger);
             return;
         }
-
-        console.log('Before Unshift', this.recentLedgers);
         this.recentLedgers.unshift(ledger);
-        console.log('After Unshift', this.recentLedgers);
         if (this.recentLedgers.length > this.maxItems) {
             this.recentLedgers.pop();
         }
-        localStorage.setItem('recentPaymentMethods', JSON.stringify(this.recentLedgers));
     }
 
     getPaymentMethods(): Ledger[] {

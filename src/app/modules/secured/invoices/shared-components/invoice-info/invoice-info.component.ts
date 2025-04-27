@@ -3,31 +3,29 @@ import { Subscription } from 'rxjs';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
 
 @Component({
-    selector: 'app-invoice-info',
-    templateUrl: './invoice-info.component.html',
-    styles: [''],
-    standalone: false
+  selector: 'app-invoice-info',
+  templateUrl: './invoice-info.component.html',
+  styles: [''],
+  standalone: false,
 })
-export class InvoiceInfoComponent implements OnInit, OnDestroy {
-    invoiceId = 0;
-    createdAt = '';
-    customerId = 0;
-    kind = 'SALES';
-    sub: Subscription = new Subscription();
+export class InvoiceInfoComponent {
+  ngOnInit(): void {}
 
-    ngOnInit(): void {
-        this.sub = this.store.invoice
-            .subscribe(invoice => {
-                this.invoiceId = invoice.id;
-                this.customerId = invoice.contact_id
-                this.createdAt = invoice.created_at || '';
-                this.kind = invoice.kind;
-            });
-    }
+  get invoiceId() {
+    return this.store.invoice().id;
+  }
 
-    ngOnDestroy(): void {
-        this.sub.unsubscribe();
-    }
+  get customerId() {
+    return this.store.invoice().contact_id;
+  }
 
-    constructor(private store: InvoiceStoreService) { }
+  get createdAt() {
+    return this.store.invoice().created_at;
+  }
+
+  get kind() {
+    return this.store.kind();
+  }
+
+  constructor(private store: InvoiceStoreService) {}
 }

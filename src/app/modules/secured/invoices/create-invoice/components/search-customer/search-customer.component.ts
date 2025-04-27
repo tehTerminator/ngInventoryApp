@@ -98,7 +98,7 @@ export class SearchCustomerComponent {
 
   navigateToCreateContact() {
     this.router.navigate(['../create-contact'], {
-      relativeTo: this.route,
+      relativeTo: this.route, queryParams: {mobile: this.contactField.value}
     })
   }
 }

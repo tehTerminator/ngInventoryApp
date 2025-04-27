@@ -16,7 +16,7 @@ export const productGuard: CanActivateFn = () => {
 
     console.log('EMpty Product');
 
-    const type = store.kind.toLowerCase() === 'sales' ? 'sales' : 'purchase';
+    const type = store.kind().toLowerCase() === 'sales' ? 'sales' : 'purchase';
     const url = getCreateInvoiceRoutes('select-product', type);
 
     return router.createUrlTree(url);

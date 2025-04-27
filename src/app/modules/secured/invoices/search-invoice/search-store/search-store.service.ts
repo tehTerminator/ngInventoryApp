@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { Invoice } from '../../../../../interface/invoice.interface';
 import { ApiService } from '../../../../../services/api/api.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
@@ -32,7 +32,7 @@ export class SearchInvoiceStoreService {
   selectInvoice(id: number): void {
     this.api
       .retrieve<{invoice: Invoice, vouchers: Voucher[]}>('invoices', { id: id.toString() })
-      .subscribe((data) => (this.store.invoice = data));
+      .subscribe((data) => (this.store.setInvoice(data)));
   }
 
   fetchUsingCustomerId(customerId: number, month: string, paid: string): void {

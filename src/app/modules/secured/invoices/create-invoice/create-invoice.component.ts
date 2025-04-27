@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InvoiceStoreService } from './../services/invoice-store.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MyLocationStoreService } from '../../../../services/myLocation/my-location.service';
+import { AuthStoreService } from './../../../../services/auth-store/auth-store.service';
 
 @Component({
     selector: 'app-create-invoice',
@@ -16,6 +17,7 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private store: InvoiceStoreService,
+    private authStore: AuthStoreService,
     private locationStore: MyLocationStoreService
   ) {}
 
@@ -26,7 +28,7 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
         let type = value.get('type') || 'EMPTY';
         type = type.toUpperCase();
         if (type === 'SALES' || type === 'PURCHASE') {
-          this.store.kind = type;
+          this.store.setKind(type);
         }
         return;
       },
@@ -34,15 +36,17 @@ export class CreateInvoiceComponent implements OnInit, OnDestroy {
 
     this.locationStore.selectedLocation
       .pipe(takeUntil(this._notifier$))
-      .subscribe({ next: (value) => (this.store.location = value.id) });
+      .subscribe({ next: (value) => (this.store.setLocation(value.id)) });
+
+    this.store.setUser(this.authStore.user().id);
   }
 
   get color(): string {
-    return this.store.kind.toLowerCase();
+    return this.store.kind().toLowerCase();
   }
 
   ngOnDestroy(): void {
-    this._notifier$.next(null);
+    this._notifier$.next(0);
     this._notifier$.complete();
   }
 }

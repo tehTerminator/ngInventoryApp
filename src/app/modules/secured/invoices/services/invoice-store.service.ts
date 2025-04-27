@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { Bundle } from '../../../../interface/bundle.interface';
 import { BundleService } from '../../../../services/bundle/bundle.service';
 import { Ledger } from '../../../../interface/ledger.interface';
@@ -25,15 +25,66 @@ import {
 })
 export class InvoiceStoreService {
   #invoice = signal(BASE_INVOICE);
-  selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
   #paymentInfo = signal([] as Voucher[]);
+  paymentInfo = computed(() => this.#paymentInfo());
+  selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
+
+  invoice = computed(() => this.#invoice());
+  id = computed(() => this.#invoice().id);
+  grossAmount = computed(() => {
+    let amount = 0;
+    this.#invoice().transactions.forEach((item) => amount += (item.quantity * item.rate));
+    return amount;
+  });
+  netAmount = computed(() => {
+    return this.grossAmount() - this.#invoice().discount_amount;
+  });
+  discountAmount = computed(() => {
+    return this.#invoice().discount_amount;
+  });
+  paidAmount = computed(() => {
+    let amount = 0;
+    this.#paymentInfo().forEach((voucher) => amount += voucher.amount);
+    return amount;
+  });
+  unpaidAmount = computed(() => {
+    return this.netAmount() - this.paidAmount();
+  });
+  kind = computed(() => this.#invoice().kind);
 
   constructor(
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService,
     private contactService: ContactsService
-  ) {}
+  ) {
+    effect(() => {
+      if (
+        this.netAmount() > 0 && 
+        this.paidAmount() === this.netAmount() && 
+        !this.#invoice().paid) 
+      {
+        this.#invoice.update((invoice) => ({...invoice, paid: true}));
+      }
+    });
+
+    // Effect to automatically compute gross_amount when transactions are updated
+    effect(() => {
+      const transactions = this.#invoice().transactions;
+      const grossAmount = transactions.reduce(
+        (sum, item) => sum + item.quantity * item.rate,
+        0
+      );
+    
+      // Avoid infinite loop by checking if gross_amount has changed
+      if (this.#invoice().gross_amount !== grossAmount) {
+        this.#invoice.update((invoice) => ({
+          ...invoice,
+          gross_amount: grossAmount,
+        }));
+      }
+    });
+  }
 
   createTransaction(
     item: Product | Bundle | Ledger,
@@ -155,13 +206,13 @@ export class InvoiceStoreService {
   addPaymentMethod(dr: number, amount: number, voucher = { ...EMPTY_VOUCHER }) {
     try {
       const contact = this.contactService.getElementById(
-        this.snapshot.contact_id
+        this.#invoice().contact_id
       );
       if (voucher.id > 0) {
         voucher.amount = amount;
         return;
       }
-      if (this.snapshot.kind === 'SALES') {
+      if (this.#invoice().kind === 'SALES') {
         voucher.cr = contact.ledger_id;
         voucher.dr = dr;
       } else {
@@ -211,58 +262,22 @@ export class InvoiceStoreService {
     });
   }
 
-  set kind(data: 'SALES' | 'PURCHASE' | 'sales' | 'purchase') {
+  setKind(data: 'SALES' | 'PURCHASE' | 'sales' | 'purchase') {
     const kind = data.toUpperCase() === 'SALES' ? 'SALES' : 'PURCHASE';
-    const currentInvoice = this.snapshot;
-    if (!!currentInvoice) {
-      this.#invoice.update(value => ({ ...value, kind }));
-    }
+    this.#invoice.update(value => ({ ...value, kind }));
   }
 
-  get kind(): 'SALES' | 'PURCHASE' {
-    if (!!this.#invoice()) {
-      return this.#invoice().kind;
-    }
-    return 'SALES';
-  }
-
-  set amount(gross_amount: number) {
-    this.#invoice.update(value => ({ ...value, gross_amount }));
-  }
-
-  set location(location_id: number) {
+  setLocation(location_id: number) {
     this.#invoice.update(value => ({ ...value, location_id }));
   }
 
-  set discount(discount: number) {
+  setDiscount(discount: number) {
     const grossAmount = this.#invoice().gross_amount;
     if (discount / grossAmount >= 0.5) {
       this.#invoice.update(value => ({ ...value, discount_amount: grossAmount * 0.49 }));
     } else {
       this.#invoice.update(value => ({ ...value, discount_amount: discount }));
     }
-  }
-
-  get discount(): number {
-    return this.#invoice().discount_amount;
-  }
-
-  get grossAmount() {
-    let grossAmount = 0;
-    this.#invoice().transactions.forEach((t) => {
-      grossAmount += t.quantity * t.rate;
-    });
-    return grossAmount;
-  }
-
-  get netAmount() {
-    return this.#invoice().gross_amount - this.#invoice().discount_amount;
-  }
-
-  get paidAmount() {
-      let amount = 0;
-      this.#paymentInfo().forEach((v) => (amount += v.amount));
-      return amount;
   }
 
   setInvoice(data: { invoice: Invoice; vouchers: Voucher[] }) {
@@ -292,11 +307,13 @@ export class InvoiceStoreService {
     this.#paymentInfo.set(data.vouchers);
   }
 
-  set id(id: number) {
+  setId(id: number) {
     this.#invoice.update(value => ({...value, id}));
   }
 
-  get id(): number {
-    return this.#invoice().id;
+  setUser(id: number) {
+    this.#invoice.update(value=> ({...value, user_id: id}));
   }
+
+
 }

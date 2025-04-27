@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let t of transactions$ | async">
+    <tr *ngFor="let t of transactions">
       <td *ngIf="showButtons()" class="text-center">
         <mat-icon (click)="deleteTransaction(t)">delete</mat-icon>
       </td>
@@ -53,17 +53,17 @@
     <tr>
       <td [attr.colspan]="colspan"></td>
       <td colspan="2" class="text-end">Gross Amount</td>
-      <td class="text-end pe-3">{{ store.grossAmount | async | currency: 'INR' }}</td>
+      <td class="text-end pe-3">{{ store.grossAmount() | currency: 'INR' }}</td>
     </tr>
     <tr>
       <td [attr.colspan]="colspan"></td>
       <td colspan="2" class="text-end">Total Discount</td>
-      <td class="text-end pe-3">{{ store.netDiscount | async | currency: 'INR' }}</td>
+      <td class="text-end pe-3">{{ store.discountAmount() | currency: 'INR' }}</td>
     </tr>
     <tr>
       <td [attr.colspan]="colspan"></td>
       <td colspan="2" class="text-end">Net Amount</td>
-      <td class="text-end pe-3 fw-bold">{{ store.netAmount | async | currency: 'INR' }} </td>
+      <td class="text-end pe-3 fw-bold">{{ store.netAmount() | currency: 'INR' }} </td>
     </tr>
   </tfoot>
 </table>

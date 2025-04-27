@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
-import { Observable, Subscription, finalize, map } from 'rxjs';
+import { finalize, map } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContactForm } from './ContactForm';
 import { ContactsService } from '../../../../../../services/contacts/contacts.service';
@@ -14,10 +14,9 @@ import { Contact } from '../../../../../../interface/contact.interface';
     styleUrls: ['./create-contact-form.component.scss'],
     standalone: false
 })
-export class CreateContactFormComponent implements OnInit, OnDestroy {
+export class CreateContactFormComponent implements OnInit {
   private _loading = false;
   contactForm = new ContactForm();
-  private _sub = new Subscription();
 
   constructor(
     private store: InvoiceStoreService,
@@ -26,20 +25,18 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
     private contactService: ContactsService,
     private ledgerService: LedgerService,
     private notification: NotificationsService
-  ) {}
+  ) {
+    // effect(() => {
+    //   this.contactForm.kind = this.store.kind() === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
+    // })
+  }
 
   ngOnInit(): void {
     this.ledgerService.init();
-    this._sub = this.store.invoice.subscribe({
-      next: (invoice) => {
-        this.contactForm.kind =
-          invoice.kind === 'SALES' ? 'CUSTOMER' : 'SUPPLIER';
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this._sub.unsubscribe();
+    const mobile = this.route.snapshot.queryParamMap.get('mobile');
+    if (!!mobile) {
+      this.contactForm.patchValue({'mobile': mobile});
+    }
   }
 
   onSubmit() {
@@ -62,7 +59,8 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
         id: 0,
         title: this.contactForm.title,
         kind: this.contactForm.kind === 'CUSTOMER' ? 'RECEIVABLE' : 'PAYABLE',
-        canReceivePayment: false,
+        can_receive_payment: false,
+        can_pay: false
       })
       .subscribe({
         next: (value) => {
@@ -89,7 +87,7 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
   private navigateToSelectProduct(contact: Contact) {
     // Get the current :type parameter from the route
     this.store.contact = contact.id;
-    const type = this.store.kind.toLowerCase();
+    const type = this.store.kind().toLowerCase();
     this.router.navigate(['../select-product'], {
       relativeTo: this.route,
     });
@@ -102,7 +100,7 @@ export class CreateContactFormComponent implements OnInit, OnDestroy {
   get ledgers() {
     return this.ledgerService.getAsObservable().pipe(
       map((value) => {
-        const kind = this.store.kind === 'SALES' ? 'RECEIVABLE' : 'PAYABLE';
+        const kind = this.store.kind() === 'SALES' ? 'RECEIVABLE' : 'PAYABLE';
         return value.filter(x => x.kind === kind);
       })
     );

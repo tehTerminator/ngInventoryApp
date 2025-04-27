@@ -1,11 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, debounceTime } from 'rxjs';
-import {
-  Contact,
-  EMPTY_CONTACT,
-} from '../../../../../interface/contact.interface';
 import { ContactsService } from './../../../../../services/contacts/contacts.service';
 import { InvoiceStoreService } from '../../services/invoice-store.service';
+import { EMPTY_CONTACT } from '../../../../../interface/contact.interface';
 
 @Component({
     selector: 'app-contact-table',
@@ -13,10 +9,7 @@ import { InvoiceStoreService } from '../../services/invoice-store.service';
     styles: [''],
     standalone: false
 })
-export class ContactTableComponent implements OnInit, OnDestroy {
-  contact: Contact = EMPTY_CONTACT;
-  private _sub = new Subscription();
-
+export class ContactTableComponent implements OnInit {
   constructor(
     private store: InvoiceStoreService,
     private contactService: ContactsService
@@ -24,18 +17,15 @@ export class ContactTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.contactService.init();
-    this._sub = this.store.invoice.pipe(debounceTime(100)).subscribe({
-      next: (invoice) => {
-        try {
-          this.contact = this.contactService.getElementById(invoice.contact_id);
-        } catch (e) {
-          this.contact = EMPTY_CONTACT;
-        }
-      },
-    });
   }
 
-  ngOnDestroy(): void {
-    this._sub.unsubscribe();
+  get contact() {
+    try {
+      const contactToDisplay = this.contactService.getElementById(this.store.invoice().contact_id);
+      return contactToDisplay;
+    } catch {
+      return EMPTY_CONTACT;
+    }
   }
+
 }

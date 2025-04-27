@@ -20,41 +20,22 @@ export class PleaseWaitPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.setAmount();
-  }
-
-  private setAmount() {
-    this.store.netAmount
-      .pipe(
-        take(1),
-        finalize(() => {
-          if (this.store.snapshot.id > 0) {
-            this.store.reset();
-            this.message = 'Please Wait, Now You Can Create New Invoice.';
-            this.navigateToCreateInvoice();
-          } else {
-            this.storeInvoice();
-          }
-        })
-      )
-      .subscribe({
-        next: (value) => (this.store.amount = value),
-        error: () => {
-          this.message = 'An Error Encountered While Calculating Amount';
-          this.navigateToCreateInvoice();
-        },
-      });
+    if (this.store.invoice().id > 0) {
+      this.navigateToPrintInvoice();
+    } else {
+      this.storeInvoice();
+    }
   }
 
   private storeInvoice() {
     this.api
       .create<Invoice>('invoice', {
-        invoice: this.store.snapshot,
-        vouchers: this.store.vouchers,
+        invoice: this.store.invoice(),
+        vouchers: this.store.paymentInfo(),
       })
       .subscribe({
         next: (value) => {
-          this.store.id = value.id;
+          this.store.setId(value.id);
           this.message = `Invoice #${value.id} Saved Successfully. Redirecting Please Wait.`;
           this.navigateToPrintInvoice();
         },
@@ -71,7 +52,7 @@ export class PleaseWaitPageComponent implements OnInit {
         '/auth',
         'invoices',
         'view',
-        this.store.snapshot.id,
+        this.store.invoice().id,
       ]);
     }, 1000);
   }
