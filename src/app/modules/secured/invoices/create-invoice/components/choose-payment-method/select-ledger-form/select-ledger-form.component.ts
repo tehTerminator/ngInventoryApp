@@ -1,7 +1,7 @@
-import { Component, effect, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Ledger } from '../../../../../../../interface/ledger.interface';
 import { LedgerService } from '../../../../../../../services/ledger/ledger.service';
 import { InvoiceStoreService } from '../../../../services/invoice-store.service';
