@@ -22,6 +22,7 @@ import { PrepaidVouchersComponent } from './components/choose-payment-method/pre
 import { MatChipsModule } from '@angular/material/chips';
 import { SearchCustomerComponent } from './components/search-customer/search-customer.component';
 import { RecentPaymentMethodService } from './services/recentPaymentMethods.service';
+import { InvoiceStoreService } from '../services/invoice-store.service';
 
 @NgModule({
   declarations: [

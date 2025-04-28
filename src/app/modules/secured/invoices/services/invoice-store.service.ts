@@ -19,6 +19,7 @@ import {
   EMPTY_VOUCHER,
   Voucher,
 } from '../../../../interface/voucher.interface';
+import { RecentPaymentMethodService } from '../create-invoice/services/recentPaymentMethods.service';
 
 @Injectable({
   providedIn: 'root',
@@ -56,7 +57,7 @@ export class InvoiceStoreService {
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService,
-    private contactService: ContactsService
+    private contactService: ContactsService,
   ) {
     effect(() => {
       if (
@@ -208,6 +209,7 @@ export class InvoiceStoreService {
       const contact = this.contactService.getElementById(
         this.#invoice().contact_id
       );
+
       if (voucher.id > 0) {
         voucher.amount = amount;
         return;
@@ -221,8 +223,8 @@ export class InvoiceStoreService {
       }
       voucher.amount = amount;
     } finally {
-      this.#paymentInfo.update((paymentInfo) => [
-        ...this.#paymentInfo(),
+      this.#paymentInfo.update((items) => [
+        ...items,
         voucher,
       ]);
     }
@@ -314,6 +316,4 @@ export class InvoiceStoreService {
   setUser(id: number) {
     this.#invoice.update(value=> ({...value, user_id: id}));
   }
-
-
 }

@@ -1,19 +1,13 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
+import { RecentPaymentMethodService } from '../../services/recentPaymentMethods.service';
 
 @Component({
     selector: 'app-choose-payment-method',
     templateUrl: './choose-payment-method.component.html',
     standalone: false
 })
-export class ChoosePaymentMethodComponent implements AfterViewInit  {
-  hasRecent = false;
+export class ChoosePaymentMethodComponent {
+  hasRecent = computed(() => this.recentPaymentService.length() > 0)
 
-  ngAfterViewInit(): void {
-    if(localStorage.getItem("recentPaymentMethod")) {
-      this.hasRecent = true;
-    } else {
-      this.hasRecent = false;
-    }
-  }
-
+  constructor(private recentPaymentService: RecentPaymentMethodService) {}
 }

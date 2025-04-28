@@ -54,7 +54,7 @@ export class PleaseWaitPageComponent implements OnInit {
         'view',
         this.store.invoice().id,
       ]);
-    }, 1000);
+    }, 500);
   }
 
   private navigateToCreateInvoice() {

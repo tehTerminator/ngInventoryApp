@@ -16,15 +16,17 @@ export class RecentPaymentBtnComponent {
   @ViewChild('recentPaymentBtn') btn!: ElementRef<HTMLInputElement>;
   constructor(
     private store: InvoiceStoreService, 
-    private recentPaymentService: RecentPaymentMethodService
+    private recentPaymentService: RecentPaymentMethodService,
+    private router: Router
   ) {}
 
   selectPaymentMethod(ledger: Ledger): void {
     this.store.resetPayment();
     this.store.addPaymentMethod(ledger.id, this.store.netAmount());
+    this.router.navigate(['/auth', 'invoices', 'please-wait']);
   }
 
-  get recentPaymentMethods(): Ledger[] {
-    return this.recentPaymentService.getPaymentMethods();
+  get recentPaymentMethods() {
+    return this.recentPaymentService.recentPaymentMethods();
   }
 }

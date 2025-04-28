@@ -1,11 +1,11 @@
 <mat-accordion>
-    <mat-expansion-panel [expanded]="hasRecent">
+    <mat-expansion-panel *ngIf="hasRecent()" [expanded]="hasRecent()">
         <mat-expansion-panel-header>
             <mat-panel-title>Recent Payment Method</mat-panel-title>
         </mat-expansion-panel-header>
         <app-recent-payment-btn></app-recent-payment-btn>
     </mat-expansion-panel>
-    <mat-expansion-panel [expanded]="!hasRecent">
+    <mat-expansion-panel [expanded]="!hasRecent()">
         <mat-expansion-panel-header>
             <mat-panel-title>Choose Payment Method</mat-panel-title>
         </mat-expansion-panel-header>

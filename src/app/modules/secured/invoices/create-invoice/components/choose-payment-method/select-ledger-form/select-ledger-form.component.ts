@@ -7,6 +7,7 @@ import { LedgerService } from '../../../../../../../services/ledger/ledger.servi
 import { InvoiceStoreService } from '../../../../services/invoice-store.service';
 import { SelectLedgerFG } from './SelectLedgerFG';
 import { RecentPaymentMethodService } from './../../../services/recentPaymentMethods.service';
+import { NotificationsService } from '../../../../../../../services/notification/notification.service';
 
 @Component({
     selector: 'app-select-ledger-form',
@@ -23,7 +24,8 @@ export class SelectLedgerFormComponent implements OnInit {
     private ledgerService: LedgerService,
     private store: InvoiceStoreService,
     private router: Router,
-    private recentPaymentService: RecentPaymentMethodService
+    private recentPaymentService: RecentPaymentMethodService,
+    private notice: NotificationsService
   ) {
     effect(() => {
       this.form.patchValue({amount: this.store.unpaidAmount()})
@@ -50,20 +52,25 @@ export class SelectLedgerFormComponent implements OnInit {
     this.loading = true;
     if (this.form.invalid) {
       console.log('Invalid select-ledger-form Data');
+      this.loading = false;
       return;
     }
 
+    if (this.isSelected(this.form.ledger)) {
+      this.loading = false;
+      this.notice.show('Ledger Already Selected');
+      return;
+    }
+
+    this.selectedLedgerIds.push(this.form.ledger);
     const ledger = this.ledgerService.getElementById(this.form.ledger);
     this.store.addPaymentMethod(this.form.ledger, this.form.amount);
     this.recentPaymentService.savePaymentMethod(ledger);
     
-    setTimeout(() => {
-      if (this.store.netAmount() > 0 && this.store.unpaidAmount() === 0) {
-        this.router.navigate(['/auth', 'invoices', 'please-wait']);
-      }
-      this.form.patchValue({ ledger: 0 });
-      this.loading = false;
-    }, 500);
+    if (this.store.netAmount() > 0 && this.store.unpaidAmount() === 0) {
+      this.router.navigate(['/auth', 'invoices', 'please-wait']);
+    }
+    this.loading = false;
   }
 
   isSelected(id: number) {
