@@ -1,8 +1,7 @@
-import { Component, effect, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, effect, ViewChild, AfterViewInit, signal, computed } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort'; // Import MatSort
+import { MatSort } from '@angular/material/sort';
 import { DaybookRow, DayBookService } from './services/day-book.service';
-import { Voucher } from '../../../../interface/voucher.interface';
 
 @Component({
   selector: 'app-daybook',
@@ -21,12 +20,12 @@ export class DaybookComponent implements AfterViewInit {
   }
 
   get length(): number {
-    return this.dayBookService.vouchers().length;
+    return this.dayBookService.data().length;
   }
 
   constructor(private dayBookService: DayBookService) {
     effect(() => {
-      this.dataSource.data = this.dayBookService.vouchers();
+      this.dataSource.data = this.dayBookService.data();
     });
   }
 
