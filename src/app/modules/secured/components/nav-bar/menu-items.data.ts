@@ -48,6 +48,14 @@ export const navItems = [
     ],
   },
   {
+    title: 'Reports',
+    links: [
+      { text: 'User Sales', routerLink: ['report', 'user', 'sales'] },
+      { text: 'Product Wise', routerLink: ['report', 'products']}
+    ],
+    role: 'admin'
+  },
+  {
     title: 'Users',
     links: [
       { text: 'Create New', routerLink: ['master', 'users', 'create-user'] },

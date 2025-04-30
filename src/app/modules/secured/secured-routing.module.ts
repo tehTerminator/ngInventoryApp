@@ -55,6 +55,11 @@ const routes: Routes = [
           import('./bundles/bundles.module').then((m) => m.BundlesModule),
       },
       {
+        path: 'report',
+        loadChildren: () =>
+          import('./reports/reports.module').then((m) => m.ReportsModule),
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
