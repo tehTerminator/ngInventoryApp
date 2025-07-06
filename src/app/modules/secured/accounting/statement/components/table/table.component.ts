@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CashbookRow } from './Cashbook';
-import { Observable, Subscription, map } from 'rxjs';
+import { Component } from '@angular/core';
+import { CashbookRow } from '../../statement-service/statement.service';
 import { StatementService } from '../../statement-service/statement.service';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-table',
@@ -21,7 +18,6 @@ export class TableComponent {
   }
 
   splitText(narration: string): string[] {
-    console.log('splitText', narration);
     if (narration.indexOf('#') >= 0) {
       const sp = narration.split('#');
       if (sp.length === 2 && !isNaN(+sp[1])) {
@@ -40,6 +36,10 @@ export class TableComponent {
   }
 
   get rows(): CashbookRow[] {
-    return this.statementService.statement().rows;
+    return this.statementService.statement();
+  }
+
+  get loading() {
+    return this.statementService.loading();
   }
 }

@@ -8,7 +8,7 @@ import { UserStoreService } from './../../../../services/user/user.service';
   styleUrl: './user-sales.component.scss'
 })
 export class UserSalesComponent implements OnInit {
-  report = 
+  // report = 
   constructor(private userStore: UserStoreService){}
 
   ngOnInit(): void {

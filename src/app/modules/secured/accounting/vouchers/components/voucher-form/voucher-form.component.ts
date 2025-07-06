@@ -3,13 +3,11 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, EMPTY, startWith, map, distinctUntilChanged } from 'rxjs';
+import { Observable, EMPTY, startWith, map, distinctUntilChanged, finalize } from 'rxjs';
 import { Ledger } from '../../../../../../interface/ledger.interface';
 import { ApiService } from '../../../../../../services/api/api.service';
 import { LedgerService } from '../../../../../../services/ledger/ledger.service';
@@ -184,18 +182,18 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
     const word = this.voucherForm.editMode ? 'Updated' : 'Created';
     const successMessage = `Voucher ${word} successfully`;
 
-    response.subscribe({
+    response
+    .pipe(finalize(() => { this.isLoading = false;}))
+    .subscribe({
       next: (value: Voucher) => {
         this.ns.show(successMessage);
         this.voucherForm.reset();
-        this.isLoading = false;
         this.input.nativeElement.focus();
         this.recentVoucherService.insert(value);
       },
       error: (error) => {
         this.ns.show(error);
-        this.isLoading = false;
-      },
+      }
     });
   }
 

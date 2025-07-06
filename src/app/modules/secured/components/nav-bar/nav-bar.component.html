@@ -5,23 +5,24 @@
   </a>
 
   <mat-accordion>
-    <ng-container *ngFor="let item of items">
-      <ng-container *ngIf="hasRole(item.role)">
+    @for (item of items; track item) {
+      @if (hasRole(item.role)) {
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>{{ item.title }}</mat-panel-title>
           </mat-expansion-panel-header>
           <p class="d-flex flex-column">
-            <a
-              mat-flat-button
-              *ngFor="let link of item.links"
-              [routerLink]="link.routerLink"
-              (click)="onLinkClick()"
-              >{{ link.text }}</a
-            >
+            @for (link of item.links; track link) {
+              <a
+                mat-flat-button
+                [routerLink]="link.routerLink"
+                (click)="onLinkClick()"
+                >{{ link.text }}</a
+              >
+            }
           </p>
         </mat-expansion-panel>
-      </ng-container>
-    </ng-container>
+      }
+    }
   </mat-accordion>
 </nav>

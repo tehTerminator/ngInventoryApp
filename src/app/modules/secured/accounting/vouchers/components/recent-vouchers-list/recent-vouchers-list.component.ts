@@ -1,9 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
-import { ApiService } from '../../../../../../services/api/api.service';
-import { BehaviorSubject, EMPTY, interval, Subject, Subscription, takeUntil } from 'rxjs';
-import { Observable } from 'rxjs';
-import { Voucher } from '../../../../../../interface/voucher.interface';
-import { SECOND } from '../../../../../../shared/constants';
+import { Component } from '@angular/core';
 import { RecentVouchersService } from '../../recent-vouchers.service';
 
 @Component({

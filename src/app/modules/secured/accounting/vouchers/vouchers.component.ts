@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, Route } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: 'app-vouchers',

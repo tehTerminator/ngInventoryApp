@@ -1,39 +1,41 @@
-<table class="table shadow" *ngIf="vouchers.length > 0;else noData">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Date</th>
-      <th>Description</th>
-      <th>Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let voucher of vouchers">
-      <td>
-        {{ voucher.id }}
-      </td>
-      <td>
-        {{ voucher.created_at | date : "dd-MMM-YY" }}
-      </td>
-      <td>
-        {{ voucher.creditor.title }} > {{ voucher.debtor.title }}
-        <br />
-        {{ voucher.narration }}
-      </td>
-      <td>
-        {{ voucher.amount | currency : "INR" }}
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<ng-template #noData>
-  <div class="w-100 card">
-    <div class="card-body">
-      <div class="text-center fs-3">
-        Nothing to Show Here
-      </div>
+@if (vouchers.length <= 0) { <div class="w-100 card">
+  <div class="card-body">
+    <div class="text-center fs-3">
+      Nothing to Show Here
     </div>
   </div>
-</ng-template>
-
+  </div>
+  } @else {
+  <table class="table shadow">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Time</th>
+        <th>Description</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (voucher of vouchers; track $index) {
+      <tr>
+        <td>
+          <a [routerLink]="['/auth', 'accounting', 'voucher', voucher.id]">
+            {{ voucher.id }}
+          </a>
+        </td>
+        <td>
+          {{ voucher.created_at | date : "hh:mm:ss a" }}
+        </td>
+        <td>
+          {{ voucher.creditor.title }} > {{ voucher.debtor.title }}
+          <br />
+          {{ voucher.narration }}
+        </td>
+        <td>
+          {{ voucher.amount | currency : "INR" }}
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }

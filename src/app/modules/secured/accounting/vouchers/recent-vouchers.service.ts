@@ -9,10 +9,11 @@ export class RecentVouchersService {
 
     insert(voucher: Voucher) {
         this.#vouchers.update(list => {
-            if (list.length >= this.#max) {
-                list.shift();
+            const newList = [...list, voucher];
+            if (newList.length > this.#max) {
+                newList.shift();
             }
-            return [...list, voucher];
+            return newList;
         });
     }
 }
