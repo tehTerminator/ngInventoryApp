@@ -1,43 +1,51 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from '../../../../../services/api/api.service';
-import { Cashbook, Statement } from '../components/table/Cashbook';
-import { EMPTY_LEDGER, Ledger } from './../../../../../interface/ledger.interface';
+import { Ledger } from './../../../../../interface/ledger.interface';
+import { Entity } from 'src/app/interface/entity.interface';
+import { finalize } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class StatementService {
-  #statement = signal(
-    new Cashbook(EMPTY_LEDGER, [])
-  );
-
+  #statement = signal([] as CashbookRow[]);
+  #loading = signal(false);
   statement = computed(() => this.#statement());
+  loading = computed(() => this.#loading());
 
   constructor(private api: ApiService) {}
 
   fetchData(ledger: Ledger, fromDate: string, toDate: string): void {
-    console.log('Fetch Data Called');
+    this.#loading.set(true);
     this.api
-      .retrieve<Statement>('ledger-statement', {
+      .retrieve<CashbookRow[]>('ledger-statement', {
         ledger: ledger.id.toString(),
         fromDate,
         toDate,
       })
+      .pipe(
+        finalize(() => {
+          this.#loading.set(false);
+        })
+      )
       .subscribe({
         next: (data) => {
-          const newCashbook = new Cashbook(
-            ledger,
-            data.vouchers,
-            data.openingBalance
-          );
-          this.#statement.set(newCashbook);
+          this.#statement.set(data);
         },
         error: (error) => {
           console.error(error);
-          const newCashbook = new Cashbook(ledger, []);
-          this.#statement.set(newCashbook);
+          this.#statement.set([]);
         },
       });
   }
 }
+
+export interface CashbookRow extends Entity {
+  date: string;
+  transfer: string;
+  narration: string;
+  cr: number;
+  dr: number;
+  balance: number;
+}
+
