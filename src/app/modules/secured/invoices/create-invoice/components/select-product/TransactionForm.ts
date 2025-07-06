@@ -1,14 +1,14 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GeneralItem } from '../../../../../../interface/general-item.interface';
 import { evaluateString } from '../../../../../../shared/functions';
-import { Product } from '../../../../../../interface/product.interface';
+import { EMPTY_PRODUCT, Product } from '../../../../../../interface/product.interface';
 
 export class TransactionForm extends FormGroup {
   constructor() {
     super({
-      item: new FormControl<GeneralItem | Product | null>(null, [
+      item: new FormControl<GeneralItem | Product | null >(null, {validators: [
         Validators.required,
-      ]),
+      ]},),
       quantity: new FormControl(1, {
         nonNullable: true,
         validators: [Validators.required, Validators.min(0.01)],
@@ -18,7 +18,6 @@ export class TransactionForm extends FormGroup {
         validators: [
           Validators.required,
           Validators.min(0.01),
-          Validators.pattern('^\\d+(\\.\\d{1,2})?$'),
         ],
       }),
     });
