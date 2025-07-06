@@ -11,6 +11,6 @@ export class StatementComponent {
     constructor(private statementService: StatementService) {}
 
     get rowCount(): number {
-        return this.statementService.statement().rows.length;
+        return this.statementService.statement().length;
     }
 }
