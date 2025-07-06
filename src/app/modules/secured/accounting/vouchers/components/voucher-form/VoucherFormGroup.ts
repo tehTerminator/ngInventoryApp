@@ -5,8 +5,8 @@ export class VoucherFormGroup extends FormGroup {
   constructor() {
     super({
       id: new FormControl(0),
-      cr: new FormControl(0, Validators.required),
-      dr: new FormControl(0, Validators.required),
+      cr: new FormControl<Ledger | null>(null, Validators.required),
+      dr: new FormControl<Ledger | null>(null, Validators.required),
       narration: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
