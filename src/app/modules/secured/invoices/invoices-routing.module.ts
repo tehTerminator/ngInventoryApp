@@ -32,13 +32,20 @@ const routes: Routes = [
   },
   {
     path: 'please-wait',
-    component: PleaseWaitPageComponent
+    component: PleaseWaitPageComponent,
+  },
+  {
+    path: 'pay-unpaid',
+    loadChildren: () =>
+      import('./pay-unpaid-invoice/pay-unpaid-invoice.module').then(
+        (m) => m.PayUnpaidInvoiceModule
+      ),
   },
   {
     path: '**',
     redirectTo: 'search',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

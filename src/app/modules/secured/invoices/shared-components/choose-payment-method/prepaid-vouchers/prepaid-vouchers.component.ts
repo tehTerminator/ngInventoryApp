@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, effect, OnDestroy } from '@angular/core';
 import { SelectVoucherFormGroup } from './SelectVoucherFormGroup';
-import { ApiService } from './../../../../../../../services/api/api.service';
+import { ApiService } from './../../../../../../services/api/api.service';
 import { Subject, debounceTime, take, takeUntil } from 'rxjs';
-import { Voucher } from './../../../../../../../interface/voucher.interface';
-import { InvoiceStoreService } from './../../../../services/invoice-store.service';
+import { Voucher } from './../../../../../../interface/voucher.interface';
+import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { Router } from '@angular/router';
-import { ContactsService } from '../../../../../../../services/contacts/contacts.service';
-import { NotificationsService } from '../../../../../../../services/notification/notification.service';
+import { ContactsService } from '../../../../../../services/contacts/contacts.service';
+import { NotificationsService } from '../../../../../../services/notification/notification.service';
 
 @Component({
     selector: 'app-prepaid-vouchers',
@@ -57,14 +57,6 @@ export class PrepaidVouchersComponent implements AfterViewInit, OnDestroy {
         this.voucher
       );
     }
-
-    // effect(() => {
-    //   if(this.store.netAmount() > 0 && this.store.netAmount() === this.store.paidAmount()) {
-    //     this.router.navigate(['/auth', 'invoices', 'please-wait']);
-    //   }
-    //   this.formGroup.amount = this.availableAmount;
-
-    // })
 
   }
 

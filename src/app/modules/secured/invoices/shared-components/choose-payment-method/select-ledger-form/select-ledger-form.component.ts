@@ -2,12 +2,12 @@ import { Component, effect, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Ledger } from '../../../../../../../interface/ledger.interface';
-import { LedgerService } from '../../../../../../../services/ledger/ledger.service';
-import { InvoiceStoreService } from '../../../../services/invoice-store.service';
+import { Ledger } from '../../../../../../interface/ledger.interface';
+import { LedgerService } from '../../../../../../services/ledger/ledger.service';
+import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { SelectLedgerFG } from './SelectLedgerFG';
-import { RecentPaymentMethodService } from './../../../services/recentPaymentMethods.service';
-import { NotificationsService } from '../../../../../../../services/notification/notification.service';
+import { NotificationsService } from '../../../../../../services/notification/notification.service';
+import { RecentPaymentMethodService } from '../../../services/recentPaymentMethods.service';
 
 @Component({
     selector: 'app-select-ledger-form',

@@ -10,19 +10,13 @@ import { CoreModule } from '../../../core/core.module';
 import { SelectProductComponent } from './components/select-product/select-product.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { CreateContactFormComponent } from './components/create-contact-form/create-contact-form.component';
-import { ChoosePaymentMethodComponent } from './components/choose-payment-method/choose-payment-method.component';
-import { RecentPaymentBtnComponent } from './components/choose-payment-method/recent-payment-btn/recent-payment-btn.component';
-import { SelectLedgerFormComponent } from './components/choose-payment-method/select-ledger-form/select-ledger-form.component';
-import { UdhaarPaymentBtnComponent } from './components/choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
 import { GeneralItemStoreService } from './services/general-item-store.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SetDiscountComponent } from './components/set-discount/set-discount.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PrepaidVouchersComponent } from './components/choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { SearchCustomerComponent } from './components/search-customer/search-customer.component';
-import { RecentPaymentMethodService } from './services/recentPaymentMethods.service';
-import { InvoiceStoreService } from '../services/invoice-store.service';
+import { RecentPaymentMethodService } from '../services/recentPaymentMethods.service';
 
 @NgModule({
   declarations: [
@@ -33,12 +27,7 @@ import { InvoiceStoreService } from '../services/invoice-store.service';
     SearchCustomerComponent,
     ContactComponent,
     CreateContactFormComponent,
-    ChoosePaymentMethodComponent,
-    RecentPaymentBtnComponent,
-    SelectLedgerFormComponent,
-    UdhaarPaymentBtnComponent,
     SetDiscountComponent,
-    PrepaidVouchersComponent,
   ],
   imports: [
     CommonModule,

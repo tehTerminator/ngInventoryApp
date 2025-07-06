@@ -10,6 +10,10 @@ import { PaymentInfoComponent } from './payment-info/payment-info.component';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { CashierNameComponent } from './cashier-name/cashier-name.component';
+import { ChoosePaymentMethodComponent } from './choose-payment-method/choose-payment-method.component';
+import { PrepaidVouchersComponent } from './choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
+import { RecentPaymentBtnComponent } from './choose-payment-method/recent-payment-btn/recent-payment-btn.component';
+import { SelectLedgerFormComponent } from './choose-payment-method/select-ledger-form/select-ledger-form.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,10 @@ import { CashierNameComponent } from './cashier-name/cashier-name.component';
     TransactionsTableComponent,
     PaymentInfoComponent,
     CashierNameComponent,
+    ChoosePaymentMethodComponent,
+    PrepaidVouchersComponent,
+    RecentPaymentBtnComponent,
+    SelectLedgerFormComponent
   ],
   imports: [
     CommonModule,

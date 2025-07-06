@@ -74,6 +74,8 @@ export class PreviewInvoiceComponent implements OnInit {
     });
   }
 
+  createNewInvoice = () => this.router.navigate(['/auth', 'invoices', 'create', 'sales']);
+
   private routeToSearchInvoice = () =>
     this.router.navigate(['/auth', 'invoices', 'search']);
 }

@@ -1,6 +1,6 @@
 import { computed, effect, Injectable, signal } from "@angular/core";
-import { Ledger } from "../../../../../interface/ledger.interface";
-import { LedgerService } from "../../../../../services/ledger/ledger.service";
+import { Ledger } from "../../../../interface/ledger.interface";
+import { LedgerService } from "../../../../services/ledger/ledger.service";
 
 @Injectable({
     providedIn: 'root'

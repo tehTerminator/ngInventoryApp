@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Ledger } from '../../../../../../../interface/ledger.interface';
-import { InvoiceStoreService } from './../../../../services/invoice-store.service';
-import { take } from 'rxjs';
+import { Ledger } from '../../../../../../interface/ledger.interface';
+import { InvoiceStoreService } from './../../../services/invoice-store.service';
 import { RecentPaymentMethodService } from '../../../services/recentPaymentMethods.service';
-
 
 @Component({
     selector: 'app-recent-payment-btn',

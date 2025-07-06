@@ -81,11 +81,13 @@
 
 
 <div class="mt-2 d-print-none">
-    <a class="btn btn-primary me-2 " [hidden]="invoiceId <= 0" [routerLink]="['/auth', 'invoices', 'create', 'sales']">
-        Create New
-    </a>
+    @if (invoiceId <= 0) {
+        <button type="button" class="btn btn-primary me-2" (click)="createNewInvoice()">
+            Create New
+        </button>
 
-    <button type="button" class="btn btn-danger" [hidden]="invoiceId <= 0" (click)="onDeleteBtn()">
-        Delete Invoice
-    </button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteBtn()">
+            Delete Invoice
+        </button>
+    }
 </div>

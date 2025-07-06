@@ -19,7 +19,7 @@ import {
   EMPTY_VOUCHER,
   Voucher,
 } from '../../../../interface/voucher.interface';
-import { RecentPaymentMethodService } from '../create-invoice/services/recentPaymentMethods.service';
+import { RecentPaymentMethodService } from './recentPaymentMethods.service';
 
 @Injectable({
   providedIn: 'root',
@@ -61,11 +61,11 @@ export class InvoiceStoreService {
   ) {
     effect(() => {
       if (
-        this.netAmount() > 0 && 
-        this.paidAmount() === this.netAmount() && 
-        !this.#invoice().paid) 
-      {
-        this.#invoice.update((invoice) => ({...invoice, paid: true}));
+        this.netAmount() > 0 &&
+        this.paidAmount() === this.netAmount() &&
+        !this.#invoice().paid
+      ) {
+        this.#invoice.update((invoice) => ({ ...invoice, paid: true }));
       }
     });
 
