@@ -26,6 +26,7 @@ import { TransactionForm } from './TransactionForm';
 import { BundleService } from '../../../../../../services/bundle/bundle.service';
 import { Bundle } from '../../../../../../interface/bundle.interface';
 import { Ledger } from '../../../../../../interface/ledger.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-select-product',
@@ -48,7 +49,9 @@ export class SelectProductComponent
     private productService: ProductService,
     private ledgerService: LedgerService,
     private notification: NotificationsService,
-    private bundleService: BundleService
+    private bundleService: BundleService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -102,6 +105,10 @@ export class SelectProductComponent
       this.productForm.amount <= 0 ||
       this.productForm.amount === null
     ) {
+      if (this.store.netAmount() > 0){
+        this.router.navigate(['../set-discount'], {relativeTo: this.route});
+      }
+      
       return;
     }
 
@@ -109,6 +116,7 @@ export class SelectProductComponent
       this.generalItemStore.isInstanceOfGeneralItem(this.productForm.item)
         ? this.generalItemStore.selectActualItem(this.productForm.item)
         : this.productForm.item;
+
 
     try {
       this.store.createTransaction(
