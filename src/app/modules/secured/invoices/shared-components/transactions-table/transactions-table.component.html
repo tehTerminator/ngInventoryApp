@@ -1,53 +1,50 @@
 <table class="table table-striped table-sm align-middle">
   <thead>
     <tr class="bg-dark text-light">
-      <th *ngIf="showButtons()">
-        Del
-      </th>
+      @if (showButtons()) {
+        <th>Del</th>
+      }
       <th class="w-50">Description</th>
       <th class="text-center">Qty</th>
       <th class="text-center">Rate</th>
       <th class="text-center">Amount</th>
-
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let t of transactions">
-      <td *ngIf="showButtons()" class="text-center">
-        <mat-icon (click)="deleteTransaction(t)">delete</mat-icon>
-      </td>
-      <td>
-        <div *ngIf="t.item_type !== 'BUNDLE';else showExpansion">
-          {{ getDescription(t) }}
-        </div>
-        <ng-template #showExpansion>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>{{ getDescription(t) }}</mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="list-group" *ngIf="t.transactions">
-              <div *ngFor="let child of t.transactions" class="list-group-item">
-                {{ getDescription(child)}} - {{child.quantity}} &#64; {{ child.rate }}
-              </div>
+    @for (row of transactions; track row) {
+      <tr>
+        @if (showButtons()) {
+          <td class="text-center">
+            <mat-icon (click)="deleteTransaction(row)">delete</mat-icon>
+          </td>
+        }
+        <td>
+          @if (row.item_type !== 'BUNDLE') {
+            <div>
+              {{ getDescription(row) }}
             </div>
-          </mat-expansion-panel>
-        </ng-template>
-
-      </td>
-      <td class="text-center">{{ t.quantity }}</td>
-      <td class="text-end pe-3">{{ t.rate | currency:'INR' }}</td>
-      <td class="text-end pe-3 text-primary">{{ t.quantity * t.rate |
-        currency:'INR'}}</td>
-
-    </tr>
-    <!-- <tr *ngFor="let row of emptyRows">
-      <td style="padding: 15px"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td *ngIf="colspan === 5"></td>
-    </tr> -->
+          } @else {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ getDescription(row) }}</mat-panel-title>
+              </mat-expansion-panel-header>
+              @if (row.transactions) {
+                <div class="list-group">
+                  @for (child of row.transactions; track child) {
+                    <div class="list-group-item">
+                      {{ getDescription(child)}} - {{child.quantity}} &#64; {{ child.rate }}
+                    </div>
+                  }
+                </div>
+              }
+            </mat-expansion-panel>
+          }
+        </td>
+        <td class="text-center">{{ row.quantity }}</td>
+        <td class="text-end pe-3">{{ row.rate | currency:'INR' }}</td>
+        <td class="text-end pe-3 text-primary">{{ row.quantity * row.rate | currency:'INR'}}</td>
+      </tr>
+    }
   </tbody>
   <tfoot>
     <tr>
