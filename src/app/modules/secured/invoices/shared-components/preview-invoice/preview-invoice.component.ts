@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, input, OnInit } from '@angular/core';
 import { InvoiceStoreService } from './../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from './../../../../../services/api/api.service';
@@ -14,6 +14,7 @@ import { NotificationsService } from '../../../../../services/notification/notif
     standalone: false
 })
 export class PreviewInvoiceComponent implements OnInit {
+  @Input('showButtons') showButtons = true;
   constructor(
     public store: InvoiceStoreService,
     private authStore: AuthStoreService,
@@ -74,7 +75,12 @@ export class PreviewInvoiceComponent implements OnInit {
     });
   }
 
-  createNewInvoice = () => this.router.navigate(['/auth', 'invoices', 'create', 'sales']);
+  get unpaid() {
+    return this.store.unpaidAmount() > 0;
+  }
+
+  gotoCreateNewInvoice = () => this.router.navigate(['/auth', 'invoices', 'create', 'sales']);
+  gotoPayUnpaid = () => this.router.navigate(['/auth', 'invoices', 'pay-unpaid']);
 
   private routeToSearchInvoice = () =>
     this.router.navigate(['/auth', 'invoices', 'search']);

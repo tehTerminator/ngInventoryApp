@@ -14,6 +14,8 @@ import { ChoosePaymentMethodComponent } from './choose-payment-method/choose-pay
 import { PrepaidVouchersComponent } from './choose-payment-method/prepaid-vouchers/prepaid-vouchers.component';
 import { RecentPaymentBtnComponent } from './choose-payment-method/recent-payment-btn/recent-payment-btn.component';
 import { SelectLedgerFormComponent } from './choose-payment-method/select-ledger-form/select-ledger-form.component';
+import { CoreModule } from 'src/app/modules/core/core.module';
+import { UdhaarPaymentBtnComponent } from './choose-payment-method/udhaar-payment-btn/udhaar-payment-btn.component';
 
 @NgModule({
   declarations: [
@@ -26,15 +28,17 @@ import { SelectLedgerFormComponent } from './choose-payment-method/select-ledger
     ChoosePaymentMethodComponent,
     PrepaidVouchersComponent,
     RecentPaymentBtnComponent,
-    SelectLedgerFormComponent
+    SelectLedgerFormComponent,
+    UdhaarPaymentBtnComponent,
   ],
   imports: [
     CommonModule,
+    CoreModule,
     MatIconModule,
     MatExpansionModule,
     MatButtonModule,
     RouterModule,
   ],
-  exports: [PreviewInvoiceComponent],
+  exports: [PreviewInvoiceComponent, ChoosePaymentMethodComponent],
 })
 export class SharedComponentModule {}

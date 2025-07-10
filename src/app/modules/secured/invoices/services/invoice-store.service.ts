@@ -19,7 +19,6 @@ import {
   EMPTY_VOUCHER,
   Voucher,
 } from '../../../../interface/voucher.interface';
-import { RecentPaymentMethodService } from './recentPaymentMethods.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,13 +27,16 @@ export class InvoiceStoreService {
   #invoice = signal(BASE_INVOICE);
   #paymentInfo = signal([] as Voucher[]);
   paymentInfo = computed(() => this.#paymentInfo());
+  paymentStatus: 'Unpaid' | 'Paid' | 'Partially Paid' = 'Unpaid';
   selectedItem: Product | Ledger | Bundle = EMPTY_PRODUCT;
 
   invoice = computed(() => this.#invoice());
   id = computed(() => this.#invoice().id);
   grossAmount = computed(() => {
     let amount = 0;
-    this.#invoice().transactions.forEach((item) => amount += (item.quantity * item.rate));
+    this.#invoice().transactions.forEach(
+      (item) => (amount += item.quantity * item.rate)
+    );
     return amount;
   });
   netAmount = computed(() => {
@@ -45,20 +47,27 @@ export class InvoiceStoreService {
   });
   paidAmount = computed(() => {
     let amount = 0;
-    this.#paymentInfo().forEach((voucher) => amount += voucher.amount);
+    this.#paymentInfo().forEach((voucher) => (amount += voucher.amount));
     return amount;
   });
   unpaidAmount = computed(() => {
     return this.netAmount() - this.paidAmount();
   });
   kind = computed(() => this.#invoice().kind);
+  invoiceExists = computed(() => this.#invoice().id > 0);
+  paymentInfoExists = computed(
+    () =>
+      this.paymentInfo().length > 0 &&
+      this.paymentInfo().every((x) => x.id !== 0)
+  );
 
   constructor(
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService,
-    private contactService: ContactsService,
+    private contactService: ContactsService
   ) {
+    // Effect to automatically mark the invoice as paid when the paid amount equals the net amount
     effect(() => {
       if (
         this.netAmount() > 0 &&
@@ -76,13 +85,27 @@ export class InvoiceStoreService {
         (sum, item) => sum + item.quantity * item.rate,
         0
       );
-    
+
       // Avoid infinite loop by checking if gross_amount has changed
       if (this.#invoice().gross_amount !== grossAmount) {
         this.#invoice.update((invoice) => ({
           ...invoice,
           gross_amount: grossAmount,
         }));
+      }
+    });
+
+    // Effect to update the paymentStatus based on the current paid amount and net amount
+    effect(() => {
+      const vouchers = this.#paymentInfo();
+      const paidAmount = vouchers.reduce((sum, item) => sum + item.amount, 0);
+
+      if (paidAmount === 0) {
+        this.paymentStatus = 'Unpaid';
+      } else if (paidAmount < this.netAmount()) {
+        this.paymentStatus = 'Partially Paid';
+      } else {
+        this.paymentStatus = 'Paid';
       }
     });
   }
@@ -223,10 +246,7 @@ export class InvoiceStoreService {
       }
       voucher.amount = amount;
     } finally {
-      this.#paymentInfo.update((items) => [
-        ...items,
-        voucher,
-      ]);
+      this.#paymentInfo.update((items) => [...items, voucher]);
     }
   }
 
@@ -266,19 +286,25 @@ export class InvoiceStoreService {
 
   setKind(data: 'SALES' | 'PURCHASE' | 'sales' | 'purchase') {
     const kind = data.toUpperCase() === 'SALES' ? 'SALES' : 'PURCHASE';
-    this.#invoice.update(value => ({ ...value, kind }));
+    this.#invoice.update((value) => ({ ...value, kind }));
   }
 
   setLocation(location_id: number) {
-    this.#invoice.update(value => ({ ...value, location_id }));
+    this.#invoice.update((value) => ({ ...value, location_id }));
   }
 
   setDiscount(discount: number) {
     const grossAmount = this.#invoice().gross_amount;
     if (discount / grossAmount >= 0.5) {
-      this.#invoice.update(value => ({ ...value, discount_amount: grossAmount * 0.49 }));
+      this.#invoice.update((value) => ({
+        ...value,
+        discount_amount: grossAmount * 0.49,
+      }));
     } else {
-      this.#invoice.update(value => ({ ...value, discount_amount: discount }));
+      this.#invoice.update((value) => ({
+        ...value,
+        discount_amount: discount,
+      }));
     }
   }
 
@@ -310,10 +336,10 @@ export class InvoiceStoreService {
   }
 
   setId(id: number) {
-    this.#invoice.update(value => ({...value, id}));
+    this.#invoice.update((value) => ({ ...value, id }));
   }
 
   setUser(id: number) {
-    this.#invoice.update(value=> ({...value, user_id: id}));
+    this.#invoice.update((value) => ({ ...value, user_id: id }));
   }
 }

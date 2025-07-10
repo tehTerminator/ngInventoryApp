@@ -1,5 +1,5 @@
 <div class="scrollable-container">
-    <div class="card d-print-block border-0">
+    <div class="card d-print-block border-0 shadow-sm">
         <div class="card-body">
             <div class="row">
                 <div class="col-8">
@@ -68,7 +68,7 @@
                 <div class="col-6">
                     <ul class="list-group">
                         <li class="list-group-item">Thank you for Doing Business with Maharaja Computers</li>
-                        <li class="list-group-item">Goods / Services onces Rendered Shall Not be Taken Back.</li>
+                        <li class="list-group-item">Goods / Services once Rendered Shall Not be Taken Back.</li>
                         <li class="list-group-item">
                             Please Make all your payments in the name of Maharaja Computers.
                         </li>
@@ -81,13 +81,19 @@
 
 
 <div class="mt-2 d-print-none">
-    @if (invoiceId <= 0) {
-        <button type="button" class="btn btn-primary me-2" (click)="createNewInvoice()">
+    @if (showButtons) {
+        <button type="button" class="btn btn-primary me-2" (click)="gotoCreateNewInvoice()">
             Create New
         </button>
 
         <button type="button" class="btn btn-danger" (click)="onDeleteBtn()">
             Delete Invoice
         </button>
+        @if (unpaid && invoiceId > 0) {
+            <button type="button" class="btn btn-primary ms-2" (click)="gotoPayUnpaid()">
+                Pay Unpaid
+            </button>
+        }
     }
+
 </div>

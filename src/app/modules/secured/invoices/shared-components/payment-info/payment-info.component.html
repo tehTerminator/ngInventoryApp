@@ -1,16 +1,22 @@
-This Invoice is <strong>{{ paymentStatus }}:
+This Invoice is <strong>{{ paymentStatus }}</strong>
 
 
 <ul class="list-group">
-    <li *ngFor="let voucher of store.paymentInfo()" class="list-group-item d-flex justify-content-between">
-        <span *ngIf="store.kind() === 'SALES'">
-            {{ getTitle(voucher.dr) }} - {{ voucher.amount | currency:'INR'}}
-        </span>
-        <span *ngIf="store.kind() === 'PURCHASE'">
-            {{ getTitle(voucher.cr) }} - {{ voucher.amount | currency:'INR'}}
-        </span>
-        <button mat-icon-button color="primary" (click)="removeVoucher(voucher)">
-            <mat-icon>close</mat-icon>
-        </button>
-    </li>
+    @for (voucher of store.paymentInfo(); track voucher) {
+        <li class="list-group-item d-flex justify-content-between">
+            @if (store.kind() === 'SALES') {
+                <span>
+                    {{ getTitle(voucher.dr) }} - {{ voucher.amount | currency:'INR'}}
+                </span>
+            }
+            @if (store.kind() === 'PURCHASE') {
+                <span>
+                    {{ getTitle(voucher.cr) }} - {{ voucher.amount | currency:'INR'}}
+                </span>
+            }
+            <button mat-icon-button color="primary" (click)="removeVoucher(voucher)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </li>
+    }
 </ul>

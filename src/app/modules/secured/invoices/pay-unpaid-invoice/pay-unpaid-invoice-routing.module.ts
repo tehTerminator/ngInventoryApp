@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PayUnpaidInvoice } from './pay-unpaid-invoice';
+import { PayUnpaidInvoiceComponent } from './pay-unpaid-invoice.component';
 
-const routes: Routes = [{ path: '', component: PayUnpaidInvoice }];
+const routes: Routes = [{ path: '', component: PayUnpaidInvoiceComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoiceStoreService } from '../services/invoice-store.service';
-import { finalize, take } from 'rxjs';
 import { ApiService } from '../../../../services/api/api.service';
-import { Invoice } from '../../../../interface/invoice.interface';
+import { BASE_INVOICE, Invoice } from '../../../../interface/invoice.interface';
 import { Router } from '@angular/router';
+import { Voucher } from 'src/app/interface/voucher.interface';
+import { finalize } from 'rxjs';
 
 @Component({
     selector: 'app-please-wait-page',
@@ -20,11 +21,17 @@ export class PleaseWaitPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.store.invoice().id > 0) {
+    if (this.store.invoiceExists() && this.store.paymentInfoExists()) {
       this.navigateToPrintInvoice();
-    } else {
-      this.storeInvoice();
+      return;
     }
+
+    if (this.store.invoiceExists() && !this.store.paymentInfoExists()) {
+      this.updatePaymentInfo();
+      return;
+    }
+
+    this.storeInvoice();
   }
 
   private storeInvoice() {
@@ -44,6 +51,23 @@ export class PleaseWaitPageComponent implements OnInit {
             this.navigateToCreateInvoice();
         },
       });
+  }
+
+  private updatePaymentInfo() {
+    this.api.update<Invoice>('paymentInfo', {
+      invoice_id: this.store.invoice().id.toString(),
+      vouchers: this.store.paymentInfo().filter(x=>x.id === 0),
+    })
+    .pipe(finalize(() => {
+      this.navigateToPrintInvoice();
+    }))
+    .subscribe({
+      next: ((data) => this.store.setId(data.id)),
+      error: ((err) => {
+        console.error(err);
+        this.store.setInvoice({invoice: BASE_INVOICE, vouchers: [] as Voucher[]});
+      })
+    });
   }
 
   private navigateToPrintInvoice() {

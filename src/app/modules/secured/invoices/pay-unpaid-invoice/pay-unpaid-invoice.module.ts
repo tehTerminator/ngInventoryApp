@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { PayUnpaidInvoiceRoutingModule } from './pay-unpaid-invoice-routing.module';
 import { PayUnpaidInvoiceComponent } from './pay-unpaid-invoice.component';
+import { SharedComponentModule } from '../shared-components/shared-components.module';
 
 
 @NgModule({
@@ -11,7 +11,8 @@ import { PayUnpaidInvoiceComponent } from './pay-unpaid-invoice.component';
   ],
   imports: [
     CommonModule,
-    PayUnpaidInvoiceRoutingModule
+    PayUnpaidInvoiceRoutingModule,
+    SharedComponentModule,
   ]
 })
 export class PayUnpaidInvoiceModule { }

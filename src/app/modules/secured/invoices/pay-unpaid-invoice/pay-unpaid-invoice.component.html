@@ -1,1 +1,10 @@
-<p>pay-unpaid-invoice works!</p>
+<div class="container">
+    <div class="row gt-2">
+        <div class="col-md-4 d-print-none">
+            <app-choose-payment-method></app-choose-payment-method>
+        </div>
+        <div class="col-md-8">
+            <app-preview-invoice [showButtons]="false"></app-preview-invoice>
+        </div>
+    </div>
+</div>

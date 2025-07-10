@@ -6,6 +6,4 @@ import { Component } from '@angular/core';
   templateUrl: './pay-unpaid-invoice.component.html',
   styleUrl: './pay-unpaid-invoice.component.scss'
 })
-export class PayUnpaidInvoiceComponent {
-
-}
+export class PayUnpaidInvoiceComponent {}
