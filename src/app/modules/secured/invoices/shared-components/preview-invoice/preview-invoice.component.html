@@ -80,17 +80,23 @@
 </div>
 
 
-<div class="mt-2 d-print-none">
+<div class="mt-2 d-print-none text-center">
     @if (showButtons) {
-        <button type="button" class="btn btn-primary me-2" (click)="gotoCreateNewInvoice()">
+        <button type="button" mat-raised-button color="primary" class="me-2" (click)="gotoCreateNewInvoice()">
+            <mat-icon>add</mat-icon>
             Create New
         </button>
 
-        <button type="button" class="btn btn-danger" (click)="onDeleteBtn()">
-            Delete Invoice
-        </button>
+        @if (isAuthor) {
+            <button type="button" mat-raised-button color="warn" (click)="onDeleteBtn()">
+                <mat-icon>delete</mat-icon>
+                Delete Invoice
+            </button>
+        }
+
         @if (unpaid && invoiceId > 0) {
-            <button type="button" class="btn btn-primary ms-2" (click)="gotoPayUnpaid()">
+            <button type="button" mat-raised-button color="accent" class="ms-2" (click)="gotoPayUnpaid()">
+                <mat-icon>currency_rupee</mat-icon>
                 Pay Unpaid
             </button>
         }

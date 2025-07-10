@@ -84,4 +84,8 @@ export class PreviewInvoiceComponent implements OnInit {
 
   private routeToSearchInvoice = () =>
     this.router.navigate(['/auth', 'invoices', 'search']);
+
+  get isAuthor(): boolean {
+    return this.authStore.user().id === this.store.invoice().user_id;
+  }
 }
