@@ -141,7 +141,7 @@ export class VoucherFormComponent implements OnInit, AfterViewInit {
         const value = evaluateString(match[0]);
         this.voucherForm.amount = value;
       } else {
-        console.log('No Match Pattern');
+        console.log('No Math Pattern');
         return;
       }
     } catch (e) {

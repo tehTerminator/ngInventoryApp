@@ -1,79 +1,93 @@
+<form class="card shadow" [formGroup]="voucherForm" (ngSubmit)="onSubmit()" [loading]="isLoading">
+  <h1 class="card-header d-flex justify-content-between">
+    <strong>
+      @if (this.voucherForm.editMode) {
+        Update
+      } @else {
+        New
+      }
+      Voucher
+    </strong>
+    <div class="form-group w-25">
+      <input type="number" class="form-control" formControlName="id" (blur)="onIdFieldChange()">
+    </div>
+  </h1>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Giver</mat-label>
+          <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="cr"
+            #firstInputField [matAutocomplete]="creditor" />
+          <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete" [displayWith]="displayFunction">
+            @for (creditor of filteredCreditor | async; track creditor.id) {
+              <mat-option [value]="creditor">
+                <div class="d-flex justify-content-between w-100">
+                  <strong>{{ creditor.title }}</strong>
+                  <small>{{ creditor.kind }}</small>
+                </div>
+              </mat-option>
+            } @empty {
+              <mat-option disabled>No creditors found</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field class="d-block" appearance="outline">
+          <mat-label>Receiver</mat-label>
+          <input type="text" placeholder="Pick one" aria-label="Creditor" matInput formControlName="dr"
+            [matAutocomplete]="debtor" />
+          <mat-autocomplete autoActiveFirstOption #debtor="matAutocomplete" [displayWith]="displayFunction">
+            @for (debtor of filteredDebtor | async; track debtor.id) {
+              <mat-option [value]="debtor">
+                <div class="d-flex justify-content-between w-100">
+                  <strong>{{ debtor.title }}</strong>
+                  <small>{{ debtor.kind }}</small>
+                </div>
+              </mat-option>
+            } @empty {
+              <mat-option disabled>No debtors found</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-form-field appearance="outline" class="d-block">
+      <mat-label>Narration</mat-label>
+      <textarea matInput formControlName="narration" rows="5"></textarea>
+    </mat-form-field>
 
-        <form class="card shadow" [formGroup]="voucherForm" (ngSubmit)="onSubmit()" [loading]="isLoading">
-            <h1 class="card-header d-flex justify-content-between">
-                <strong>
-                    {{ this.voucherForm.editMode ? 'Update' : 'New' }}
-                    Voucher</strong>
-                <div class="form-group w-25">
-                    <input type="number" class="form-control" formControlName="id" (blur)="onIdFieldChange()">
-                </div>
-            </h1>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <mat-form-field class="d-block" appearance="outline">
-                            <mat-label>Giver</mat-label>
-                            <input type="text" placeholder="Pick one" aria-label="Creditor" matInput
-                                formControlName="cr" #firstInputField [matAutocomplete]="creditor" />
-                            <mat-autocomplete autoActiveFirstOption #creditor="matAutocomplete"
-                                [displayWith]="displayFunction">
-                                <mat-option *ngFor="let creditor of filteredCreditor | async" [value]="creditor">
-                                    <div class="d-flex justify-content-between w-100">
-                                        <strong>{{ creditor.title }}</strong>
-                                        <small>{{ creditor.kind }}</small>
-                                    </div>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div>
-                    <div class="col">
-                        <mat-form-field class="d-block" appearance="outline">
-                            <mat-label>Receiver</mat-label>
-                            <input type="text" placeholder="Pick one" aria-label="Creditor" matInput
-                                formControlName="dr" [matAutocomplete]="debtor" />
-                            <mat-autocomplete autoActiveFirstOption #debtor="matAutocomplete"
-                                [displayWith]="displayFunction">
-                                <mat-option *ngFor="let debtor of filteredDebtor | async" [value]="debtor">
-                                    <div class="d-flex justify-content-between w-100">
-                                        <strong>{{ debtor.title }}</strong>
-                                        <small>{{ debtor.kind }}</small>
-                                    </div>
-                                </mat-option>
-                            </mat-autocomplete>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <mat-form-field appearance="outline" class="d-block">
-                    <mat-label>Narration</mat-label>
-                    <textarea matInput formControlName="narration" rows="5"></textarea>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Amount</mat-label>
-                    <input type="number" matInput formControlName="amount" min="0"
-                        (focus)="onAmountFieldFocus()" />
-                    <mat-error
-                        *ngIf="voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)">
-                        <span *ngIf="voucherForm.amountFormControl.hasError('required')">
-                            Amount is Required for Voucher Entry.
-                        </span>
-                        <span *ngIf="voucherForm.amountFormControl.hasError('min')">
-                            Amount is Too Low.
-                        </span>
-                    </mat-error>
-                </mat-form-field>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="w-100 mt-2 py-3" mat-raised-button color="primary"
-                            [disabled]="voucherForm.invalid">
-                            Submit
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button type="reset" class="w-100 mt-2 py-3" mat-raised-button color="warn">
-                            Reset Form
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Amount</mat-label>
+      <input type="number" matInput formControlName="amount" min="0" (focus)="onAmountFieldFocus()" />
+      <mat-error>
+        @if (voucherForm.amountFormControl.invalid && (voucherForm.amountFormControl.dirty || voucherForm.amountFormControl.touched)) {
+          @if (voucherForm.amountFormControl.hasError('required')) {
+            <span>
+              Amount is Required for Voucher Entry.
+            </span>
+          }
+          @if (voucherForm.amountFormControl.hasError('min')) {
+            <span>
+              Amount is Too Low.
+            </span>
+          }
+        }
+      </mat-error>
+    </mat-form-field>
+    <div class="row">
+      <div class="col">
+        <button type="submit" class="w-100 mt-2 py-3" mat-raised-button color="primary"
+          [disabled]="voucherForm.invalid">
+          Submit
+        </button>
+      </div>
+      <div class="col">
+        <button type="reset" class="w-100 mt-2 py-3" mat-raised-button color="warn">
+          Reset Form
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
