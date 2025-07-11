@@ -55,6 +55,14 @@ export class ListUsageComponent implements OnInit {
       });
   }
 
+  get consumption(): ProductUsageItem[] {
+    return this.productUsageData.filter(x => x.from_location_id === this.productUsageForm.location.id);
+  }
+
+  get refills(): ProductUsageItem[] {
+    return this.productUsageData.filter(x => x.to_location_id === this.productUsageForm.location.id);
+  }
+
   get products(): Observable<Product[]> {
     return this.productService.getAsObservable();
   }

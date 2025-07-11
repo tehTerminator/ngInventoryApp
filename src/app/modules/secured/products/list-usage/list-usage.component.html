@@ -77,29 +77,29 @@
           <tr>
             <th>Details</th>
             <th>Quantity</th>
-            <!-- Quantity column with conditional color -->
             <th>Created At</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of productUsageData" [hidden]="item.to_location" [title]="item.user.name">
-            <td>
-              <!-- Conditional logic for displaying details -->
-              <ng-container *ngIf="!item.to_location; else locationDetails">
-                {{ item.narration }}
-              </ng-container>
-              <ng-template #locationDetails>
-                To: {{ item.to_location?.title || "N/A" }}
-              </ng-template>
-            </td>
-            <td>
-              <!-- Quantity with conditional color -->
-              <span [ngStyle]="{ color: 'red' }">
-                {{ item.quantity }}
-              </span>
-            </td>
-            <td>{{ item.created_at | date : "hh:mm a" }}</td>
-          </tr>
+          @for (item of consumption; track item) {
+            <tr [title]="item.user.name">
+              <td>
+                <!-- Conditional logic for displaying details -->
+                 @if (item.to_location) {
+                   To: {{ item.to_location.title }}
+                } @else {
+                   {{ item.narration }}
+                 }
+              </td>
+              <td>
+                <!-- Quantity with conditional color -->
+                <span [ngStyle]="{ color: 'red' }">
+                  {{ item.quantity }}
+                </span>
+              </td>
+              <td>{{ item.created_at | date : "hh:mm a" }}</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
@@ -117,28 +117,27 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let item of productUsageData"
-            [hidden]="item.from_location"
-            [title]="item.user.name"
-          >
-            <td>
-              <!-- Conditional logic for displaying details -->
-              <ng-container *ngIf="!item.from_location; else locationDetails">
-                {{ item.narration }}
-              </ng-container>
-              <ng-template #locationDetails>
-                From: {{ item.from_location?.title || "N/A" }}
-              </ng-template>
-            </td>
-            <td>
-              <!-- Quantity with conditional color -->
-              <span [ngStyle]="{ color: 'green' }">
-                {{ item.quantity }}
-              </span>
-            </td>
-            <td>{{ item.created_at | date : "hh:mm a" }}</td>
-          </tr>
+          @for (item of refills; track item) {
+            <tr
+              [title]="item.user.name"
+            >
+              <td>
+                <!-- Conditional logic for displaying details -->
+                 @if (item.from_location) {
+                  From: {{ item.from_location.title }}
+                 } @else {
+                   {{ item.narration }}
+                 }
+              </td>
+              <td>
+                <!-- Quantity with conditional color -->
+                <span [ngStyle]="{ color: 'green' }">
+                  {{ item.quantity }}
+                </span>
+              </td>
+              <td>{{ item.created_at | date : "hh:mm a" }}</td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

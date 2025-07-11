@@ -11,14 +11,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of data">
-                    <td>
-                        {{ item.key }}
-                    </td>
-                    <td>
-                        {{ item.value }}
-                    </td>
-                </tr>
+                @for (item of data; track item) {
+                    <tr>
+                        <td>
+                            {{ item.key }}
+                        </td>
+                        <td>
+                            {{ item.value }}
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

@@ -13,12 +13,14 @@
           </mat-expansion-panel-header>
           <p class="d-flex flex-column">
             @for (link of item.links; track link) {
-              <a
-                mat-flat-button
-                [routerLink]="link.routerLink"
-                (click)="onLinkClick()"
-                >{{ link.text }}</a
-              >
+              @if (hasRole(link.role)) {
+                <a
+                  mat-flat-button
+                  [routerLink]="link.routerLink"
+                  (click)="onLinkClick()"
+                  >{{ link.text }}</a
+                >
+              }
             }
           </p>
         </mat-expansion-panel>

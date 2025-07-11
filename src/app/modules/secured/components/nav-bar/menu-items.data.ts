@@ -1,11 +1,11 @@
-export const navItems = [
+export const navItems: Menu[] = [
   {
     title: 'Accounting',
     links: [
-      { text: 'Ledger', routerLink: ['accounting', 'ledgers'] },
+      { text: 'Ledger', routerLink: ['accounting', 'ledgers'], role: 'admin' },
       { text: 'Vouchers', routerLink: ['accounting', 'voucher'] },
       { text: 'Statement', routerLink: ['accounting', 'statement'] },
-      { text: 'Day Book', routerLink: ['accounting', 'daybook'] },
+      { text: 'Day Book', routerLink: ['accounting', 'daybook'], role: 'admin' },
       { text: 'Balance', routerLink: ['accounting', 'ledger-balance'] }
     ],
   },
@@ -35,11 +35,12 @@ export const navItems = [
       { text: 'Create', routerLink: ['bundles', 'create'] },
       { text: 'View', routerLink: ['bundles', 'view'] },
     ],
+    role: 'admin'
   },
   {
     title: 'Locations',
     links: [
-      { text: 'New Store', routerLink: ['locations', 'add'] },
+      { text: 'New Store', routerLink: ['locations', 'add'], role: 'admin' },
       { text: 'View Locations', routerLink: ['locations', 'view'] },
       {
         text: 'My Location',
@@ -63,3 +64,15 @@ export const navItems = [
     role: 'admin'
   },
 ];
+
+interface MenuItems {
+  text: string;
+  routerLink: string[];
+  role?: 'admin' | 'user';
+}
+
+interface Menu {
+  title: string;
+  links: MenuItems[];
+  role?: 'admin' | 'user';
+}
