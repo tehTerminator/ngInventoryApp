@@ -20,7 +20,6 @@ export class RecentPaymentMethodService {
 
     // Effect to persist changes to localStorage
     effect(() => {
-      console.log('Effect Called');
       const ledgers = this.#recentLedgers();
       localStorage.setItem('recentPaymentMethods', JSON.stringify(ledgers));
     });
