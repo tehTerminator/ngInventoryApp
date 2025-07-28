@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of transactions; track row) {
+    @for (row of transactions; track $index) {
       <tr>
         @if (showButtons()) {
           <td class="text-center">
