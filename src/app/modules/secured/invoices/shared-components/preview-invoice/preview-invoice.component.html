@@ -79,7 +79,6 @@
     </div>
 </div>
 
-
 <div class="mt-2 d-print-none text-center">
     @if (showButtons) {
         <button type="button" mat-raised-button color="primary" class="me-2" (click)="gotoCreateNewInvoice()">
@@ -87,7 +86,7 @@
             Create New
         </button>
 
-        @if (isAuthor) {
+        @if (isAuthor() || isAdmin()) {
             <button type="button" mat-raised-button color="warn" (click)="onDeleteBtn()">
                 <mat-icon>delete</mat-icon>
                 Delete Invoice

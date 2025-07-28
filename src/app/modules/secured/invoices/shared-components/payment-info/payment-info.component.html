@@ -2,21 +2,23 @@ This Invoice is <strong>{{ paymentStatus }}</strong>
 
 
 <ul class="list-group">
-    @for (voucher of store.paymentInfo(); track voucher) {
+    @for (voucher of store.paymentInfo(); track $index) {
         <li class="list-group-item d-flex justify-content-between">
             @if (store.kind() === 'SALES') {
-                <span>
+                <strong>
                     {{ getTitle(voucher.dr) }} - {{ voucher.amount | currency:'INR'}}
-                </span>
-            }
-            @if (store.kind() === 'PURCHASE') {
-                <span>
+                </strong>
+            } @else {
+                <strong>
                     {{ getTitle(voucher.cr) }} - {{ voucher.amount | currency:'INR'}}
-                </span>
+                </strong>
             }
-            <button mat-icon-button color="primary" (click)="removeVoucher(voucher)">
-                <mat-icon>close</mat-icon>
-            </button>
+
+            @if (voucher.id === 0 ) {
+                <button mat-icon-button color="primary" (click)="removeVoucher(voucher)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            }
         </li>
     }
 </ul>
