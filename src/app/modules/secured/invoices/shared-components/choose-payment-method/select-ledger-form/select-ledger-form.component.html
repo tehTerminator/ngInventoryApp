@@ -1,14 +1,24 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field class="w-100" appearance="outline">
     <mat-label>Select Payment Method</mat-label>
-    <mat-select name="paymentMethod" formControlName="ledger">
-      <mat-option value="0">
-        -- SELECT LEDGER --
-      </mat-option>
-      <mat-option *ngFor="let ledger of ledgers | async" [value]="ledger.id" [disabled]="isSelected(ledger.id)">
-        {{ ledger.title }}
-      </mat-option>
-    </mat-select>
+    <input
+      type="text"
+      placeholder="Search for a ledger"
+      aria-label="Ledger"
+      matInput
+      formControlName="ledger"
+      [matAutocomplete]="auto"
+    >
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayLedgerTitle">
+      @for (ledger of filteredLedgers | async; track ledger.id) {
+        <mat-option [value]="ledger.id" [disabled]="isSelected(ledger.id)">
+          {{ ledger.title }}
+        </mat-option>
+      }
+      @empty {
+        <mat-option disabled>No ledgers found</mat-option>
+      }
+    </mat-autocomplete>
   </mat-form-field>
   <mat-form-field class="w-100" appearance="outline">
     <mat-label>Amount</mat-label>
