@@ -1,9 +1,11 @@
 <div class="row g-3 vh-100" [ngClass]="color">
-    <div class="col-md-4 col-sm-6 d-print-none d-flex flex-column flex-column-reverse">
-        <div class="col-12 mt-0 mb-auto">
+    <div class="col-md-4 col-sm-6 d-print-none d-flex flex-column">
+        
+        <div class="col-12">
             <router-outlet ></router-outlet>
         </div>
-        <div class="col-12 mt-0">
+
+        <div class="col-12">
             <app-navigation-btn ></app-navigation-btn>
         </div>
     </div>
