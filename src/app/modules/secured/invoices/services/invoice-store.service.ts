@@ -19,6 +19,7 @@ import {
   EMPTY_VOUCHER,
   Voucher,
 } from '../../../../interface/voucher.interface';
+import { AuthStoreService } from 'src/app/services/auth-store/auth-store.service';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +66,8 @@ export class InvoiceStoreService {
     private ledgerService: LedgerService,
     private productService: ProductService,
     private bundleService: BundleService,
-    private contactService: ContactsService
+    private contactService: ContactsService,
+    private authStoreService: AuthStoreService
   ) {
     // Effect to automatically mark the invoice as paid when the paid amount equals the net amount
     effect(() => {
@@ -263,7 +265,11 @@ export class InvoiceStoreService {
   }
 
   reset(): void {
-    this.#invoice.set({ ...BASE_INVOICE, transactions: [] });
+    this.#invoice.set({
+      ...BASE_INVOICE,
+      user_id: +this.authStoreService.user().id,
+      transactions: [],
+    });
     this.resetPayment();
     this.ledgerService.init();
     this.productService.init();
