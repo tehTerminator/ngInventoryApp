@@ -1,4 +1,4 @@
-import { Component, Input, input, OnInit } from '@angular/core';
+import { Component, Input, signal, computed, OnInit } from '@angular/core';
 import { InvoiceStoreService } from './../../services/invoice-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from './../../../../../services/api/api.service';
@@ -14,13 +14,29 @@ import { NotificationsService } from '../../../../../services/notification/notif
     standalone: false
 })
 export class PreviewInvoiceComponent implements OnInit {
-  @Input('showButtons') showButtons = true;
+  @Input() showButtons = true;
+  #isAuthorComputed = computed(() => {
+    const invoice = this.store.invoice(); // Read the invoice signal
+    const user = this.authStore.user();   // Read the user signal
+
+    // Add checks for initial/undefined states if they can occur
+    if (!invoice || !user) {
+      return false; // Or handle as appropriate, e.g., throw an error or show a loading state
+    }
+    return invoice.user_id === user.id;
+  });
+
+  // Expose it as a computed signal
+  isAuthor = this.#isAuthorComputed; // No need for another computed() here, just assign
+
+  isAdmin = computed(() => this.authStore.user().role_id === 1);
+
   constructor(
     public store: InvoiceStoreService,
     private authStore: AuthStoreService,
     private notificationService: NotificationsService,
     private api: ApiService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,    
     private router: Router,
   ) {}
 
@@ -30,10 +46,10 @@ export class PreviewInvoiceComponent implements OnInit {
       return;
     }
 
-    this.loadInvoices(id);
+    this.#loadInvoice(id);
   }
 
-  private loadInvoices(id: string) {
+  #loadInvoice(id: string) {
     this.api
       .retrieve<{ invoice: Invoice; vouchers: Voucher[] }>(['invoice', id])
       .subscribe({
@@ -41,7 +57,8 @@ export class PreviewInvoiceComponent implements OnInit {
           this.store.setInvoice(value);
         },
         error: (err) => {
-          this;
+          this.notificationService.show('Error Occurred');
+          console.error(err);
         },
       });
   }
@@ -58,7 +75,7 @@ export class PreviewInvoiceComponent implements OnInit {
    * 2. If not, show a notification
    */
   onDeleteBtn(): void {
-    if (this.store.invoice().user_id !== this.authStore.user().id) {
+    if (!(this.isAuthor() || this.isAdmin())) {
       this.notificationService.show("You are not allowed to delete this invoice");
       return;
     }
@@ -70,7 +87,7 @@ export class PreviewInvoiceComponent implements OnInit {
     this.api.delete<any>('invoice', this.invoiceId).subscribe({
       next: (value) => {
         console.log(value);
-        this.routeToSearchInvoice();
+        this.#routeToSearchInvoice();
       },
     });
   }
@@ -82,10 +99,6 @@ export class PreviewInvoiceComponent implements OnInit {
   gotoCreateNewInvoice = () => this.router.navigate(['/auth', 'invoices', 'create', 'sales']);
   gotoPayUnpaid = () => this.router.navigate(['/auth', 'invoices', 'pay-unpaid']);
 
-  private routeToSearchInvoice = () =>
+  #routeToSearchInvoice = () =>
     this.router.navigate(['/auth', 'invoices', 'search']);
-
-  get isAuthor(): boolean {
-    return this.authStore.user().id === this.store.invoice().user_id;
-  }
 }
