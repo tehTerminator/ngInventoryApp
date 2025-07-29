@@ -1,55 +1,80 @@
-<form class="card" [formGroup]="productForm" (ngSubmit)="onSubmit()">
-  <div class="card-body">
-    <button type="submit" mat-stroked-button color="primary" class="w-100 mb-2">
-      Add
-      <mat-icon>add</mat-icon>
+<form class="card p-3 shadow-sm" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+  @if (recentProducts.length > 0) {
+  <div
+    class="mb-3 p-2 bg-light rounded border recent-products d-flex align-items-center flex-wrap gap-2 justify-content-center">
+    @for (product of recentProducts; track product.id ?? product.title) {
+    <button type="button" (click)="onQuickSelect(product)" class="btn btn-outline-secondary btn-sm">
+      {{ product.title }}
     </button>
-    <mat-form-field class="w-100">
-      <mat-label>Select Product</mat-label>
-      <input type="text" #firstInputField matInput formControlName="item" [matAutocomplete]="auto">
-      <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn"
-        autoActiveFirstOption="true" autoSelectActiveOption="true">
-        <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
-          {{ product.title }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-error>
-        <small *ngIf="productForm.itemFormControl.hasError('required')">
-          Please Select Item
-        </small>
-      </mat-error>
-    </mat-form-field>
-
-    <div class="row">
-      <div class="col-md-6">
-        <mat-form-field class="d-block" appearance="outline">
-          <mat-label>Quantity</mat-label>
-          <input #quantityField type="number" name="quantity" matInput formControlName="quantity" required
-            class="text-center" />
-          <mat-error
-            *ngIf="productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)">
-            <span *ngIf="productForm.quantityFormControl.hasError('required')">Please Provide Quantity.</span>
-            <span *ngIf="productForm.quantityFormControl.hasError('min')">Quantity Must Not Be Zero.</span>
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-md-6">
-        <mat-form-field class="d-block" appearance="outline">
-          <mat-label>Rate</mat-label>
-          <input [readonly]="isBundle" type="text" name="rate" matInput formControlName="rate" required
-            class="text-center" />
-          <mat-error *ngIf="productForm.rateFormControl.dirty">
-            <span *ngIf="productForm.rateFormControl.hasError('required')">Please Provide Rate.</span>
-            <span *ngIf="productForm.rateFormControl.hasError('min')">Rate Must Not Be Zero.</span>
-            <span *ngIf="productForm.rateFormControl.hasError('pattern')">Invalid Data</span>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="col-md-12 text-center border border-1 p-2">
-      <strong class="fs-3">{{ productForm.amount | currency: 'INR'}}</strong>
-    </div>
-
+    }
   </div>
+  }
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Select Product</mat-label>
+        <input type="text" #firstInputField matInput formControlName="item" [matAutocomplete]="auto">
+        <mat-autocomplete (optionSelected)="onSelectProduct($event)" #auto="matAutocomplete" [displayWith]="displayFn"
+          autoActiveFirstOption="true" autoSelectActiveOption="true">
+          @for (product of filteredProducts$ | async; track product.id ?? product.title) {
+          <mat-option [value]="product">
+            {{ product.title }}
+          </mat-option>
+          }
+        </mat-autocomplete>
+        <mat-error>
+          @if (productForm.itemFormControl.hasError('required')) {
+          Please select a product.
+          }
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-6">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input type="number" min="0.01" matInput formControlName="quantity" required class="text-center" />
+        <mat-error
+          *ngIf="productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)">
+          <span *ngIf="productForm.quantityFormControl.hasError('required')">Please provide quantity.</span>
+          <span *ngIf="productForm.quantityFormControl.hasError('min')">Must not be zero.</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-6">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Rate</mat-label>
+        <input [readonly]="isBundle" type="text" matInput formControlName="rate" required class="text-center" />
+        <mat-error>
+          @if (productForm.rateFormControl.hasError('required')) {
+          Please provide rate.
+          }
+          @if (productForm.rateFormControl.hasError('min')) {
+          Must not be zero.
+          }
+          @if (productForm.rateFormControl.hasError('pattern')) {
+          Invalid data.
+          }
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="text-center mb-3">
+    <div class="fs-4 border rounded p-3 bg-white d-inline-block w-100 shadow-sm">
+      <span class="text-secondary">Total:</span>
+      <strong class="text-primary fs-3">{{ productForm.amount | currency: 'INR' }}</strong>
+    </div>
+  </div>
+
+
+
+  <button type="submit" mat-stroked-button color="primary" class="w-100">
+    <mat-icon>add</mat-icon>
+    Add Product
+  </button>
 </form>

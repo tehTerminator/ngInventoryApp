@@ -41,6 +41,7 @@ export class SelectProductComponent
   productForm = new TransactionForm();
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
   isBundle = false;
+  recentProducts: (GeneralItem | Product)[] = [];
   private _sub = new Subscription();
 
   constructor(
@@ -58,6 +59,16 @@ export class SelectProductComponent
     this.generalItemStore.init();
     this.productService.init();
     this.ledgerService.init();
+
+    //Checks Locally Stored Products
+    const stored = localStorage.getItem(RECENT_PRODUCTS_KEY);
+    if (stored) {
+      try {
+        this.recentProducts = JSON.parse(stored);
+      } catch (e) {
+        this.recentProducts = [];
+      }
+    }
 
     // Combine observable streams for product options
     this.filteredProducts$ = this.productForm.itemFormControl.valueChanges.pipe(
@@ -82,20 +93,45 @@ export class SelectProductComponent
     this._sub.unsubscribe();
   }
 
+  // Util to add product to recent list
+  private addToRecentProducts(product: GeneralItem | Product) {
+    // Remove if already present (by product id or title)
+    this.recentProducts = this.recentProducts.filter(
+      p => p && (p['id'] ?? p['title']) !== (product['id'] ?? product['title'])
+    );
+    // Add to front
+    this.recentProducts.unshift(product);
+    // Cap to 4
+    if (this.recentProducts.length > 4) {
+      this.recentProducts = this.recentProducts.slice(0, 4);
+    }
+    // Optionally persist
+    localStorage.setItem(RECENT_PRODUCTS_KEY, JSON.stringify(this.recentProducts));
+  }
+
   onSelectProduct(event: MatAutocompleteSelectedEvent) {
     const selectedProduct: GeneralItem | Product | null = event.option.value;
     this.isBundle = false;
     if (selectedProduct === null) {
       this.notification.show('Invalid Product Selected');
-    } else {
-      if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
-        const item = this.generalItemStore.selectActualItem(selectedProduct);
-        if (this.bundleService.isInstanceOfBundle(item)) {
-          this.isBundle = true;
-        }
+      return;
+    } 
+
+    if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
+      const item = this.generalItemStore.selectActualItem(selectedProduct);
+      if (this.bundleService.isInstanceOfBundle(item)) {
+        this.isBundle = true;
       }
-      this.productForm.rate = selectedProduct.rate;
     }
+    this.productForm.rate = selectedProduct.rate;
+  }
+
+    // Add a manual 'quick select' handler for the buttons
+  onQuickSelect(product: GeneralItem | Product) {
+    // Set form controls directly
+    this.productForm.itemFormControl.setValue(product);
+    this.productForm.rate = product.rate;
+    this.addToRecentProducts(product); // move to front
   }
 
   onSubmit() {
@@ -111,6 +147,8 @@ export class SelectProductComponent
       
       return;
     }
+
+    this.addToRecentProducts(this.productForm.item);
 
     const actualItem: Product | Ledger | Bundle =
       this.generalItemStore.isInstanceOfGeneralItem(this.productForm.item)
@@ -156,3 +194,6 @@ export class SelectProductComponent
   }
 
 }
+
+// Add at the top
+const RECENT_PRODUCTS_KEY = 'recent_products';
