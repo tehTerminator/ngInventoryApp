@@ -51,4 +51,8 @@ export class ProductForm extends FormGroup {
     return this.locationControl.value;
   }
 
+  get editMode(): boolean {
+    return this.id > 0;
+  }
+
 }
