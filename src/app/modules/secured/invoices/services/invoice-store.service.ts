@@ -165,15 +165,9 @@ export class InvoiceStoreService {
       existingTransactions.push(newTransaction);
     }
 
-    let grossAmount = 0;
-    existingTransactions.forEach(
-      (item) => (grossAmount += item.quantity * item.rate)
-    );
-
     this.#invoice.update((value) => {
       return {
         ...value,
-        gross_amount: grossAmount,
         transactions: existingTransactions,
       };
     });
