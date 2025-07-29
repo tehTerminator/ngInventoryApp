@@ -1,43 +1,59 @@
 <div class="card">
-    <div class="card-header">Save Opening / Closing Balance</div>
-    <div class="card-body">
-      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Ledger Name</mat-label>
-          <mat-select formControlName="ledger" required>
-            <mat-option *ngFor="let l of ledgers | async" [value]="l">
+  <div class="card-header">Save Opening / Closing Balance</div>
+  <div class="card-body">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Ledger Name</mat-label>
+        <mat-select formControlName="ledger" required>
+          @for (l of ledgers | async; track l) {
+            <mat-option [value]="l">
               {{ l.title }}
             </mat-option>
-          </mat-select>
-          <mat-error *ngIf="ledger.invalid && (ledger.touched || ledger.dirty)">
-            <span *ngIf="ledger.hasError('required')">Please Select a Ledger</span>
+          }
+        </mat-select>
+        @if (ledger.invalid && (ledger.touched || ledger.dirty)) {
+          <mat-error>
+            Please Select a Ledger
           </mat-error>
-        </mat-form-field>
-  
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Opening Balance</mat-label>
-          <input type="number" matInput formControlName="opening" min="0" required />
-          <mat-error *ngIf="opening.invalid && (opening.dirty || opening.touched)">
-            <span *ngIf="opening.hasError('required')">Please Enter Opening Balance</span>
-            <span *ngIf="closing.hasError('min')">Opening Balance must be more than 0.</span>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Opening Balance</mat-label>
+        <input type="number" matInput formControlName="opening" min="0" required />
+        @if (opening.invalid && (opening.dirty || opening.touched)) {
+          <mat-error>
+            @if (opening.hasError('required')) {
+              <span>Please Enter Opening Balance</span>
+            }
+            @if (opening.hasError('min')) {
+              <span>Opening Balance must be more than 0.</span>
+            }
           </mat-error>
-        </mat-form-field>
-  
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Closing Balance</mat-label>
-          <input type="number" matInput formControlName="closing" required />
-          <mat-error *ngIf="closing.invalid && (closing.dirty || closing.touched)">
-            <span *ngIf="closing.hasError('required')">Please Enter Closing Balance</span>
-            <span *ngIf="closing.hasError('min')">Closing Balance must be more than 0.</span>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Closing Balance</mat-label>
+        <input type="number" matInput formControlName="closing" required />
+        @if (closing.invalid && (closing.dirty || closing.touched)) {
+          <mat-error>
+            @if (closing.hasError('required')) {
+              <span>Please Enter Closing Balance</span>
+            }
+            @if (closing.hasError('min')) {
+              <span>Closing Balance must be more than 0.</span>
+            }
           </mat-error>
-        </mat-form-field>
-  
-        <button mat-flat-button color="primary" type="submit" class="btn m-1" [disabled]="myForm.invalid">
-          Submit
-        </button>
-        <button mat-flat-button color="warn" type="reset" class="btn m-1">
-          Reset Form
-        </button>
-      </form>
-    </div>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" type="submit" class="btn m-1" [disabled]="myForm.invalid">
+        Submit
+      </button>
+      <button mat-flat-button color="warn" type="reset" class="btn m-1">
+        Reset Form
+      </button>
+    </form>
   </div>
+</div>
