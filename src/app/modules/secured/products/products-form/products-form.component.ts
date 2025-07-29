@@ -48,7 +48,7 @@ export class ProductsFormComponent implements OnInit {
 
     this._loading = true;
 
-    if (this.editMode) {
+    if (this.form.editMode) {
       this.handleResponse(this.updateProduct(this.form.value));
       return;
     }
@@ -70,7 +70,7 @@ export class ProductsFormComponent implements OnInit {
     response.subscribe({
       next: (value) => {
         let message = `Product ${value.title} Created.`;
-        if (this.editMode) {
+        if (this.form.editMode) {
           message = `Product ${value.title} Updated`;
         }
         this.notice.show(message);
@@ -89,10 +89,6 @@ export class ProductsFormComponent implements OnInit {
       title: product.title,
       rate: product.rate,
     })
-  }
-
-  get editMode(): boolean {
-    return this.form.idControl.value > 0;
   }
 
   get loading(): boolean {

@@ -20,14 +20,20 @@
             <mat-label>StoreLocation</mat-label>
             <mat-select formControlName="location_id">
               <mat-option [value]="0">Select StoreLocation</mat-option>
-              <mat-option [value]="l.id" *ngFor="let l of locations | async">
-                {{ l.title }}
-              </mat-option>
+              @for (l of locations | async; track l.id) {
+                <mat-option [value]="l.id">
+                  {{ l.title }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
 
           <button type="submit" mat-raised-button color="primary" class="w-100">
-            Submit
+            @if (form.editMode) {
+              Update Product
+            } @else {
+              Add Product
+            }
           </button>
         </form>
       </div>
