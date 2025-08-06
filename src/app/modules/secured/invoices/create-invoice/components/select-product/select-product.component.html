@@ -37,7 +37,7 @@
     <div class="col-6">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Quantity</mat-label>
-        <input type="number" min="0.01" matInput formControlName="quantity" required class="text-center" />
+        <input type="number" value="1" matInput formControlName="quantity" required class="text-center" />
         <mat-error
           *ngIf="productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)">
           <span *ngIf="productForm.quantityFormControl.hasError('required')">Please provide quantity.</span>
