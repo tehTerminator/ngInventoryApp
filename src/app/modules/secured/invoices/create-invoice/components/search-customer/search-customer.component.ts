@@ -1,9 +1,11 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   ElementRef,
   OnDestroy,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +13,7 @@ import { InvoiceStoreService } from '../../../services/invoice-store.service';
 import { Contact } from './../../../../../../interface/contact.interface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from './../../../../../../services/api/api.service';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -20,6 +23,8 @@ import { ApiService } from './../../../../../../services/api/api.service';
   styleUrl: './search-customer.component.scss'
 })
 export class SearchCustomerComponent {
+  #loading = signal<boolean>(false);
+  loading = computed(() => this.#loading());
 @ViewChild('customerTextField') input!: ElementRef<HTMLInputElement>;
   label = 'Party';
   contactField = new FormControl<string>('9999999999', {
@@ -61,6 +66,8 @@ export class SearchCustomerComponent {
     let mobile = this.contactField.value;
     const contact = this.checkLocalContact(mobile);
 
+    this.#loading.set(true);
+
     if (contact) {
       this.store.contact = contact.id;
       this.navigateToSelectProduct();
@@ -68,6 +75,9 @@ export class SearchCustomerComponent {
     }
 
     this.api.retrieve<Contact>('contact', {mobile})
+    .pipe(finalize(() => {
+      this.#loading.set(false);
+    }))
     .subscribe({
         next: (value => {
           this.store.contact = value.id;
@@ -79,6 +89,7 @@ export class SearchCustomerComponent {
           console.error(err);
         })
       })
+
   }
 
   private storeCustomerData(data: Contact) {
