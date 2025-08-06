@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { evaluateString, mathPattern } from './../../../../shared/functions';
+import { evaluateString, mathPattern } from '../../../../../shared/functions';
 
 @Component({
     selector: 'app-evaluator',
