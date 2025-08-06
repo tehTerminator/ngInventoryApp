@@ -1,0 +1,110 @@
+<form [formGroup]="taskFormGroup">
+    <mat-card style="min-width: 400px;">
+        <mat-card-header>
+            <mat-card-title>
+                Create New Task
+            </mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    Mobile Number
+                </mat-label>
+                <input matInput type="text" pattern="^[6-9][0-9]{9}$" required formControlName="mobile">
+                @if (taskFormGroup.mobileFC.touched && taskFormGroup.mobileFC.invalid) {
+                <mat-error>
+                    @if (taskFormGroup.mobileFC.errors && taskFormGroup.mobileFC.errors['required']) {
+                    <span>
+                        Mobile Number is required.
+                    </span>
+                    }
+                    @if (taskFormGroup.mobileFC.errors && taskFormGroup.mobileFC.errors['pattern']) {
+                    <span>
+                        Invalid Mobile Number
+                    </span>
+                    }
+                </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    Customer Name
+                </mat-label>
+                <input matInput type="text" required formControlName="customer">
+                @if (taskFormGroup.customerFC.touched && taskFormGroup.customerFC.invalid) {
+                    <mat-error>
+                        @if (taskFormGroup.customerFC.errors && taskFormGroup.customerFC.errors['required']) {
+                        <span>
+                            Customer Name is required.
+                        </span>
+                        }
+                        @if (taskFormGroup.customerFC.errors && taskFormGroup.customerFC.errors['minlength']) {
+                            <span>
+                                Customer Name is too Small.
+                            </span>
+                        }
+                        @if (taskFormGroup.customerFC.errors && taskFormGroup.customerFC.errors['maxlength']) {
+                            <span>
+                                Customer Name is too Big.
+                            </span>
+                        }
+                    </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    Category
+                </mat-label>
+                <input matInput type="text" required formControlName="category">
+                @if (taskFormGroup.categoryFC.touched && taskFormGroup.categoryFC.invalid) {
+                    <mat-error>
+                        @if (taskFormGroup.categoryFC.errors && taskFormGroup.categoryFC.errors['required']) {
+                        <span>
+                            Category is required.
+                        </span>
+                        }
+                        @if (taskFormGroup.categoryFC.errors && taskFormGroup.categoryFC.errors['minlength']) {
+                            <span>
+                                Category is too Small.
+                            </span>
+                        }
+                        @if (taskFormGroup.categoryFC.errors && taskFormGroup.categoryFC.errors['maxlength']) {
+                            <span>
+                                Category is too Big.
+                            </span>
+                        }
+                    </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    Comment
+                </mat-label>
+                <textarea matInput type="text" required="" formControlName="comment"></textarea>
+                @if (taskFormGroup.commentFC.touched && taskFormGroup.commentFC.invalid) {
+                    <mat-error>
+                        @if (taskFormGroup.commentFC.errors && taskFormGroup.commentFC.errors['required']) {
+                        <span>
+                            comment is required.
+                        </span>
+                        }
+                        @if (taskFormGroup.commentFC.errors && taskFormGroup.commentFC.errors['minlength']) {
+                            <span>
+                                Comment is too Small.
+                            </span>
+                        }
+                        @if (taskFormGroup.commentFC.errors && taskFormGroup.commentFC.errors['maxlength']) {
+                            <span>
+                                Comment is too Big.
+                            </span>
+                        }
+                    </mat-error>
+                }
+            </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button type="submit" color="primary" class="w-100">Submit</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

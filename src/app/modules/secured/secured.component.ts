@@ -16,7 +16,7 @@ import { Ledger } from '../../interface/ledger.interface';
 import { StoreLocation } from '../../interface/location.interface';
 import { Product } from '../../interface/product.interface';
 import { MatDialog } from '@angular/material/dialog';
-import { CalculatorComponent } from './calculator/calculator.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
 
 @Component({
     selector: 'app-secured',

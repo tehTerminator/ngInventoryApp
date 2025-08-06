@@ -1,13 +1,14 @@
 <mat-tab-group>
     <mat-tab label="Overview">
         <div class="row mx-4 mt-4 g-4">
-            <div class="col-md-4 col-lg-3">
-                <app-card-with-text title="Current Location" [text]="myLocation.title"></app-card-with-text>
-                <app-card-with-text class="p-1" title="My Sales" dataUrl="mySales"></app-card-with-text>
+            <div class="col-md-6 col-lg-3 col-sm-4">
+                <app-card-with-text title="Location" [text]="myLocation.title"></app-card-with-text>
+                <app-card-with-text class="p-1" title="Sales" dataUrl="mySales"></app-card-with-text>
                 <app-card-with-text class="p-1" title="Commissions" dataUrl="myCommission"></app-card-with-text>
             </div>
-            <app-product-list class="col-md-6 col-lg-4" [location]="myLocation.id"></app-product-list>
-            <app-products-used class="col-md-6 col-lg-4"></app-products-used>
+            <div class="col-md-6 col-lg-9 col-sm-8">
+                <app-task-list></app-task-list>
+            </div>
         </div>
     </mat-tab>
     <mat-tab label="Accounts">
@@ -25,9 +26,12 @@
             <app-under-construction></app-under-construction>
         </ng-template>
     </mat-tab>
-    <mat-tab label="Payments">
+    <mat-tab label="Products">
         <ng-template matTabContent>
-            <app-under-construction></app-under-construction>
+            <div class="row">
+                <app-product-list class="col-md-6 col-lg-4" [location]="myLocation.id"></app-product-list>
+                <app-products-used class="col-md-6 col-lg-4"></app-products-used>
+            </div>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

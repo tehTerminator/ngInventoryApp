@@ -10,6 +10,10 @@ import { UnderConstructionComponent } from './components/under-construction/unde
 import { CardWithTableComponent } from './components/card-with-table/card-with-table.component';
 import { ProductListComponent } from './../standalone/product-list/product-list.component';
 import { ProductsUsedComponent } from './components/products-used/products-used.component';
+import { TaskListComponent } from './components/task-list/task-list.component';
+import { MatCardModule } from '@angular/material/card';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -17,12 +21,16 @@ import { ProductsUsedComponent } from './components/products-used/products-used.
     CardWithTextComponent,
     CardWithTableComponent,
     ProductsUsedComponent,
+    TaskListComponent,
     UnderConstructionComponent,
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     MatTabsModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatDialogModule,
     ProductListComponent,
     CoreModule,
   ],
