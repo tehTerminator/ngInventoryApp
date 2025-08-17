@@ -2,9 +2,9 @@
 
   @if (recentProducts.length > 0) {
   <div
-    class="mb-3 p-2 bg-light rounded border recent-products d-flex align-items-center flex-wrap gap-2 justify-content-center">
+    class="mb-3 p-2 bg-light rounded border recent-products d-flex flex-wrap gap-2">
     @for (product of recentProducts; track product.id ?? product.title) {
-    <button type="button" (click)="onQuickSelect(product)" class="btn btn-outline-secondary btn-sm">
+    <button type="button" (click)="onQuickSelect(product)" class="btn btn-outline-secondary btn-sm flex-fill">
       {{ product.title }}
     </button>
     }
@@ -38,17 +38,22 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Quantity</mat-label>
         <input type="number" value="1" matInput formControlName="quantity" required class="text-center" />
-        <mat-error
-          *ngIf="productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)">
-          <span *ngIf="productForm.quantityFormControl.hasError('required')">Please provide quantity.</span>
-          <span *ngIf="productForm.quantityFormControl.hasError('min')">Must not be zero.</span>
-        </mat-error>
+        @if (productForm.quantityFormControl.invalid && (productForm.quantityFormControl.touched || productForm.quantityFormControl.dirty)) {
+          <mat-error>
+            @if (productForm.quantityFormControl.hasError('required')) {
+              <span>Please provide quantity.</span>
+            }
+            @if (productForm.quantityFormControl.hasError('min')) {
+              <span>Must not be zero.</span>
+            }
+          </mat-error> 
+        }
       </mat-form-field>
     </div>
     <div class="col-6">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Rate</mat-label>
-        <input [readonly]="isBundle" type="text" matInput formControlName="rate" required class="text-center" />
+        <input type="text" matInput formControlName="rate" required class="text-center" />
         <mat-error>
           @if (productForm.rateFormControl.hasError('required')) {
           Please provide rate.
@@ -73,7 +78,7 @@
 
 
 
-  <button type="submit" mat-stroked-button color="primary" class="w-100">
+  <button type="submit" mat-raised-button color="primary" class="w-100">
     <mat-icon>add</mat-icon>
     Add Product
   </button>

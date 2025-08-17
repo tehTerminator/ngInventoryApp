@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { InvoiceStoreService } from '../../../services/invoice-store.service';
@@ -29,10 +30,10 @@ import { Ledger } from '../../../../../../interface/ledger.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-select-product',
-    templateUrl: './select-product.component.html',
-    styleUrls: ['./select-product.component.scss'],
-    standalone: false
+  selector: 'app-select-product',
+  templateUrl: './select-product.component.html',
+  styleUrls: ['./select-product.component.scss'],
+  standalone: false,
 })
 export class SelectProductComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -40,7 +41,6 @@ export class SelectProductComponent
   @ViewChild('firstInputField') input!: ElementRef<HTMLInputElement>;
   productForm = new TransactionForm();
   filteredProducts$: Observable<GeneralItem[] | Product[]> = EMPTY;
-  isBundle = false;
   recentProducts: (GeneralItem | Product)[] = [];
   private _sub = new Subscription();
 
@@ -97,7 +97,8 @@ export class SelectProductComponent
   private addToRecentProducts(product: GeneralItem | Product) {
     // Remove if already present (by product id or title)
     this.recentProducts = this.recentProducts.filter(
-      p => p && (p['id'] ?? p['title']) !== (product['id'] ?? product['title'])
+      (p) =>
+        p && (p['id'] ?? p['title']) !== (product['id'] ?? product['title'])
     );
     // Add to front
     this.recentProducts.unshift(product);
@@ -106,32 +107,31 @@ export class SelectProductComponent
       this.recentProducts = this.recentProducts.slice(0, 4);
     }
     // Optionally persist
-    localStorage.setItem(RECENT_PRODUCTS_KEY, JSON.stringify(this.recentProducts));
+    localStorage.setItem(
+      RECENT_PRODUCTS_KEY,
+      JSON.stringify(this.recentProducts)
+    );
   }
 
   onSelectProduct(event: MatAutocompleteSelectedEvent) {
     const selectedProduct: GeneralItem | Product | null = event.option.value;
-    this.isBundle = false;
     if (selectedProduct === null) {
       this.notification.show('Invalid Product Selected');
       return;
-    } 
+    }
 
     if (this.generalItemStore.isInstanceOfGeneralItem(selectedProduct)) {
       const item = this.generalItemStore.selectActualItem(selectedProduct);
-      if (this.bundleService.isInstanceOfBundle(item)) {
-        this.isBundle = true;
-      }
     }
     this.productForm.rate = selectedProduct.rate;
   }
 
-    // Add a manual 'quick select' handler for the buttons
+  // Add a manual 'quick select' handler for the buttons
   onQuickSelect(product: GeneralItem | Product) {
     // Set form controls directly
     this.productForm.itemFormControl.setValue(product);
     this.productForm.rate = product.rate;
-    this.addToRecentProducts(product); // move to front
+    this.input.nativeElement.focus();
   }
 
   onSubmit() {
@@ -141,10 +141,10 @@ export class SelectProductComponent
       this.productForm.amount <= 0 ||
       this.productForm.amount === null
     ) {
-      if (this.store.netAmount() > 0){
-        this.router.navigate(['../set-discount'], {relativeTo: this.route});
+      if (this.store.netAmount() > 0) {
+        this.router.navigate(['../set-discount'], { relativeTo: this.route });
       }
-      
+
       return;
     }
 
@@ -154,7 +154,6 @@ export class SelectProductComponent
       this.generalItemStore.isInstanceOfGeneralItem(this.productForm.item)
         ? this.generalItemStore.selectActualItem(this.productForm.item)
         : this.productForm.item;
-
 
     try {
       this.store.createTransaction(
@@ -192,7 +191,6 @@ export class SelectProductComponent
     }
     return product && product.title ? product.title : '';
   }
-
 }
 
 // Add at the top
