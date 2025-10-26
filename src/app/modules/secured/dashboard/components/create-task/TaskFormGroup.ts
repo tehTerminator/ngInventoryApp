@@ -90,7 +90,7 @@ export class TaskFormGroup extends FormGroup {
     return this.categoryFC.value;
   }
 
-  /** 
+  /**
    * @returns Comments
    */
   get comment(): string {

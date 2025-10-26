@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { Product } from './../../../../interface/product.interface';
 import { StoreLocation } from './../../../../interface/location.interface';
 import { ApiService } from './../../../../services/api/api.service';
@@ -17,7 +17,8 @@ import { ProductUsageItem } from './ProductUsageItem';
 })
 export class ListUsageComponent implements OnInit {
   productUsageForm = new ProductUsageForm();
-  productUsageData: ProductUsageItem[] = [];
+  #productUsageData = signal<ProductUsageItem[]>([]);
+  usage = computed(() => this.#productUsageData());
 
   constructor(
     private api: ApiService,
@@ -47,21 +48,22 @@ export class ListUsageComponent implements OnInit {
     this.api
       .retrieve<ProductUsageItem[]>(['product', 'transferHistory'], payload)
       .subscribe({
-        next: (value) => (this.productUsageData = value),
+        next: (value) => {
+          console.log(value);
+          this.notice.show('Data Loaded Success');
+          this.#productUsageData.set(value);
+        },
         error: (err) => {
-          this.productUsageData = [];
+          this.#productUsageData.set([]);
           this.notice.show('Error, Please Check Log');
         },
       });
   }
 
-  get consumption(): ProductUsageItem[] {
-    return this.productUsageData.filter(x => x.from_location_id === this.productUsageForm.location.id);
-  }
 
-  get refills(): ProductUsageItem[] {
-    return this.productUsageData.filter(x => x.to_location_id === this.productUsageForm.location.id);
-  }
+  consumption = computed(() => this.#productUsageData().filter(x => x.from_location_id === this.productUsageForm.location.id));
+
+  refills = computed(() => this.#productUsageData().filter(x => x.to_location_id === this.productUsageForm.location.id));
 
   get products(): Observable<Product[]> {
     return this.productService.getAsObservable();

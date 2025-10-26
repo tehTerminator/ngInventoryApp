@@ -1,15 +1,16 @@
+import { ThisReceiver } from '@angular/compiler';
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'app-navigation-btn',
-    templateUrl: './navigation-btn.component.html',
-    styleUrls: ['./navigation-btn.component.scss'],
-    standalone: false
+  selector: 'app-navigation-btn',
+  templateUrl: './navigation-btn.component.html',
+  styleUrls: ['./navigation-btn.component.scss'],
+  standalone: false,
 })
 export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
-  private paths = [
+  #paths = [
     'select-contact',
     'select-product',
     'set-discount',
@@ -21,15 +22,15 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
   constructor(private router: Router) {}
 
   ngAfterViewInit(): void {
-    this.router.events.pipe(takeUntil(this._notifier$)).subscribe((val) => {
+    this.router.events.pipe(takeUntil(this._notifier$)).subscribe(() => {
       if (this.isPurchase()) {
-        this.paths = [
+        this.#paths = [
           'select-contact',
           'select-product',
           'choose-payment-method',
         ];
       } else {
-        this.paths = [
+        this.#paths = [
           'select-contact',
           'select-product',
           'set-discount',
@@ -50,7 +51,7 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    path[4] = this.paths[this.currentPathIndex - 1];
+    path[4] = this.#paths[this.currentPathIndex - 1];
     this.router.navigate(path);
   }
 
@@ -60,7 +61,7 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    path[4] = this.paths[this.currentPathIndex + 1];
+    path[4] = this.#paths[this.currentPathIndex + 1];
     this.router.navigate(path);
   }
 
@@ -69,17 +70,26 @@ export class NavigationBtnComponent implements AfterViewInit, OnDestroy {
   }
 
   get currentPathIndex(): number {
-    return this.paths.indexOf(this.currentPath[4]);
+    return this.#paths.indexOf(this.currentPath[4]);
   }
 
   showBtn(): boolean {
     if (
       this.currentPath.length < 3 ||
-      this.currentPath[2] !== 'create'
+      this.currentPath[2] !== 'create' ||
+      this.currentPath[4] === 'select-contact'
     ) {
       return false;
     }
+
     return true;
+  }
+
+  isLast(): boolean {
+    return (
+      this.currentPath.length >= 5 &&
+      this.currentPath[4] === this.#paths[this.#paths.length - 1]
+    );
   }
 
   isPurchase(): boolean {

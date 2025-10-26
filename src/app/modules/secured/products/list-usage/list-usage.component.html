@@ -81,7 +81,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of consumption; track item) {
+          @for (item of consumption(); track $index) {
             <tr [title]="item.user.name">
               <td>
                 <!-- Conditional logic for displaying details -->
@@ -117,7 +117,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of refills; track item) {
+          @for (item of refills(); track $index) {
             <tr
               [title]="item.user.name"
             >

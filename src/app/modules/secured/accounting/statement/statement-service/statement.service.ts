@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { ApiService } from '../../../../../services/api/api.service';
-import { Ledger } from './../../../../../interface/ledger.interface';
+import { EMPTY_LEDGER, Ledger } from './../../../../../interface/ledger.interface';
 import { Entity } from 'src/app/interface/entity.interface';
 import { finalize } from 'rxjs';
 
@@ -12,6 +12,9 @@ export class StatementService {
   #loading = signal(false);
   statement = computed(() => this.#statement());
   loading = computed(() => this.#loading());
+  fromDate: string = '';
+  toDate = '';
+  ledger: Ledger = EMPTY_LEDGER;
 
   constructor(private api: ApiService) {}
 
@@ -31,6 +34,9 @@ export class StatementService {
       .subscribe({
         next: (data) => {
           this.#statement.set(data);
+          this.fromDate = fromDate;
+          this.toDate = toDate;
+          this.ledger = ledger;
         },
         error: (error) => {
           console.error(error);

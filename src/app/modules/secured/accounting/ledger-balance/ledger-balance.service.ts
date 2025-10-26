@@ -28,8 +28,8 @@ export class LedgerBalanceService {
     })
   }
 
-  updateBalance(id: number, opening?: number, closing?: number): Observable<LedgerBalance> {
-    return this.api.create<LedgerBalance>('balance', {id, opening, closing})
+  updateBalance(id: number, opening?: number, closing?: number, date?: string): Observable<LedgerBalance> {
+    return this.api.create<LedgerBalance>('balance', {id, opening, closing, date})
     .pipe(
       tap(ledger => {
         ledger.ledger = this.ledgerService.getElementById(ledger.ledger_id) || EMPTY_LEDGER;

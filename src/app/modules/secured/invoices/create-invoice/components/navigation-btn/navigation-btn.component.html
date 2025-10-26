@@ -1,15 +1,17 @@
-<div class="row gt-2 p-3 mb-3 d-flex flex-row-reverse" *ngIf="showBtn()">
-    <div class="col-6">
-        <button (click)="goForward()" mat-raised-button class="accent" class="w-100">
-            <span>Next</span>
-            <mat-icon>keyboard_arrow_right</mat-icon>
-        </button>
+@if (showBtn()) {
+    <div class="row gt-2 p-2 d-flex flex-row-reverse">
+        <div class="col-6">
+            <button [disabled]="isLast()" (click)="goForward()" mat-raised-button class="accent" class="w-100">
+                <span>Next</span>
+                <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+        </div>
+        <div class="col-6">
+            <button (click)="goBack()" mat-raised-button class="accent" class="w-100">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+                <span>Prev</span>
+            </button>
+        </div>
+    
     </div>
-    <div class="col-6">
-        <button (click)="goBack()" mat-raised-button class="accent" class="w-100">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-            <span>Prev</span>
-        </button>
-    </div>
-
-</div>
+}

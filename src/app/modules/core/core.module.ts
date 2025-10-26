@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 /**
  * CoreModule is a shared module that imports and exports common Angular Material components
@@ -36,8 +37,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,  
     MatTabsModule,
+    MatCardModule,
   ],
   exports: [
     LoadingDirective,
@@ -48,6 +50,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatCardModule,
   ],
 })
 export class CoreModule {}

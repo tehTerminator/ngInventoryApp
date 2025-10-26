@@ -1,5 +1,4 @@
 import { StoreLocation } from '../../../../interface/location.interface';
-import { Product } from '../../../../interface/product.interface';
 import { UserData } from '../../../../services/authentication/user.model';
 
 

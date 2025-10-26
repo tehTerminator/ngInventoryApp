@@ -21,7 +21,7 @@ export class ApiService {
     const url = this.createUrl('get', urlData);
     return this.http
       .get<T>(url, { params: payload })
-      .pipe(delay(this.randomTime()), retry(3));
+      .pipe(delay(this.randomTime()));
   }
 
   create<T>(

@@ -89,7 +89,6 @@ export class SearchCustomerComponent {
           console.error(err);
         })
       })
-
   }
 
   private storeCustomerData(data: Contact) {

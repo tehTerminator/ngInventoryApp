@@ -10,9 +10,10 @@ import { CoreModule } from './../../../core/core.module';
 import { StatementService } from './statement-service/statement.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { BalanceFormComponent } from './components/balance-form/balance-form.component';
 
 @NgModule({
-  declarations: [StatementComponent, FormComponent, TableComponent],
+  declarations: [StatementComponent, FormComponent, TableComponent, BalanceFormComponent],
   imports: [
     CommonModule,
     StatementRoutingModule,
