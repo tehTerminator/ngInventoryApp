@@ -14,6 +14,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { MatCardModule } from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { OperatorSalesChartComponent } from './components/operator-sales-chart/operator-sales.chart.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     ProductsUsedComponent,
     TaskListComponent,
     UnderConstructionComponent,
+    OperatorSalesChartComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTabsModule,
     MatCardModule,
     MatToolbarModule,
-    MatDialogModule,
+    MatDialogModule,  
     ProductListComponent,
     CoreModule,
   ],

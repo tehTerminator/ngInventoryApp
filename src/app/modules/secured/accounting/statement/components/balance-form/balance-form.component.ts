@@ -44,7 +44,7 @@ export class BalanceFormComponent {
     const date = this.statementService.fromDate;
     const opening = this.amountControl.value;
     const ledgerId = this.statementService.ledger.id;
-    this.balanceStore.updateBalance(ledgerId, opening, 0, date).subscribe({
+    this.balanceStore.updateBalance(ledgerId, opening, 0).subscribe({
         next: ((data) => {
             console.log(data);
             this.statementService.fetchData(this.statementService.ledger, this.statementService.fromDate, this.statementService.toDate);
